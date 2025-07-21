@@ -30,21 +30,10 @@ MonoBehaviour:
     referenceMode: 2
     serializationDepthLimit: 64
     assemblyNames:
-    - AimingRig
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
     - Cinemachine
-    - Convention.Plugin
-    - Convention.Runtime
-    - Convention.Windows
-    - CW.Common
-    - Dreamteck.Splines
-    - Dreamteck.Utilities
     - EasySave3
-    - IngameDebugConsole.Runtime
-    - LeanCommon
-    - LeanPool
-    - WorkflowAgent
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
