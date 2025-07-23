@@ -8,7 +8,7 @@ using static Convention.WindowsUI.Variant.PropertiesWindow;
 namespace Convention.WindowsUI.Variant
 {
     /// <summary>
-    /// enum&1==1则为动态生成类型
+    /// enum&1==1锟斤拷为锟斤拷态锟斤拷锟斤拷锟斤拷锟斤拷
     /// </summary>
     public enum InspectorDrawType
     {
@@ -400,9 +400,8 @@ namespace Convention.WindowsUI.Variant
 
 
     /// <summary>
-    /// 使用这个接口, 将在GameObject被SetTarget在Inspector上时只展示这个类实例的内容,
-    /// 而不会展示Components也不能通过<To GameObject>跳转到GameObject的Components列表,
-    /// 见<see cref="InspectorWindow.BuildWindow"/>
+    /// 
+    /// <see cref="InspectorWindow.BuildWindow"/>
     /// </summary>
-    public interface IOnlyFocusThisOnInspector : IAnyClass { }
+    public interface IOnlyFocusThisOnInspector { }
 }

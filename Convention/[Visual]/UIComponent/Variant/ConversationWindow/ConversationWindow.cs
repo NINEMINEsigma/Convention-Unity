@@ -9,7 +9,6 @@ namespace Convention.WindowsUI.Variant
     {
         [Resources, OnlyNotNullMode] public WindowManager m_WindowManager;
         [Resources, SerializeField, OnlyNotNullMode] private PropertiesWindow m_PropertiesWindow;
-        private RegisterWrapper<ConversationWindow> m_RegisterWrapper;
 
         [Resources, Header("HeadLine"), OnlyNotNullMode] public Image HeadIcon;
         [Resources, OnlyNotNullMode] public ModernUIInputField HeadText = new();
@@ -36,14 +35,10 @@ namespace Convention.WindowsUI.Variant
 
         private void Start()
         {
-            m_RegisterWrapper = new(() =>
+            Architecture.RegisterWithDuplicateAllow(typeof(ConversationWindow), this, () =>
             {
 
             });
-        }
-        private void OnDestroy()
-        {
-            m_RegisterWrapper.Release();
         }
 
         public void SetHeadText(string text)

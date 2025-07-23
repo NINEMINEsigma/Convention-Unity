@@ -20,6 +20,7 @@ namespace Convention
             var results = WindowsKit.SelectMultipleFiles(filter, title);
             if (results != null && results.Length > 0)
                 return results[0];
+            return null;
 #else           
             throw new NotImplementedException();
 #endif

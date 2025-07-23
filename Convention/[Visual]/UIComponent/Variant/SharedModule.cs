@@ -54,7 +54,7 @@ namespace Convention.WindowsUI.Variant
         }
 
         [ArgPackage]
-        public class CallbackData : AnyClass
+        public class CallbackData
         {
             public string name;
             public Action<Vector3> callback;
@@ -65,7 +65,7 @@ namespace Convention.WindowsUI.Variant
             }
         }
         /// <summary>
-        /// 回调函数的参数是root
+        /// 
         /// </summary>
         [return: ReturnNotNull, IsInstantiated(true)]
         public CustomMenu OpenCustomMenu([In] RectTransform root, params CallbackData[] actions)

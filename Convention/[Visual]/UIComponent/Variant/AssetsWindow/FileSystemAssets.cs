@@ -9,7 +9,7 @@ namespace Convention.WindowsUI.Variant
         public static void InitLoadedRoots(ref List<string> LoadedInRoot)
         {
             LoadedInRoot = new List<string>();
-            if (PlatformIndicator.is_platform_windows)
+            if (PlatformIndicator.IsPlatformWindows)
             {
                 LoadedInRoot.Add(Application.persistentDataPath);
                 LoadedInRoot.Add(Application.streamingAssetsPath);

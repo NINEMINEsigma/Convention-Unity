@@ -9,7 +9,7 @@ namespace Convention.WindowsUI.Variant
     {
         [Resources] public ModernUIInputField TextArea;
         [Resources] public Button RawButton;
-        public IAnyClass lastReference;
+        public object lastReference;
         [Content] public bool isEditing = false;
 
         private void OnCallback(string str)

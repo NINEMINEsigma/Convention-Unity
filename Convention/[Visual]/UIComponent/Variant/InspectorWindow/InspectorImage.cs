@@ -37,7 +37,7 @@ namespace Convention.WindowsUI.Variant
             if (path == null || path.Length == 0)
                 return;
             var file = new ToolFile(path);
-            if (file.IsExist == false)
+            if (file.Exists() == false)
                 return;
             Texture2D texture = file.LoadAsImage();
             SetImage(texture);

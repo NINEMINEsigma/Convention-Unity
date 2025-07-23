@@ -39,6 +39,11 @@ namespace Convention
     [Serializable]
     public sealed class ToolFile
     {
+        public static string[] TextFileExtensions = new string[] { "txt", "ini", "manifest" };
+        public static string[] AudioFileExtension = new string[] { "ogg", "mp2", "mp3", "mod", "wav", "it" };
+        public static string[] ImageFileExtension = new string[] { "png", "jpg", "jpeg", "bmp", "tif", "icon" };
+        public static string[] AssetBundleExtension = new string[] { "AssetBundle", "AssetBundle".ToLower(), "ab" };
+        public static string[] JsonExtension = new string[] { "json" };
         public static AudioType GetAudioType(string path)
         {
             return Path.GetExtension(path) switch
@@ -369,6 +374,21 @@ namespace Convention
                 return (this.OriginInfo as FileInfo).Length == 0;
             throw new InvalidOperationException();
         }
+
+        public bool ExtensionIs(params string[] extensions)
+        {
+            string el = GetExtension().ToLower();
+            string eln = el.Length > 1 ? el[1..] : null;
+            foreach (string extension in extensions)
+                if (el == extension || eln == extension)
+                    return true;
+            return false;
+        }
+        public bool IsText => this.ExtensionIs(TextFileExtensions);
+        public bool IsJson => this.ExtensionIs(JsonExtension);
+        public bool IsImage => this.ExtensionIs(ImageFileExtension);
+        public bool IsAudio => this.ExtensionIs(AudioFileExtension);
+        public bool IsAssetBundle => this.ExtensionIs(AssetBundleExtension);
 
         #endregion
 

@@ -15,11 +15,6 @@ namespace Convention.WindowsUI.Variant
         [Resources, OnlyNotNullMode, SerializeField, Tooltip("Path Text")] private Text m_PathTitle;
         [Content, OnlyPlayMode] public string CurrentTargetName;
         [Content, OnlyPlayMode, SerializeField] public List<string> pathContainer = new();
-        private RegisterWrapper<AssetsWindow> m_RegisterWrapper;
-        private void OnDestroy()
-        {
-            m_RegisterWrapper.Release();
-        }
 
         public PropertiesWindow MainPropertiesWindow => m_PropertiesWindow;
 
@@ -33,12 +28,11 @@ namespace Convention.WindowsUI.Variant
         {
             m_BackButton.onClick.AddListener(() => Pop(true));
             UpdatePathText();
-            m_RegisterWrapper = new(() => { });
+            Architecture.RegisterWithDuplicateAllow(typeof(AssetsWindow), this, () => { });
         }
 
         protected virtual void Reset()
         {
-            m_PropertiesWindow.m_PerformanceMode = PerformanceIndicator.PerformanceMode.L1;
             m_PropertiesWindow = GetComponent<PropertiesWindow>();
         }
 

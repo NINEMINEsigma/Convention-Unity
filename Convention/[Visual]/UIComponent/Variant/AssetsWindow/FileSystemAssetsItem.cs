@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Convention.WindowsUI.Variant
 {
-    public class FileSystemAssetsItem : MonoAnyBehaviour, AssetsItem.IAssetsItemInvoke
+    public class FileSystemAssetsItem : MonoBehaviour, AssetsItem.IAssetsItemInvoke
     {
         public static Dictionary<string, ToolFile> LoadedFiles = new();
         public static long LoadedFileAutoLoadMaxFileSize = 1024 * 50;
@@ -17,15 +17,6 @@ namespace Convention.WindowsUI.Variant
         [Content, OnlyPlayMode, SerializeField] private bool m_Dirty = false;
         [Content, OnlyNotNullMode, SerializeField, InspectorDraw(InspectorDrawType.Toggle), Ignore]
         private bool m_IsLoading = false;
-
-        private void OnDestroy()
-        {
-            if (m_File.data is AssetBundle)
-            {
-                return;
-            }
-            m_File.data = null;
-        }
 
         public void RebuildFileInfo([In] string path)
         {
@@ -67,15 +58,15 @@ namespace Convention.WindowsUI.Variant
         private void OnAssetsItemFocusWithFileMode([In] AssetsItem item, [In] string name)
         {
             item.title = name;
-            FileSystemAssets.instance.CurrentSelectFilename.title = m_File.FullPath;
-            if (m_File.IsExist == false)
+            FileSystemAssets.instance.CurrentSelectFilename.title = m_File.GetFullPath();
+            if (m_File.Exists() == false)
                 return;
             else if (m_File.IsDir())
                 UpdateSprite(item, "folder");
-            else if (m_File.Extension.Length != 0 && m_Icons.uobjects.ContainsKey(m_File.Extension))
-                UpdateSprite(item, m_File.Extension);
-            else if (m_File.Extension.Length != 0 && m_Icons.uobjects.ContainsKey(m_File.Extension[1..]))
-                UpdateSprite(item, m_File.Extension[1..]);
+            else if (m_File.GetExtension().Length != 0 && m_Icons.uobjects.ContainsKey(m_File.GetExtension()))
+                UpdateSprite(item, m_File.GetExtension());
+            else if (m_File.GetExtension().Length != 0 && m_Icons.uobjects.ContainsKey(m_File.GetExtension()[1..]))
+                UpdateSprite(item, m_File.GetExtension()[1..]);
             else if (m_File.IsImage)
                 UpdateSprite(item, "image");
             else if (m_File.IsText)
@@ -101,8 +92,9 @@ namespace Convention.WindowsUI.Variant
         private class SkyItem : AssetBundleItem
         {
             [Resources, SerializeField] private Material SkyBox;
-            public class SkyItemInstanceWrapper : Singleton<SkyItemInstanceWrapper>
+            public class SkyItemInstanceWrapper
             {
+                public static SkyItemInstanceWrapper instance { get; protected set; }
                 public static void InitInstance()
                 {
                     if (instance == null)

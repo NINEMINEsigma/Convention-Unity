@@ -7,10 +7,9 @@ using UnityEngine;
 
 namespace Convention.WindowsUI.Variant
 {
-    public class InspectorWindow : WindowsComponent, ISingleton<InspectorWindow>
+    public class InspectorWindow : WindowsComponent
     {
         public static InspectorWindow instance { get; private set; }
-        private RegisterWrapper<InspectorWindow> m_RegisterWrapper;
         private object target;
 
         [Setting] public bool IsWorkWithHierarchyWindow = true;
@@ -32,11 +31,6 @@ namespace Convention.WindowsUI.Variant
                 m_PropertiesWindow = GetComponent<PropertiesWindow>();
         }
 
-        private void OnDestroy()
-        {
-            m_RegisterWrapper.Release();
-        }
-
         private void Start()
         {
             if (m_WindowManager == null)
@@ -44,7 +38,7 @@ namespace Convention.WindowsUI.Variant
             if (m_PropertiesWindow == null)
                 m_PropertiesWindow = GetComponent<PropertiesWindow>();
 
-            m_RegisterWrapper = new(() => { });
+            Architecture.RegisterWithDuplicateAllow(typeof(InspectorWindow), this, () => { });
             instance = this;
 
             if (IsWorkWithHierarchyWindow == true)
@@ -91,12 +85,12 @@ namespace Convention.WindowsUI.Variant
         }
 
         /// <summary>
-        /// 设置引用以及对应的tab
+        /// 锟斤拷锟斤拷锟斤拷锟斤拷锟皆硷拷锟斤拷应锟斤拷tab
         /// </summary>
         /// <param name="target"></param>
         /// <param name="item"></param>
-        /// <returns>是否与传入的target相同</returns>
-        [return: When("当传入的target与被设置为target的实例相同")]
+        /// <returns>锟角凤拷锟诫传锟斤拷锟絫arget锟斤拷同</returns>
+        [return: When("锟斤拷锟斤拷锟斤拷锟絫arget锟诫被锟斤拷锟斤拷为target锟斤拷实锟斤拷锟斤拷同")]
         public bool SetTarget([In] object target, [In, Opt] HierarchyItem item)
         {
             if (item != null && IsWorkWithHierarchyWindow)
@@ -159,7 +153,6 @@ namespace Convention.WindowsUI.Variant
             m_currentEntries.Clear();
         }
         private static readonly Type[] IgnoreCutOffType = new Type[] {
-                typeof(MonoAnyBehaviour),
                 typeof(GameObject),
                 typeof(MonoBehaviour),
                 typeof(UnityEngine.Object),

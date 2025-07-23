@@ -7,11 +7,11 @@ namespace Convention
 {
     public interface ILoadedInHierarchy { }
     public interface IOnlyLoadedInHierarchy { }
-    public class HierarchyLoadedIn : MonoAnyBehaviour
+    public class HierarchyLoadedIn : MonoBehaviour
     {
         private void Update()
         {
-            if (!RegisterBaseWrapperExtension.Registers.ContainsKey(typeof(WindowsUI.Variant.HierarchyWindow)))
+            if (!Architecture.Contains<WindowsUI.Variant.HierarchyWindow>())
                 return;
             var onlys = GetComponents<IOnlyLoadedInHierarchy>();
             try

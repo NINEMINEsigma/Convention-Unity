@@ -7,11 +7,13 @@ using UnityEngine.UI;
 
 namespace Convention.WindowsUI.Variant
 {
-    public class PropertiesWindow : MonoAnyBehaviour
+    public class PropertiesWindow : MonoBehaviour
     {
         [ArgPackage]
-        public class ItemEntry : LeftValueReference<WindowUIModule>
+        public class ItemEntry
         {
+            private WindowUIModule m_module;
+
             #region Tools
 
             private static bool IsSetupParentRectTransformAdjustSizeToContainsChilds = false;
@@ -118,8 +120,8 @@ namespace Convention.WindowsUI.Variant
             public static IActionInvoke MakeItemAsActionInvoke(
                 [In, Out] ItemEntry entry,
                 [In] string invokerName, [In] PropertiesWindow parent,
-                [In][Opt, When("If you sure not need a target")] IAnyClass target,
-                params UnityAction<IAnyClass>[] actions)
+                [In][Opt, When("If you sure not need a target")] object target,
+                params UnityAction<object>[] actions)
             {
                 entry.ref_value = InstantiateItemObject(invokerName, parent.m_WindowManager, parent.m_WindowsConfig);
                 var invoker = entry.ref_value as IActionInvoke;
@@ -132,8 +134,8 @@ namespace Convention.WindowsUI.Variant
             public static IButton MakeItemAsActionInvoke(
                 [In, Out] ItemEntry entry,
                 [In] string invokerName, [In] ItemEntry parent, [In] SO.Windows config,
-                [In][Opt, When("If you sure not need a target")] IAnyClass target,
-                params UnityAction<IAnyClass>[] actions)
+                [In][Opt, When("If you sure not need a target")] object target,
+                params UnityAction<object>[] actions)
             {
                 entry.ref_value = InstantiateItemObject(invokerName, parent.ref_value.GetComponent<RectTransform>(), config);
                 var invoker = entry.ref_value as IButton;
@@ -147,8 +149,8 @@ namespace Convention.WindowsUI.Variant
             public static IButton MakeItemAsButton(
                 [In, Out] ItemEntry entry,
                 [In] string buttonName, [In] PropertiesWindow parent,
-                [In][Opt, When("If you sure not need a target")] IAnyClass target,
-                params UnityAction<IAnyClass>[] actions)
+                [In][Opt, When("If you sure not need a target")] object target,
+                params UnityAction<object>[] actions)
             {
                 entry.ref_value = InstantiateItemObject(buttonName, parent.m_WindowManager, parent.m_WindowsConfig);
                 var button = entry.ref_value as IButton;
@@ -161,8 +163,8 @@ namespace Convention.WindowsUI.Variant
             public static IButton MakeItemAsButton(
                 [In, Out] ItemEntry entry,
                 [In] string buttonName, [In] ItemEntry parent, [In] SO.Windows config,
-                [In][Opt, When("If you sure not need a target")] IAnyClass target,
-                params UnityAction<IAnyClass>[] actions)
+                [In][Opt, When("If you sure not need a target")] object target,
+                params UnityAction<object>[] actions)
             {
                 entry.ref_value = InstantiateItemObject(buttonName, parent.ref_value.GetComponent<RectTransform>(), config);
                 var button = entry.ref_value as IButton;
@@ -219,18 +221,18 @@ namespace Convention.WindowsUI.Variant
 
             #endregion
 
-            public override WindowUIModule ref_value
+            public WindowUIModule ref_value
             {
-                get => base.ref_value;
+                get => m_module;
                 set
                 {
-                    if (base.ref_value != value)
+                    if (m_module != value)
                     {
-                        if (base.ref_value != null)
+                        if (m_module != null)
                         {
-                            base.ref_value.gameObject.SetActive(false);
+                            m_module.gameObject.SetActive(false);
                         }
-                        base.ref_value = value;
+                        m_module = value;
                         if (parentWindow != null)
                         {
                             parentWindow.m_WindowManager.SelectContextPlane(parentWindow.m_TargetWindowContent);
@@ -266,7 +268,7 @@ namespace Convention.WindowsUI.Variant
             public List<ItemEntry> GetChilds() => new(childs);
             public ItemEntry GetParent() => parentEntry;
 
-            public ItemEntry(PropertiesWindow parent) : base(null)
+            public ItemEntry(PropertiesWindow parent)
             {
                 childs = new();
                 this.parentWindow = parent;
@@ -274,7 +276,7 @@ namespace Convention.WindowsUI.Variant
                 parent.m_Entrys.Add(this);
                 layer = 0;
             }
-            public ItemEntry(ItemEntry parent) : base(null)
+            public ItemEntry(ItemEntry parent)
             {
                 childs = new();
                 this.parentEntry = parent;
@@ -401,7 +403,6 @@ namespace Convention.WindowsUI.Variant
         private RectTransform m_ContentPlaneWhenNoWindow;
         [Content, SerializeField, OnlyPlayMode] private List<ItemEntry> m_Entrys = new();
         [Resources, SerializeField, HopeNotNull] public WindowUIModule ItemPrefab;
-        [Setting, Tooltip("RUNTIME MODE")] public PerformanceIndicator.PerformanceMode m_PerformanceMode = PerformanceIndicator.PerformanceMode.Quality;
 
         public RectTransform TargetWindowContent => m_WindowManager == null ? m_ContentPlaneWhenNoWindow : m_WindowManager[m_TargetWindowContent];
 

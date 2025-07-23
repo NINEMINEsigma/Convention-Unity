@@ -264,12 +264,8 @@ namespace Convention
             }
         }
 
-        public static Registering Register(Type slot, object target, Action completer, params Type[] dependences)
+        public static Registering RegisterWithDuplicateAllow(Type slot, object target, Action completer, params Type[] dependences)
         {
-            if (RegisterHistory.Add(slot) == false)
-            {
-                throw new InvalidOperationException("Illegal duplicate registrations");
-            }
             Completer[slot] = completer;
             UncompleteTargets[slot] = target;
             Dependences[slot] = new DependenceModel(from dependence in dependences where dependence != slot select new TypeQuery(dependence));
@@ -278,9 +274,18 @@ namespace Convention
             return new Registering(slot);
         }
 
+        public static Registering Register(Type slot, object target, Action completer, params Type[] dependences)
+        {
+            if (RegisterHistory.Add(slot) == false)
+            {
+                throw new InvalidOperationException("Illegal duplicate registrations");
+            }
+            return RegisterWithDuplicateAllow(slot, target, completer, dependences);
+        }
+
         public static Registering Register<T>(T target, Action completer, params Type[] dependences) => Register(typeof(T), target!, completer, dependences);
 
-        public static bool Contains(Type type) => Childs.ContainsKey(type);
+        public static bool Contains(Type type) => Childs.TryGetValue(type, out var value) && value != null;
 
         public static bool Contains<T>() => Contains(typeof(T));
 

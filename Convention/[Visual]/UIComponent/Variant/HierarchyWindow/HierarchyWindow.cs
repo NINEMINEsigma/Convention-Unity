@@ -9,14 +9,13 @@ namespace Convention.WindowsUI.Variant
     {
         [Resources] public WindowManager windowManager;
         [Resources, SerializeField] private PropertiesWindow m_PropertiesWindow;
-        private RegisterWrapper<HierarchyWindow> m_RegisterWrapper;
 
         private Dictionary<int, object> AllReferenceLinker = new();
         private Dictionary<object, int> AllReferenceLinker_R = new();
         private Dictionary<object, HierarchyItem> AllReferenceItemLinker = new();
 
         /// <summary>
-        /// Ìí¼ÓÒýÓÃÒÔ¼°¶ÔÓ¦µÄtab
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½tab
         /// </summary>
         /// <param name="reference"></param>
         /// <param name="item"></param>
@@ -97,7 +96,7 @@ namespace Convention.WindowsUI.Variant
 
         private void Start()
         {
-            m_RegisterWrapper = new(() => { });
+            Architecture.RegisterWithDuplicateAllow(typeof(HierarchyWindow), this, () => { });
         }
 
         private void Reset()
@@ -105,10 +104,6 @@ namespace Convention.WindowsUI.Variant
             windowManager = GetComponent<WindowManager>();
             m_PropertiesWindow = GetComponent<PropertiesWindow>();
             AllReferenceLinker = new();
-        }
-        private void OnDestroy()
-        {
-            m_RegisterWrapper.Release();
         }
 
         public void RenameTabWhenItFocus()

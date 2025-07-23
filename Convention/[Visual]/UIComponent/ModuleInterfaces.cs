@@ -58,17 +58,17 @@ namespace Convention.WindowsUI
         }
     }
 
-    public interface IText : IAnyClass
+    public interface IText 
     {
         string text { get; set; }
     }
 
-    public interface ITitle : IAnyClass
+    public interface ITitle 
     {
         string title { get; set; }
     }
 
-    public interface IInteractable : IAnyClass
+    public interface IInteractable
     {
         bool interactable { get; set; }
     }
