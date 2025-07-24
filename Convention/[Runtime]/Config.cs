@@ -2104,3 +2104,18 @@ namespace Convention
         }
     }
 }
+
+namespace Convention
+{
+    public static partial class ConventionUtility
+    {
+        public static object GetDefault([In] Type type)
+        {
+            if (type.IsClass)
+                return null;
+            else
+                return Activator.CreateInstance(type);
+        }
+    }
+}
+

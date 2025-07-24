@@ -16,7 +16,7 @@ namespace Convention.WindowsUI.Variant
         [Setting] public ScriptableObject m_Icons;
         [Content, OnlyPlayMode, SerializeField] private bool m_Dirty = false;
         [Content, OnlyNotNullMode, SerializeField, InspectorDraw(InspectorDrawType.Toggle), Ignore]
-        private bool m_IsLoading = false;
+        // private bool m_IsLoading = false;
 
         public void RebuildFileInfo([In] string path)
         {
@@ -243,11 +243,13 @@ namespace Convention.WindowsUI.Variant
 
         // --------------------
 
+        private object data = null;
+
         private void OnAssetsItemFocusWithFileLoading([In] AssetsItem item)
         {
             if (m_File.IsAssetBundle)
             {
-                if (m_File.data == null)
+                if (data == null)
                 {
                     StartLoad();
                     StartCoroutine(this.m_File.LoadAsAssetBundle(LoadAssetBundle));
@@ -255,25 +257,24 @@ namespace Convention.WindowsUI.Variant
             }
             else
             {
-                if (m_File.data == null && m_File.FileSize < 1024 * 50)
-                    m_File.Load();
+                if (data == null && m_File.GetSize() < 1024 * 50)
+                    data = m_File.LoadAsAssetBundle();
 
             }
 
             void StartLoad()
             {
-                m_IsLoading = true;
+                // m_IsLoading = true;
                 item.GetComponent<Image>().color = Color.red;
             }
             void EndLoad()
             {
-                m_IsLoading = false;
+                // m_IsLoading = false;
                 item.GetComponent<Image>().color = Color.white;
             }
-            void LoadAssetBundle()
+            void LoadAssetBundle(AssetBundle ab)
             {
                 EndLoad();
-                AssetBundle ab = m_File.data as AssetBundle;
                 var assets = ab.GetAllAssetNames().ToList();
                 assets.AddRange(ab.GetAllScenePaths());
                 var entries = item.AddChilds(assets.Count);
@@ -314,8 +315,8 @@ namespace Convention.WindowsUI.Variant
                 var files = m_File.DirToolFileIter();
                 var paths = (from file in files
                              where !file.ExtensionIs("meta")
-                             where !file.Filename.ToLower().Contains("<ignore file>")
-                             select file).ToList().ConvertAll(x => x.FullPath);
+                             where !file.GetFilename().ToLower().Contains("<ignore file>")
+                             select file).ToList().ConvertAll(x => x.GetFullPath());
                 AddChils(item, paths);
             }
             else
@@ -351,7 +352,7 @@ namespace Convention.WindowsUI.Variant
                 m_Dirty = false;
             }
             item.HasChildLayer = item.ChildCount() != 0 ||
-                ((m_File != null && m_File.IsExist) && (m_File.IsDir() || m_File.IsAssetBundle));
+                ((m_File != null && m_File.Exists()) && (m_File.IsDir() || m_File.IsAssetBundle));
             FileSystemAssets.instance.CurrentSelectFilename.title = ItemPathName;
             InspectorWindow.instance.SetTarget(this, null);
         }

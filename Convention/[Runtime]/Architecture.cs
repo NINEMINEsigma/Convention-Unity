@@ -285,9 +285,11 @@ namespace Convention
 
         public static Registering Register<T>(T target, Action completer, params Type[] dependences) => Register(typeof(T), target!, completer, dependences);
 
-        public static bool Contains(Type type) => Childs.TryGetValue(type, out var value) && value != null;
+        public static bool Contains(Type type, bool alive) => Childs.TryGetValue(type, out var value) && (alive == false || value != null);
 
-        public static bool Contains<T>() => Contains(typeof(T));
+        public static bool Contains(Type type) => Contains(type, true);
+
+        public static bool Contains<T>() => Contains(typeof(T), true);
 
         public static object InternalGet(Type type) => Childs[type];
 

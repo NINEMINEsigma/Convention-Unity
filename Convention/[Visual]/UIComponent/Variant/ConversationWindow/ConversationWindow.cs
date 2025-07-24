@@ -11,7 +11,7 @@ namespace Convention.WindowsUI.Variant
         [Resources, SerializeField, OnlyNotNullMode] private PropertiesWindow m_PropertiesWindow;
 
         [Resources, Header("HeadLine"), OnlyNotNullMode] public Image HeadIcon;
-        [Resources, OnlyNotNullMode] public ModernUIInputField HeadText = new();
+        [Resources, OnlyNotNullMode] public ModernUIInputField HeadText;
         [Resources] public List<Text> HeadTitles = new();
         private List<PropertiesWindow.ItemEntry> m_entries = new();
 
