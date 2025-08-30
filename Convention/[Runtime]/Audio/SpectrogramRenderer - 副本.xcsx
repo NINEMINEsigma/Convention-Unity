@@ -1,0 +1,182 @@
+using System;
+using System.Collections;
+using UnityEngine;
+using Unity.Collections;
+
+namespace Convention
+{
+    /// <summary>
+    /// 频谱图渲染器 - 横轴时间，纵轴频率，颜色深度表示声音强度
+    /// </summary>
+    public class SpectrogramRenderer : MonoBehaviour
+    {
+            [Header("Audio Source")]
+        public AudioClip audioClip;
+        public int fftSize = 256; // FFT窗口大小，必须是2的幂
+        public int timeResolution = 10; // 时间分辨率，每秒分析多少次
+        
+        [Header("Render Texture")]
+        public RenderTexture spectrogramTexture;
+        public RenderTextureFormat textureFormat = RenderTextureFormat.ARGB32;
+        public int textureWidth = 512;  // 时间轴分辨率
+        public int textureHeight = 256; // 频率轴分辨率
+        
+        [Header("Display Settings")]
+        public float intensityScale = 100f;
+        public Color lowIntensityColor = Color.black;
+        public Color highIntensityColor = Color.red;
+
+        private float[][] spectrogramData;
+        private int currentTimeIndex = 0;
+        private Texture2D bufferTexture;
+
+        void Start()
+        {
+            InitializeSpectrogramTexture();
+            if (audioClip != null)
+            {
+                StartCoroutine(ProcessAudioClip());
+            }
+        }
+
+        void InitializeSpectrogramTexture()
+        {
+            if (spectrogramTexture == null)
+            {
+                spectrogramTexture = new RenderTexture(textureWidth, textureHeight, 0, textureFormat);
+                spectrogramTexture.Create();
+            }
+            
+            bufferTexture = new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
+            
+            // 初始化为黑色
+            Color[] pixels = new Color[textureWidth * textureHeight];
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                pixels[i] = Color.black;
+            }
+            bufferTexture.SetPixels(pixels);
+            bufferTexture.Apply();
+        }
+
+        IEnumerator ProcessAudioClip()
+        {
+            if (audioClip == null)
+            {
+                Debug.LogError("AudioClip is null!");
+                yield break;
+            }
+
+            float[] samples = new float[audioClip.samples * audioClip.channels];
+            audioClip.GetData(samples, 0);
+
+            int sampleRate = audioClip.frequency;
+            int samplesPerAnalysis = sampleRate / timeResolution;
+            int totalAnalyses = Mathf.CeilToInt((float)samples.Length / samplesPerAnalysis);
+
+            spectrogramData = new float[totalAnalyses][];
+
+            for (int i = 0; i < totalAnalyses; i++)
+            {
+                int startSample = i * samplesPerAnalysis;
+                int endSample = Mathf.Min(startSample + fftSize, samples.Length);
+                
+                // 创建FFT窗口数据
+                float[] windowData = new float[fftSize];
+                for (int j = 0; j < fftSize && startSample + j < endSample; j++)
+                {
+                    if (startSample + j < samples.Length)
+                    {
+                        // 应用汉宁窗
+                        float windowValue = 0.5f * (1f - Mathf.Cos(2f * Mathf.PI * j / (fftSize - 1)));
+                        windowData[j] = samples[startSample + j] * windowValue;
+                    }
+                }
+
+                // 执行FFT
+                spectrogramData[i] = PerformFFT(windowData);
+                
+                // 渲染当前频谱到纹理
+                RenderSpectrumToTexture(spectrogramData[i], i);
+                
+                // 每处理几帧就让出控制权，避免卡顿
+                if (i % 10 == 0)
+                {
+                    yield return null;
+                }
+            }
+
+            // 最终更新渲染纹理
+            Graphics.CopyTexture(bufferTexture, spectrogramTexture);
+            Debug.Log("频谱图生成完成！");
+        }
+
+        float[] PerformFFT(float[] timeData)
+        {
+            // 简化的FFT实现 - 实际项目中建议使用更优化的FFT库
+            float[] magnitudes = new float[fftSize / 2];
+            
+            for (int k = 0; k < fftSize / 2; k++)
+            {
+                float real = 0f;
+                float imag = 0f;
+                
+                for (int n = 0; n < fftSize; n++)
+                {
+                    float angle = -2f * Mathf.PI * k * n / fftSize;
+                    real += timeData[n] * Mathf.Cos(angle);
+                    imag += timeData[n] * Mathf.Sin(angle);
+                }
+                
+                magnitudes[k] = Mathf.Sqrt(real * real + imag * imag) / fftSize;
+            }
+            
+            return magnitudes;
+        }
+
+        void RenderSpectrumToTexture(float[] spectrum, int timeIndex)
+        {
+            if (bufferTexture == null || spectrum == null)
+                return;
+
+            // 计算在纹理中的x坐标
+            int x = Mathf.FloorToInt((float)timeIndex / spectrogramData.Length * textureWidth);
+            x = Mathf.Clamp(x, 0, textureWidth - 1);
+
+            // 渲染频谱数据到纹理的一列
+            for (int y = 0; y < textureHeight; y++)
+            {
+                float frequency = (float)y / textureHeight;
+                int spectrumIndex = Mathf.FloorToInt(frequency * spectrum.Length);
+                spectrumIndex = Mathf.Clamp(spectrumIndex, 0, spectrum.Length - 1);
+
+                float intensity = spectrum[spectrumIndex] * intensityScale;
+                intensity = Mathf.Clamp01(intensity);
+
+                Color pixelColor = Color.Lerp(lowIntensityColor, highIntensityColor, intensity);
+                bufferTexture.SetPixel(x, y, pixelColor);
+            }
+        }
+
+        public void GenerateSpectrogram()
+        {
+            if (audioClip == null)
+            {
+                Debug.LogError("请先设置AudioClip!");
+                return;
+            }
+
+            StopAllCoroutines();
+            StartCoroutine(ProcessAudioClip());
+        }
+
+        void OnDestroy()
+        {
+            if (bufferTexture != null)
+            {
+                DestroyImmediate(bufferTexture);
+            }
+        }
+
+    }
+}

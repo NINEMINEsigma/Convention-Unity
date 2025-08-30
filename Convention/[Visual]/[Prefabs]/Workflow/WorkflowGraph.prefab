@@ -1309,7 +1309,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 32531427016416541}
-  - component: {fileID: 7551288850924406523}
   m_Layer: 5
   m_Name: VFX
   m_TagString: Untagged
@@ -1336,77 +1335,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7551288850924406523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3705958412594858625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5a3db8f679e3ee40b424f8a997797ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _passName: Fullscreen Pass
-  _material: {fileID: 0}
-  _injectionPoint: 450
-  _injectionPointOffset: 0
-  _inputRequirements: 0
-  _cameraType: 3
-  IgnoreCameraTag: []
-  TransitionAmount_Float: _TransitionAmount
-  DissolveZoomInCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  DissolveZoomOutCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  ZommInDuration: 0.5
-  ZommOutDuration: 0.5
-  StayDuration: 0.5
 --- !u!1 &3962607723904284606
 GameObject:
   m_ObjectHideFlags: 0
@@ -2063,19 +1991,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5270120234092917765}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49e2d4cf41bb80444b49aaedbadf0f2f, type: 3}
+  m_Script: {fileID: 11500000, guid: dd45ab603848a8147a3b02553e5bc1ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_workflow:
     Datas: []
     Functions: []
-  m_CameraTransform: {fileID: 2785136268184413821}
-  ScrollSpeed: 10
+  m_CameraTransform: {fileID: 3948954146018797651}
+  ScrollSpeed: 1
   GraphNodePrefabs: {fileID: 11400000, guid: 30f07b1347aae0c4288acea46ad161e8, type: 2}
-  TextLabels: {fileID: 0}
-  ContentPlane: {fileID: 7225733823207126825}
-  focusObject: {fileID: 7100963408768520451}
-  UIFocusObject: {fileID: 8189909026899954709}
+  TextLabels: {fileID: 11400000, guid: 06b127d4e769f714db8a80d09253087a, type: 2}
+  ContentPlane: {fileID: 0}
+  focusObject: {fileID: 8189909026899954709}
+  UIFocusObject: {fileID: 0}
   LastSavePath: 
 --- !u!95 &3419202564603977045
 Animator:
@@ -2970,7 +2898,6 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
-  m_ScrollDeltaPerTick: 6
 --- !u!1 &8436897264842315307
 GameObject:
   m_ObjectHideFlags: 0
@@ -3708,6 +3635,7 @@ MonoBehaviour:
     anchorMax: {x: 0, y: 0}
     anchorMin: {x: 0, y: 0}
     pivot: {x: 0, y: 0}
+  BeforeMaximizeWindowBackgroundColorA: 1
   AdjustSizeToContainsRect: {fileID: 0}
 --- !u!114 &1320903217118218443
 MonoBehaviour:
@@ -4898,6 +4826,10 @@ PrefabInstance:
       propertyPath: WindowBar
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6735928090187812461, guid: 9d6ed184d3a99cd49b371b22fec6714f, type: 3}
+      propertyPath: WindowPlane
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6988049406595588431, guid: 9d6ed184d3a99cd49b371b22fec6714f, type: 3}
       propertyPath: m_Size
       value: 1
@@ -5952,6 +5884,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 860861549860063477, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
+      propertyPath: WindowPlane
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 860861549860063477, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
       propertyPath: m_AllContextPlane.Array.data[0].plane
       value: 
       objectReference: {fileID: 1323789305018436660}
@@ -6193,7 +6129,6 @@ MonoBehaviour:
   m_TargetWindowContent: 0
   m_ContentPlaneWhenNoWindow: {fileID: 0}
   ItemPrefab: {fileID: 7740662971038264527}
-  m_PerformanceMode: 0
 --- !u!114 &6628618279245547126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6239,7 +6174,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2035005425643518082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91b5b0c662a658545ba5cfa5a0dd4b70, type: 3}
+  m_Script: {fileID: 11500000, guid: 21cd7907b9c0ce64bb4ef9dac9a93969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &7265172763763404296 stripped
@@ -6444,6 +6379,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 860861549860063477, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
       propertyPath: WindowBar
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 860861549860063477, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
+      propertyPath: WindowPlane
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1397725728417784005, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
@@ -6746,7 +6685,6 @@ MonoBehaviour:
   m_TargetWindowContent: 0
   m_ContentPlaneWhenNoWindow: {fileID: 0}
   ItemPrefab: {fileID: 1942734057263046869}
-  m_PerformanceMode: 0
 --- !u!114 &8999231603941374278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6769,7 +6707,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1828036881698774017}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91b5b0c662a658545ba5cfa5a0dd4b70, type: 3}
+  m_Script: {fileID: 11500000, guid: 21cd7907b9c0ce64bb4ef9dac9a93969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &5155802057930152595 stripped
@@ -9174,17 +9112,6 @@ PrefabInstance:
       addedObject: {fileID: 7844091122059257835}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47ed122beb336ff4ba830546f35ad2c8, type: 3}
---- !u!114 &3836347942742320304 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6015220258457388142, guid: 47ed122beb336ff4ba830546f35ad2c8, type: 3}
-  m_PrefabInstance: {fileID: 7369904209281605854}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91b5b0c662a658545ba5cfa5a0dd4b70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6061975152605555874 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3631975649388694652, guid: 47ed122beb336ff4ba830546f35ad2c8, type: 3}
@@ -10106,10 +10033,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 6061975152605555874}
     m_Modifications:
     - target: {fileID: 914721809293730570, guid: 44ff85d9b4c334343aaa0bf65299378d, type: 3}
-      propertyPath: m_WindowManager
-      value: 
-      objectReference: {fileID: 3836347942742320304}
-    - target: {fileID: 914721809293730570, guid: 44ff85d9b4c334343aaa0bf65299378d, type: 3}
       propertyPath: ConsoleButtonName
       value: "\u63A7\u5236\u53F0/\u65E5\u5FD7"
       objectReference: {fileID: 0}
@@ -10193,10 +10116,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5573581179708198155, guid: 44ff85d9b4c334343aaa0bf65299378d, type: 3}
-      propertyPath: m_WindowManager
-      value: 
-      objectReference: {fileID: 3836347942742320304}
     - target: {fileID: 5573581179708198155, guid: 44ff85d9b4c334343aaa0bf65299378d, type: 3}
       propertyPath: m_PerformanceMode
       value: 0

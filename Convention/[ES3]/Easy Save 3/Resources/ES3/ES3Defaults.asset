@@ -33,7 +33,11 @@ MonoBehaviour:
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
     - Cinemachine
+    - CW.Common
     - EasySave3
+    - LeanCommon
+    - LeanGUI
+    - LeanTransition
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
