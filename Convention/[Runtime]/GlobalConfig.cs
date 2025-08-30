@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Convention
 {
@@ -12,14 +13,6 @@ namespace Convention
         {
             ConstConfigFile = "config.json";
             ProjectConfig.InitExtensionEnv();
-        }
-
-        public static void GenerateEmptyConfigJson(ToolFile file)
-        {
-            file.SaveAsRawJson<Dictionary<string, object>>(new()
-            {
-                { "properties",new Dictionary<string, object>() }
-            });
         }
 
         private int configLogging_tspace = "Property not found".Length;
@@ -46,7 +39,7 @@ namespace Convention
             // build up init data file
             var configFile = this.ConfigFile;
             if (configFile.Exists() == false)
-                GenerateEmptyConfigJson(configFile);
+                SaveProperties();
             else if (isLoad)
                 this.LoadProperties();
         }
@@ -133,13 +126,16 @@ namespace Convention
         }
         public int DataSize() => data_pair.Count;
 
+        [Serializable]
+        public class InternalProperty
+        {
+            public Dictionary<string, object> property = new();
+        }
+
         public GlobalConfig SaveProperties()
         {
             var configFile = this.ConfigFile;
-            configFile.SaveAsRawJson<Dictionary<string, Dictionary<string, object>>>(new()
-            {
-                { "properties", data_pair }
-            });
+            configFile.SaveAsJson(new InternalProperty() { property = data_pair });
             return this;
         }
         public GlobalConfig LoadProperties()
@@ -151,11 +147,7 @@ namespace Convention
             }
             else
             {
-                var data = configFile.LoadAsRawJson<Dictionary<string, Dictionary<string, object>>>();
-                if (data.TryGetValue("properties", out data_pair) == false)
-                {
-                    throw new Exception($"Can't find properties not found in config file");
-                }
+                data_pair = configFile.LoadAsJson<InternalProperty>().property;
             }
             return this;
         }

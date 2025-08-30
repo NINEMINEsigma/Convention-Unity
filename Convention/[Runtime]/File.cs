@@ -287,7 +287,7 @@ namespace Convention
         {
             SaveAsText(JsonUtility.ToJson(data));
         }
-        public void SaveAsJson<T>(T data, string key)
+        public void SaveAsJson<T>(T data, string key = "data")
         {
             ES3.Save(key, data,FullPath);
         }
@@ -472,7 +472,8 @@ namespace Convention
                 if (IsDir())
                     Directory.CreateDirectory(this.FullPath);
                 else
-                    File.Create(this.FullPath);
+                    File.Create(this.FullPath).Close();
+                Refresh();
             }
             return this;
         }

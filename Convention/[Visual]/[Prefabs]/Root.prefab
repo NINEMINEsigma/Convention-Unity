@@ -866,7 +866,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20656b3ea2f18ff4cafeb3e072d97e01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Configs: []
+  Configs:
+  - {fileID: 11400000, guid: 6ae7d35b7aadb144086c6fd47efa1f67, type: 2}
 --- !u!1 &6879896907576927809
 GameObject:
   m_ObjectHideFlags: 0
@@ -1381,8 +1382,8 @@ GameObject:
   - component: {fileID: 257072955588997064}
   - component: {fileID: 7206794941111705965}
   - component: {fileID: 6620572890770901228}
-  - component: {fileID: 296421685682893814}
   - component: {fileID: 5183958985083021394}
+  - component: {fileID: 5016912336678498821}
   m_Layer: 0
   m_Name: SceneVirtualCamera
   m_TagString: Untagged
@@ -1541,19 +1542,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &296421685682893814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8936143318184057326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20656b3ea2f18ff4cafeb3e072d97e01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Configs: []
 --- !u!114 &5183958985083021394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1566,6 +1554,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9daa10f8493ef343892b18ea5365cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5016912336678498821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8936143318184057326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a335d6894daac4c980d4519ab1e3ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetFollow: {fileID: 8045550196878911107}
+  moveSpeed: 1
+  rotationSpeed: 1
 --- !u!1 &9093688029225793428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1985,7 +1988,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6988049406595588431, guid: 9d6ed184d3a99cd49b371b22fec6714f, type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8180581102036933126, guid: 9d6ed184d3a99cd49b371b22fec6714f, type: 3}
       propertyPath: m_Name
@@ -2188,6 +2191,26 @@ PrefabInstance:
     - target: {fileID: 8040840210842048516, guid: de9a9a57b2b5472478e3a8bf12c38e87, type: 3}
       propertyPath: m_Name
       value: Main
+      objectReference: {fileID: 0}
+    - target: {fileID: 9148145088215354980, guid: de9a9a57b2b5472478e3a8bf12c38e87, type: 3}
+      propertyPath: clickEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9148145088215354980, guid: de9a9a57b2b5472478e3a8bf12c38e87, type: 3}
+      propertyPath: clickEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5016912336678498821}
+    - target: {fileID: 9148145088215354980, guid: de9a9a57b2b5472478e3a8bf12c38e87, type: 3}
+      propertyPath: clickEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_isFocus
+      objectReference: {fileID: 0}
+    - target: {fileID: 9148145088215354980, guid: de9a9a57b2b5472478e3a8bf12c38e87, type: 3}
+      propertyPath: clickEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Convention.FreeSceneCamera, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9148145088215354980, guid: de9a9a57b2b5472478e3a8bf12c38e87, type: 3}
+      propertyPath: clickEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2572,6 +2595,10 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: -6641050763205051922, guid: 4abb91c83e9e6214992ef15922294c0c, type: 2}
+    - target: {fileID: 4422343518200301270, guid: 47ed122beb336ff4ba830546f35ad2c8, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5981089689042882848, guid: 47ed122beb336ff4ba830546f35ad2c8, type: 3}
       propertyPath: m_PropertiesWindow
       value: 

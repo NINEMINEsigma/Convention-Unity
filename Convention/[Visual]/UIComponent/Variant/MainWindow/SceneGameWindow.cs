@@ -15,7 +15,7 @@ namespace Convention.WindowsUI.Variant
         [Resources, SerializeField, OnlyNotNullMode(nameof(m_WindowManager)), TextArea(1, 3)] private string m_planePath;
         [Resources, SerializeField] private string moduleName = "Game";
         [Resources, SerializeField,Header("Camera Base")] private CinemachineVirtualCameraBase SceneCamera;
-        [Resources, SerializeField] private CinemachineVirtualCameraBase ModuleCamera;
+        [Resources, SerializeField] public CinemachineVirtualCameraBase ModuleCamera;
         [Resources, SerializeField,HopeNotNull] private CinemachineBrain MainCamera;
         [Resources, SerializeField, OnlyNotNullMode] private RawImage TextureRenderer;
         [Resources, SerializeField] private GameObject m_GameObjectOnSceneOnly;

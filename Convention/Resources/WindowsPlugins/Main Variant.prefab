@@ -249,17 +249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999be728ad5e8324baf45ccaf0f9c3d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &62017277418570083 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5207688615231407609, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
-  m_PrefabInstance: {fileID: 5231275486479271066}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8040840210842048516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21cd7907b9c0ce64bb4ef9dac9a93969, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1070298063421716900 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5062977532320841022, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
@@ -309,7 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e5965b3e248d5743aec2dad26483515, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WindowManager: {fileID: 62017277418570083}
+  m_WindowManager: {fileID: 0}
   m_root: {fileID: 1070298063421716900}
   m_planePath: 
   moduleName: Game

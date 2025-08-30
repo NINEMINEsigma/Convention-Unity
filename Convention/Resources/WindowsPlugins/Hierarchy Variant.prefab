@@ -549,7 +549,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2476344447420352570}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91b5b0c662a658545ba5cfa5a0dd4b70, type: 3}
+  m_Script: {fileID: 11500000, guid: 21cd7907b9c0ce64bb4ef9dac9a93969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2476344447420352570 stripped
@@ -574,7 +574,6 @@ MonoBehaviour:
   m_TargetWindowContent: 0
   m_ContentPlaneWhenNoWindow: {fileID: 0}
   ItemPrefab: {fileID: 2447206846939804910}
-  m_PerformanceMode: -1
 --- !u!114 &5551824027870255850
 MonoBehaviour:
   m_ObjectHideFlags: 0
