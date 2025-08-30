@@ -79,7 +79,7 @@ namespace Convention
         }
         public string GetName(bool is_ignore_extension = false)
         {
-            return this.FullPath[..(
+            var result = this.FullPath[..(
                 (this.FullPath.Contains('.') && is_ignore_extension)
                     ? this.FullPath.LastIndexOf('.')
                     : ^0
@@ -89,6 +89,8 @@ namespace Convention
                     ? ^1
                     : ^0
                 )];
+            return result[(Mathf.Max(result.Contains('/') ? result.LastIndexOf('/') : -1,
+                result.Contains('\\') ? result.LastIndexOf('\\') : -1) + 1)..];
         }
         public string GetExtension()
         {

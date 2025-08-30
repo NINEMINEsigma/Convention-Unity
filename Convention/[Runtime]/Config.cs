@@ -1273,7 +1273,7 @@ namespace Convention
             }
             return result;
         }
-        public static List<MemberInfo> SeekMemberInfo([In] object target, IEnumerable<string> names, BindingFlags flags = BindingFlags.Default)
+        public static List<MemberInfo> SeekMemberInfo([In] object target, IEnumerable<string> names, BindingFlags flags = BindingFlags.Public | BindingFlags.Instance)
         {
             Type _CurType = target.GetType();
             List<MemberInfo> result = _CurType.GetMembers(flags).ToList();
