@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Convention.VFX
 {
-    public class DreamTeckSplinePointBuilder : MonoAnyBehaviour, ILoadedInHierarchy
+    public class DreamTeckSplinePointBuilder : MonoBehaviour, ILoadedInHierarchy
     {
         public enum InjectType
         {
@@ -15,7 +15,6 @@ namespace Convention.VFX
             Broken = SplinePoint.Type.Broken,
             SmoothFree = SplinePoint.Type.SmoothFree
         };
-        [Setting, InspectorDraw] public PerformanceIndicator.PerformanceMode performanceMode = PerformanceIndicator.PerformanceMode.Speed;
         [Content] public List<LinePoint> childPoints = new();
 
         [Resources, SerializeField, HopeNotNull, InspectorDraw] private SplineComputer m_splineComputer;
@@ -98,23 +97,6 @@ namespace Convention.VFX
                 m_splineComputer = GetComponent<SplineComputer>();
             if (m_splineRenderer == null)
                 m_splineRenderer = GetComponent<SplineRenderer>();
-        }
-
-        private void LateUpdate()
-        {
-            if ((int)performanceMode >= (int)PerformanceIndicator.PerformanceMode.L6)
-            {
-                RebuildAll();
-                m_splineRenderer.Rebuild();
-            }
-            else if ((int)performanceMode >= (int)PerformanceIndicator.PerformanceMode.L6)
-            {
-                if (childPoints.Count != knots.Count)
-                    RebuildAll();
-                else
-                    ResetPoints();
-                m_splineRenderer.Rebuild();
-            }
         }
 
         public static void SetKnot([In, ArgPackage] ref SplinePoint point, [In, ArgPackage] LinePoint linePoint)
