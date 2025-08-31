@@ -435,6 +435,21 @@ namespace Convention
 
             throw new InvalidCastException($"\"{str}\" is cannt convert to type<{type}>");
         }
+
+        public static object ConventValue([In] Type type, [In] string str)
+        {
+            var parse_method = type.GetMethod("Parse");
+            if (parse_method != null &&
+                (parse_method.ReturnType.IsSubclassOf(type) || parse_method.ReturnType == type) &&
+                parse_method.GetParameters().Length == 1 &&
+                parse_method.GetParameters()[0].ParameterType == typeof(string))
+            {
+                return parse_method.Invoke(null, new object[] { str });
+            }
+
+            throw new InvalidCastException($"\"{str}\" is cannt convert to type<{type}>");
+        }
+
         public static string Combine([In] params object[] args)
         {
             if (args.Length == 0)
@@ -1463,7 +1478,7 @@ namespace Convention
         }
         public static void AdjustSizeToContainsChilds([In] RectTransform rectTransform, Vector2 min, Vector2 max, RectTransform.Axis? axis)
         {
-            if (IsDisableAdjustSizeToContainsChilds2DeferUpdates)
+            if (IsDisableAdjustSizeToContainsChilds2DeferUpdates) 
                 return;
             LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
 

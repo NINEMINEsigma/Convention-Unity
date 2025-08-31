@@ -43,7 +43,7 @@ namespace Convention.WindowsUI.Variant
         }
         private void OnDestroy()
         {
-            if (InspectorWindow.instance.GetTarget() == target)
+            if (InspectorWindow.instance != null && InspectorWindow.instance.GetTarget() == target)
             {
                 InspectorWindow.instance.ClearWindow();
             }
@@ -64,11 +64,13 @@ namespace Convention.WindowsUI.Variant
         [Content]
         public void OnFocusHierarchyItem()
         {
-            if (target == null)
+            if (target != null)
             {
-                throw new InvalidOperationException("target is null");
+                if (InspectorWindow.instance != null)
+                {
+                    InspectorWindow.instance.SetTarget(target, this);
+                }
             }
-            InspectorWindow.instance.SetTarget(target, this);
             if (!IsEnableFocusWindow)
                 return;
             if (FocusWindowIndictaor.instance != null)

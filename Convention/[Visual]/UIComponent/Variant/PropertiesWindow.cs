@@ -313,8 +313,12 @@ namespace Convention.WindowsUI.Variant
                 }
                 static IEnumerator Adjuster2(RectTransform rectTransform, ItemEntry parentEntry)
                 {
+                    if (rectTransform == null)
+                        yield break;
                     LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
                     yield return null;
+                    if (rectTransform == null)
+                        yield break;
                     RectTransformExtension.AdjustSizeToContainsChilds(rectTransform);
                     yield return null;
                     parentEntry.ForceRebuildLayoutImmediate();
@@ -364,6 +368,8 @@ namespace Convention.WindowsUI.Variant
                     ForceRebuildLayoutImmediate();
             }
 
+            public bool IsRemovingChilds { get; private set; } = false;
+
             public void Release()
             {
                 if ((parentWindow == null && parentEntry == null) || childs == null || rootWindow == null)
@@ -376,20 +382,17 @@ namespace Convention.WindowsUI.Variant
                     ref_value.gameObject.SetActive(false);
                     Destroy(ref_value.gameObject);
                 }
+                IsRemovingChilds = true;
                 foreach (var item in childs)
                 {
                     item.Release();
                 }
+                IsRemovingChilds = false;
                 if (parentWindow != null)
                     parentWindow.m_Entrys.Remove(this);
-                else
+                else if (GetParent().IsRemovingChilds == false)
                     parentEntry.childs.Remove(this);
                 ref_value = null;
-            }
-
-            ~ItemEntry()
-            {
-                Release();
             }
         }
         public interface IItemEntry
