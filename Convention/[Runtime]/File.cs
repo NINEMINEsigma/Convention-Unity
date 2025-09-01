@@ -79,6 +79,13 @@ namespace Convention
         }
         public string GetName(bool is_ignore_extension = false)
         {
+            if (OriginInfo != null)
+            {
+                if (OriginInfo is FileInfo finfo)
+                    return is_ignore_extension ? Path.GetFileNameWithoutExtension(finfo.FullName) : finfo.Name;
+                else if (OriginInfo is DirectoryInfo dinfo)
+                    return dinfo.Name;
+            }
             var result = this.FullPath[..(
                 (this.FullPath.Contains('.') && is_ignore_extension)
                     ? this.FullPath.LastIndexOf('.')
@@ -89,8 +96,8 @@ namespace Convention
                     ? ^1
                     : ^0
                 )];
-            return result[(Mathf.Max(result.Contains('/') ? result.LastIndexOf('/') : -1,
-                result.Contains('\\') ? result.LastIndexOf('\\') : -1) + 1)..];
+            //result.LastIndexOf('\\') return -1 when '\\' was not been contained
+            return result[(Mathf.Max(result.LastIndexOf('/'), result.LastIndexOf('\\')) + 1)..];
         }
         public string GetExtension()
         {

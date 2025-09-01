@@ -22,8 +22,11 @@ namespace Convention.WindowsUI.Variant
 
         public BaseWindowBar.RegisteredPageWrapper GameWindowIndex { get; private set; }
 
+        public bool IsSelectSceneCamera { get; private set; }
+
         public void CameraSelect(bool isScene)
         {
+            IsSelectSceneCamera = isScene;
             SceneCamera.gameObject.SetActive(isScene);
             ModuleCamera.gameObject.SetActive(!isScene);
             if (m_GameObjectOnSceneOnly != null)
