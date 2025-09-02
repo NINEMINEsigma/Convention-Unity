@@ -10,6 +10,11 @@ namespace Convention.WindowsUI.Variant
         string HierarchyItemTitle { get; }
     }
 
+    public interface IHierarchyItemClickEventListener
+    {
+        void OnHierarchyItemClick(HierarchyItem item);
+    }
+
     public class HierarchyItem : PropertyListItem
     {
         [Content, HopeNotNull] public object m_target;
@@ -69,6 +74,10 @@ namespace Convention.WindowsUI.Variant
                 if (InspectorWindow.instance != null)
                 {
                     InspectorWindow.instance.SetTarget(target, this);
+                }
+                if(target is IHierarchyItemClickEventListener listener)
+                {
+                    listener.OnHierarchyItemClick(this);
                 }
             }
             if (!IsEnableFocusWindow)

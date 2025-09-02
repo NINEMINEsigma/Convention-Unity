@@ -273,14 +273,9 @@ namespace Convention
         public IEnumerator LoadAsAssetBundle([In] Action<AssetBundle> callback)
         {
             AssetBundleCreateRequest result = AssetBundle.LoadFromFileAsync(FullPath);
-            result.completed += x =>
-            {
-                if (x.isDone)
-                {
-                    callback(result.assetBundle);
-                }
-            };
             yield return result;
+            callback(result.assetBundle);
+            yield return null;
         }
 
         public string LoadAsUnknown(string suffix)

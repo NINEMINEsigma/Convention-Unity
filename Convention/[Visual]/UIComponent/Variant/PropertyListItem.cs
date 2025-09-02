@@ -9,9 +9,11 @@ namespace Convention.WindowsUI.Variant
 {
     public class PropertyListItem : WindowUIModule, ITitle, IText, IItemEntry, IActionInvoke
     {
-        [Resources, SerializeField, OnlyNotNullMode] private Button m_rawButton;
-        [Resources, SerializeField, OnlyNotNullMode(nameof(m_rawButton))] private float layerTab = 7.5f;
-        [Resources, SerializeField, OnlyNotNullMode(nameof(m_rawButton))] private float layerHeight = 15f;
+        [Resources, SerializeField] private Button m_rawButton;
+        [Resources, SerializeField] private ModernUIButton m_modernButton;
+        public GameObject ButtonGameObject => m_rawButton == null ? m_modernButton.gameObject : m_rawButton.gameObject;
+        [Resources, SerializeField] private float layerTab = 7.5f;
+        [Resources, SerializeField] private float layerHeight = 15f;
         [Resources, SerializeField, OnlyNotNullMode] private RectTransform dropdownImage;
         [Resources, SerializeField, OnlyNotNullMode] private Text m_buttonText;
         [Resources, SerializeField, OnlyNotNullMode, Header("Self Layer")] private RectTransform m_Layer;
@@ -44,10 +46,13 @@ namespace Convention.WindowsUI.Variant
 
         protected virtual void Start()
         {
-            m_rawButton.gameObject.AddComponent<RectTransformExtension.AdjustSizeIgnore>();
+            ButtonGameObject.AddComponent<RectTransformExtension.AdjustSizeIgnore>();
             dropdownImage.gameObject.AddComponent<RectTransformExtension.AdjustSizeIgnore>();
             m_buttonText.gameObject.AddComponent<RectTransformExtension.AdjustSizeIgnore>();
-            m_rawButton.onClick.AddListener(Switch);
+            if (m_rawButton != null)
+                m_rawButton.onClick.AddListener(Switch);
+            else
+                m_modernButton.AddListener(Switch);
             TextRectTransform = m_buttonText.GetComponent<RectTransform>();
             dropdownImage.eulerAngles = new(0, 0, IsFold ? 90 : 0);
         }
@@ -79,7 +84,23 @@ namespace Convention.WindowsUI.Variant
 
         public virtual string title { get => m_buttonText.title; set => m_buttonText.title = value; }
         public virtual string text { get => m_buttonText.text; set => m_buttonText.text = value; }
-        public virtual bool interactable { get => m_rawButton.interactable; set => m_rawButton.interactable = value; }
+        public virtual bool interactable
+        {
+            get
+            {
+                if (m_rawButton != null)
+                    return m_rawButton.interactable;
+                else
+                    return m_modernButton.interactable;
+            }
+            set
+            {
+                if (m_rawButton != null)
+                    m_rawButton.interactable = value;
+                else
+                    m_modernButton.interactable = value;
+            }
+        }
 
         public void Switch()
         {
@@ -134,7 +155,10 @@ namespace Convention.WindowsUI.Variant
         {
             foreach (var item in action)
             {
-                m_rawButton.onClick.AddListener(item);
+                if (m_rawButton != null)
+                    m_rawButton.onClick.AddListener(item);
+                else
+                    m_modernButton.AddListener(item);
             }
             return this;
         }
@@ -143,14 +167,20 @@ namespace Convention.WindowsUI.Variant
         {
             foreach (var item in action)
             {
-                m_rawButton.onClick.RemoveListener(item);
+                if (m_rawButton != null)
+                    m_rawButton.onClick.RemoveListener(item);
+                else
+                    m_modernButton.RemoveListener(item);
             }
             return this;
         }
 
         public IActionInvoke RemoveAllListeners()
         {
-            m_rawButton.onClick.RemoveAllListeners();
+            if (m_rawButton != null)
+                m_rawButton.onClick.RemoveAllListeners();
+            else
+                m_modernButton.RemoveAllListeners();
             return this;
         }
     }
