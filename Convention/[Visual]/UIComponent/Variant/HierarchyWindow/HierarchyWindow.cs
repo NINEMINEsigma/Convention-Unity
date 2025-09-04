@@ -15,7 +15,7 @@ namespace Convention.WindowsUI.Variant
         private Dictionary<object, HierarchyItem> AllReferenceItemLinker = new();
 
         /// <summary>
-        /// ��������Լ���Ӧ��tab
+        /// 
         /// </summary>
         /// <param name="reference"></param>
         /// <param name="item"></param>

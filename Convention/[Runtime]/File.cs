@@ -161,9 +161,15 @@ namespace Convention
             if (Exists() == false)
                 OriginInfo = null;
             else if (IsDir())
+            {
                 OriginInfo = new DirectoryInfo(FullPath);
+                FullPath = Path.GetFullPath(FullPath);
+            }
             else
+            {
                 OriginInfo = new FileInfo(FullPath);
+                FullPath = Path.GetFullPath(FullPath);
+            }
             return this;
         }
 
