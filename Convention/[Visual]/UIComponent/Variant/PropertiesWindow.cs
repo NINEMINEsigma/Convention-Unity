@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Convention.Internal;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -288,11 +289,11 @@ namespace Convention.WindowsUI.Variant
             private void ForceRebuildLayoutImmediate()
             {
                 // TODO
-                if(this.parentEntry!=null)
                 {
-
+                    RectTransformExtension.AdjustSizeToContainsChilds(ref_value.transform as RectTransform);
                 }
                 return;
+                /*
                 if (ref_value != null)
                 {
                     ConventionUtility.StartCoroutine(Adjuster(ref_value.transform as RectTransform));
@@ -330,6 +331,7 @@ namespace Convention.WindowsUI.Variant
                     parentEntry.ForceRebuildLayoutImmediate();
                     yield break;
                 }
+                */
             }
 
             public void DisableChilds(bool isForceRebuildLayoutImmediate)

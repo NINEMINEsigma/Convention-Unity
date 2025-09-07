@@ -141,7 +141,7 @@ Material:
     - _Anisotropy: 0
     - _BlendMode: 0
     - _CoatMask: 0
-    - _ColorLevel: 1
+    - _ColorLevel: 0.1
     - _CullMode: 2
     - _CullModeForward: 2
     - _Cutoff: 0.5
