@@ -64,7 +64,11 @@ namespace Convention
             }
             if (Keyboard.current[Key.Space].isPressed)
                 dxyz += Vector3.up;
+#if !UNITY_EDITOR
             if (Keyboard.current[Key.LeftShift].isPressed)
+#else
+            if (Keyboard.current[Key.Q].isPressed)
+#endif
                 dxyz -= Vector3.up;
 
             var drotation = Vector3.zero;

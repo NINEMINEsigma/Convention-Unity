@@ -188,7 +188,7 @@ namespace Convention
             if (IsFile() == false)
                 throw new InvalidOperationException("Target is not a file");
             string result = "";
-            using (var fs = (this.OriginInfo as FileInfo).OpenText())
+            using (var fs = new StreamReader((this.OriginInfo as FileInfo).OpenRead()))
             {
                 result = fs.ReadToEnd();
             }

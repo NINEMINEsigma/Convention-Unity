@@ -287,6 +287,12 @@ namespace Convention.WindowsUI.Variant
 
             private void ForceRebuildLayoutImmediate()
             {
+                // TODO
+                if(this.parentEntry!=null)
+                {
+
+                }
+                return;
                 if (ref_value != null)
                 {
                     ConventionUtility.StartCoroutine(Adjuster(ref_value.transform as RectTransform));

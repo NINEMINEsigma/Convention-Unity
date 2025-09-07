@@ -1267,34 +1267,46 @@ namespace Convention
             return false;
         }
 
+        public static List<MemberInfo> SeekMemberInfoFromType(
+            [In] Type targetType,
+            [In, Opt] IEnumerable<Type> attrs, [In, Opt] IEnumerable<Type> types,
+            [In, Opt] Type untilBase = null
+            )
+        {
+            List<MemberInfo> result = new();
+            result.AddRange(targetType.GetMembers(BindingFlags.Public | BindingFlags.Instance));
+            while (targetType != null && targetType != typeof(object) && targetType != untilBase)
+            {
+                result.AddRange(
+                    from info in targetType.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance)
+                    where attrs == null || HasCustomAttribute(info, attrs)
+                    where types == null || (GetMemberValueType(info, out var type) && types.Contains(type))
+                    select info
+                    );
+                targetType = targetType.BaseType;
+            }
+            return result;
+        }
         public static List<MemberInfo> SeekMemberInfo(
             [In] object target,
             [In, Opt] IEnumerable<Type> attrs, [In, Opt] IEnumerable<Type> types,
             [In, Opt] Type untilBase = null
             )
         {
-            Type _CurType = target.GetType();
-            List<MemberInfo> result = new();
-            result.AddRange(_CurType.GetMembers(BindingFlags.Public | BindingFlags.Instance));
-            while (_CurType != null && _CurType != typeof(object) && _CurType != untilBase)
-            {
-                result.AddRange(
-                    from info in _CurType.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance)
-                    where attrs == null || HasCustomAttribute(info, attrs)
-                    where types == null || (GetMemberValueType(info, out var type) && types.Contains(type))
-                    select info
-                    );
-                _CurType = _CurType.BaseType;
-            }
-            return result;
+            return SeekMemberInfoFromType(target.GetType(), attrs, types, untilBase);
         }
-        public static List<MemberInfo> SeekMemberInfo([In] object target, IEnumerable<string> names, BindingFlags flags = BindingFlags.Public | BindingFlags.Instance)
+        public static List<MemberInfo> SeekMemberInfoFromType([In] Type target, IEnumerable<string> names,
+            BindingFlags flags = BindingFlags.Public | BindingFlags.Instance)
         {
-            Type _CurType = target.GetType();
-            List<MemberInfo> result = _CurType.GetMembers(flags).ToList();
+            List<MemberInfo> result = target.GetMembers(flags).ToList();
             HashSet<string> nameSet = names.ToHashSet();
             result.RemoveAll(x => nameSet.Contains(x.Name) == false);
             return result;
+        }
+        public static List<MemberInfo> SeekMemberInfo([In] object target, IEnumerable<string> names, 
+            BindingFlags flags = BindingFlags.Public | BindingFlags.Instance)
+        {
+            return SeekMemberInfoFromType(target.GetType(), names, flags);
         }
         public static object InvokeMember([In] MemberInfo member, [In] object target, params object[] parameters)
         {

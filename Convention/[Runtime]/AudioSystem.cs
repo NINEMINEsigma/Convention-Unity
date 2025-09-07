@@ -14,13 +14,18 @@ namespace Convention
         public abstract void LoadAudioClip(AudioClip clip);
         public abstract AudioClip GetAudioClip();
         public abstract float GetClockTime();
+        public abstract void SetClockTime(float value);
 
         public AudioClip CurrentClip
         {
             get => GetAudioClip();
             set => LoadAudioClip(value);
         }
-        public float CurrentTime => GetClockTime();
+        public float CurrentTime
+        {
+            get => GetClockTime();
+            set => SetClockTime(value);
+        }
 
         public abstract bool IsPlaying();
 
@@ -207,7 +212,14 @@ namespace Convention
         }
         public override float GetClockTime()
         {
+            if (Source.clip == null)
+                return 0;
             return (float)Source.timeSamples / (float)Source.clip.frequency;
+        }
+
+        public override void SetClockTime(float value)
+        {
+            Source.time = value;
         }
 
         public override bool IsPlaying()

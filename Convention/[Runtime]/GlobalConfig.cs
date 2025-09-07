@@ -51,12 +51,9 @@ namespace Convention
         public ToolFile GetConfigFile() => DataDir | ConstConfigFile;
         public ToolFile ConfigFile => GetConfigFile();
 
-        public ToolFile GetFile(string path, bool isMustExist = false)
+        public ToolFile GetFile(string path)
         {
-            var file = DataDir | path;
-            if (isMustExist)
-                file.MustExistsPath();
-            return file;
+            return DataDir | path;
         }
         public bool EraseFile(string path)
         {
@@ -154,7 +151,7 @@ namespace Convention
 
         public ToolFile GetLogFile()
         {
-            return this.GetFile(ConfigFile.GetName(true) + "_log.txt", true);
+            return this.GetFile(ConfigFile.GetName(true) + "_log.txt").MustExistsPath();
         }
         public ToolFile LogFile => GetLogFile();
 
