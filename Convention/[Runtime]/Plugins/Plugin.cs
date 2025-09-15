@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Convention
 {
@@ -53,6 +54,11 @@ namespace Convention
         public readonly IComparer<T> _comparer = null;
         public readonly Func<T, T, int> _comparer_func = null;
         public readonly Comparator _comparator = Comparator.less;
+
+        public T GetTP(float p)
+        {
+            return _elements[(int)(Mathf.Clamp01(p) * _elements.Length)];
+        }
 
         public int Size => _size;
         public int Capacity => _capacity;

@@ -26,16 +26,31 @@ namespace Convention.WindowsUI.Variant
 
         public void CameraSelect(bool isScene)
         {
-            IsSelectSceneCamera = isScene;
-            SceneCamera.gameObject.SetActive(isScene);
-            ModuleCamera.gameObject.SetActive(!isScene);
-            if (m_GameObjectOnSceneOnly != null)
+            if (ModuleCamera == null)
             {
-                m_GameObjectOnSceneOnly.SetActive(isScene);
+                IsSelectSceneCamera = true;
+                SceneCamera.gameObject.SetActive(true);
+                m_GameObjectOnSceneOnly.SetActive(true);
+            }
+            else
+            {
+                IsSelectSceneCamera = isScene;
+                SceneCamera.gameObject.SetActive(isScene);
+                ModuleCamera.gameObject.SetActive(!isScene);
+                if (m_GameObjectOnSceneOnly != null)
+                {
+                    m_GameObjectOnSceneOnly.SetActive(isScene);
+                }
             }
         }
 
-
+        private void Update()
+        {
+            if(IsSelectSceneCamera==false&& ModuleCamera==null)
+            {
+                CameraSelect(true);
+            }
+        }
 
         private void Start()
         {
@@ -43,7 +58,7 @@ namespace Convention.WindowsUI.Variant
             {
                 m_WindowManager = GetComponent<WindowManager>();
             }
-            if(MainCamera==null)
+            if (MainCamera == null)
             {
                 MainCamera = Camera.main.GetComponent<CinemachineBrain>();
             }

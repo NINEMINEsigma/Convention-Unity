@@ -84,8 +84,8 @@ namespace Convention.WindowsUI.Variant
             {
                 target.CreateItem(() =>
                 {
-                    action.callback(rightTop);
                     ReleaseAllCustomMenu();
+                    action.callback(rightTop);
                 }, action.name);
             }
             CustomMenuRelease.gameObject.SetActive(true);

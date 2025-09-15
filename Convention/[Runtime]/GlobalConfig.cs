@@ -127,12 +127,17 @@ namespace Convention
         public class InternalProperty
         {
             public Dictionary<string, object> property = new();
+            public Dictionary<string, object> find = new();
         }
 
         public GlobalConfig SaveProperties()
         {
             var configFile = this.ConfigFile;
-            configFile.SaveAsJson(new InternalProperty() { property = data_pair });
+            configFile.SaveAsJson(new InternalProperty()
+            {
+                property = data_pair,
+                find = data_find
+            });
             return this;
         }
         public GlobalConfig LoadProperties()
@@ -196,14 +201,18 @@ namespace Convention
             Log("Error", message);
         }
 
+        private Dictionary<string, object> data_find = new();
+
         public object FindItem(string key, object @default = null)
         {
             if (Contains(key))
             {
+                data_find.Remove(key);
                 return this[key];
             }
             else
             {
+                data_find[key] = @default;
                 LogPropertyNotFound(key, @default);
                 return @default;
             }

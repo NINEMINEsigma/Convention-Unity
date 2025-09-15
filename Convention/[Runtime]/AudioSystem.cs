@@ -192,9 +192,7 @@ namespace Convention
             get
             {
                 if (source == null)
-                    source = this.SeekComponent<AudioSource>();
-                if (source == null)
-                    source = this.gameObject.AddComponent<AudioSource>();
+                    source = this.GetOrAddComponent<AudioSource>();
                 return source;
             }
             set
@@ -251,7 +249,7 @@ namespace Convention
         }
         public override void SetSpeed(float speed)
         {
-            SetSpeed(speed, 1.0f, "Master", "MasterPitch", "PitchShifterPitch", true);
+            SetSpeed(speed, "Master", "MasterPitch", "PitchShifterPitch", true);
         }
         public override void SetVolume(float volume)
         {
@@ -259,7 +257,6 @@ namespace Convention
         }
 
         public void SetSpeed(float speed,
-                             float TargetPitchValue,
                              string TargetGroupName,
                              string TargetPitch_Attribute_Name,
                              string TargetPitchshifterPitch_Attribute_Name,
@@ -267,19 +264,19 @@ namespace Convention
         {
             if (Mixer != null)
             {
-                if (TargetPitchValue > 0)
+                if (speed > 0)
                 {
                     Source.pitch = 1;
-                    Mixer.SetFloat(TargetPitch_Attribute_Name, TargetPitchValue);
-                    float TargetPitchshifterPitchValue = 1.0f / TargetPitchValue;
+                    Mixer.SetFloat(TargetPitch_Attribute_Name, speed);
+                    float TargetPitchshifterPitchValue = 1.0f / speed;
                     Mixer.SetFloat(TargetPitchshifterPitch_Attribute_Name, TargetPitchshifterPitchValue);
                     Source.outputAudioMixerGroup = Mixer.FindMatchingGroups(TargetGroupName)[0];
                 }
                 else
                 {
                     Source.pitch = -1;
-                    Mixer.SetFloat(TargetPitch_Attribute_Name, -TargetPitchValue);
-                    float TargetPitchshifterPitchValue = -1.0f / TargetPitchValue;
+                    Mixer.SetFloat(TargetPitch_Attribute_Name, -speed);
+                    float TargetPitchshifterPitchValue = -1.0f / speed;
                     Mixer.SetFloat(TargetPitchshifterPitch_Attribute_Name, TargetPitchshifterPitchValue);
                     Source.outputAudioMixerGroup = Mixer.FindMatchingGroups(TargetGroupName)[0];
                 }
@@ -424,6 +421,7 @@ namespace Convention
             BandNegativeCheck();
 
         }
+
         //void Update()
         //{
         //    float[] spectrum = new float[256];

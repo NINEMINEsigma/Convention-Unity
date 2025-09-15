@@ -288,50 +288,12 @@ namespace Convention.WindowsUI.Variant
 
             private void ForceRebuildLayoutImmediate()
             {
-                // TODO
-                {
-                    RectTransformExtension.AdjustSizeToContainsChilds(ref_value.transform as RectTransform);
-                }
-                return;
-                /*
                 if (ref_value != null)
                 {
-                    ConventionUtility.StartCoroutine(Adjuster(ref_value.transform as RectTransform));
-
+                    RectTransformExtension.AdjustSizeToContainsChilds(ref_value.transform as RectTransform);
+                    if (parentEntry != null)
+                        parentEntry.ForceRebuildLayoutImmediate();
                 }
-                if (parentWindow)
-                {
-                    ConventionUtility.StartCoroutine(Adjuster(parentWindow.TargetWindowContent));
-                }
-                else
-                {
-                    ConventionUtility.StartCoroutine(Adjuster2(parentEntry.ref_value.transform as RectTransform, parentEntry));
-                }
-
-                static IEnumerator Adjuster(RectTransform rectTransform)
-                {
-                    if (rectTransform == null)
-                        yield break;
-                    LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
-                    yield return null;
-                    if (rectTransform == null)
-                        yield break;
-                    RectTransformExtension.AdjustSizeToContainsChilds(rectTransform);
-                }
-                static IEnumerator Adjuster2(RectTransform rectTransform, ItemEntry parentEntry)
-                {
-                    if (rectTransform == null)
-                        yield break;
-                    LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
-                    yield return null;
-                    if (rectTransform == null)
-                        yield break;
-                    RectTransformExtension.AdjustSizeToContainsChilds(rectTransform);
-                    yield return null;
-                    parentEntry.ForceRebuildLayoutImmediate();
-                    yield break;
-                }
-                */
             }
 
             public void DisableChilds(bool isForceRebuildLayoutImmediate)

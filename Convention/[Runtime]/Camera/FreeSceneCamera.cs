@@ -90,10 +90,13 @@ namespace Convention
                     isFocus = false;
                 if (Keyboard.current[Key.LeftCtrl].isPressed && Keyboard.current[Key.LeftShift].isPressed)
                 {
-                    TargetFollow.localEulerAngles = new(0, TargetFollow.eulerAngles.y, 0);
-                    if(Keyboard.current[Key.Z].wasPressedThisFrame)
+                    if(Keyboard.current[Key.Z].isPressed)
                     {
                         TargetFollow.localPosition = Vector3.zero;
+                    }
+                    else
+                    {
+                        TargetFollow.localEulerAngles = new(0, TargetFollow.eulerAngles.y, 0);
                     }
                 }
             }
