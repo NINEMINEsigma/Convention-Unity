@@ -34,7 +34,7 @@ namespace Convention
         {
             colorKeys = new GradientColorKey[]
             {
-                new GradientColorKey(Color.white, 1),
+                new GradientColorKey(Color.white, 0),
                 new GradientColorKey(Color.white, 1)
             }
         };

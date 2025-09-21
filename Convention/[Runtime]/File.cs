@@ -283,6 +283,18 @@ namespace Convention
             callback(result.assetBundle);
             yield return null;
         }
+        public IEnumerator LoadAsAssetBundle([In]Action<float> progress, [In] Action<AssetBundle> callback)
+        {
+            AssetBundleCreateRequest result = AssetBundle.LoadFromFileAsync(FullPath);
+            while (result.isDone == false)
+            {
+                progress(result.progress);
+                yield return null;
+            }
+            yield return result;
+            callback(result.assetBundle);
+            yield return null;
+        }
 
         public string LoadAsUnknown(string suffix)
         {

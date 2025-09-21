@@ -125,6 +125,25 @@ namespace Convention.WindowsUI.Variant
                 });
             }
         }
+
+        public void MakeFocusOn(HierarchyItem target)
+        {
+            static void BFS(HierarchyItem t)
+            {
+                var next = t.Entry.GetParent();
+                if (next != null)
+                {
+                    BFS(next.GetHierarchyItem());
+                    next.GetHierarchyItem().IsFold = false;
+                }
+            }
+
+            BFS(target);
+            if (FocusWindowIndictaor.instance != null)
+            {
+                FocusWindowIndictaor.instance.SetTargetRectTransform(target.TextRectTransform);
+            }
+        }
     }
 }
 

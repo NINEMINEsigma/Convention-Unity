@@ -37,6 +37,11 @@ MonoBehaviour:
     - Dreamteck.Splines
     - Dreamteck.Utilities
     - EasySave3
+    - glTFast
+    - glTFast.Documentation.Examples
+    - glTFast.dots
+    - glTFast.Export
+    - glTFast.Newtonsoft
     - LeanCommon
     - LeanGUI
     - LeanTransition

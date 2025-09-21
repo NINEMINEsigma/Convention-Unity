@@ -8,19 +8,43 @@ namespace Convention.WindowsUI.Variant
     {
         [Setting, Range(0, 1), Percentage(0, 1)] public float Speed = 0.36f;
         [Resources, OnlyNotNullMode] public RectTransform RectBox;
-        [Resources, OnlyNotNullMode] public RectTransform RopParent;
+        [Resources, OnlyNotNullMode] public RectTransform TopParent;
         [Resources] public List<RectTransform> Targets = new();
         [Content] public int TargetIndex;
-        [Content, OnlyPlayMode] public RectTransform Target;
+        public RectTransform Target { get; private set; }
+
+        private Stack<ConventionUtility.ActionStepCoroutineWrapper> Tasks = new();
 
         public void SetTargetRectTransform(RectTransform target)
         {
-            Target = target;
+            if (target == null)
+            {
+                Target = null;
+                RectTransformInfo.UpdateAnimationPlane(TopParent, RectBox, Speed, 0, true);
+            }
+            else
+            {
+                ConventionUtility.ActionStepCoroutineWrapper task = ConventionUtility.CreateSteps();
+                task.Next(() =>
+                    {
+                        if (gameObject.activeInHierarchy == false)
+                            RectTransformInfo.UpdateAnimationPlane(TopParent, RectBox, 1, 0, true);
+                    })
+                    .Until(() => target.gameObject.activeInHierarchy == true && Tasks.Peek() == task, () => Target = target)
+                    .Next(() => Tasks.TryPop(out var _))
+                    .Invoke();
+                Tasks.Push(task);
+            }
         }
         public void SelectNextTarget()
         {
-            Debug.Log(TargetIndex);
             Target = Targets[TargetIndex = (TargetIndex + 1) % Targets.Count];
+        }
+
+        private void Start()
+        {
+            if (TopParent == null)
+                TopParent = transform.parent as RectTransform;
         }
 
         private void LateUpdate()
@@ -28,7 +52,7 @@ namespace Convention.WindowsUI.Variant
             if (Target != null)
                 RectTransformInfo.UpdateAnimationPlane(Target, RectBox, Speed, 0, true);
             else
-                RectTransformInfo.UpdateAnimationPlane(RopParent, RectBox, Speed, 0, true);
+                RectTransformInfo.UpdateAnimationPlane(TopParent, RectBox, Speed, 0, true);
         }
     }
 }

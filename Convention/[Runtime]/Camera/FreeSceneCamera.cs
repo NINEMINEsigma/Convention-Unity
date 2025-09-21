@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Cinemachine;
 using Convention.WindowsUI.Variant;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,6 +24,16 @@ namespace Convention
                     Cursor.visible = !m_IsFocus;
                 }
             }
+        }
+
+        public void SetMoveSpeed(float value)
+        {
+            moveSpeed = value;
+        }
+
+        public void SetRotationSpeed(float value)
+        {
+            rotationSpeed = value;
         }
 
         private void Start()

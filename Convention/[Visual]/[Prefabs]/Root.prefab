@@ -91,7 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 0.32
   RectBox: {fileID: 6272003121708756342}
-  RopParent: {fileID: 8773560469810817739}
+  TopParent: {fileID: 0}
   Targets:
   - {fileID: 0}
   - {fileID: 7709311530016948315}
@@ -100,7 +100,6 @@ MonoBehaviour:
   - {fileID: 2403051311178796671}
   - {fileID: 5377214671440830306}
   TargetIndex: 0
-  Target: {fileID: 0}
 --- !u!114 &7462675906960032546
 MonoBehaviour:
   m_ObjectHideFlags: 0
