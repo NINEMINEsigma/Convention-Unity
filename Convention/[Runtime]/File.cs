@@ -62,7 +62,7 @@ namespace Convention
         private FileSystemInfo OriginInfo;
         public ToolFile(string path) 
         {
-            FullPath = Path.GetFullPath(path);
+            FullPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(path));
             Refresh();
         }
         public override string ToString()
