@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using Convention.SO;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +9,7 @@ namespace Convention
         [MenuItem("Convention/AssetBundle/Create for Android")]
         static void CreatAssetBundle()
         {
-            string path = Path.Combine(Application.streamingAssetsPath, "AssetBundle", "Android");
+            string path = Path.Combine(Application.dataPath, "../", "AssetBundle", "Android");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -24,7 +21,7 @@ namespace Convention
         [MenuItem("Convention/AssetBundle/Create for IOS")]
         static void BuildAllAssetBundlesForIOS()
         {
-            string dirName = "AssetBundles/IOS/IOS";
+            string dirName = "AssetBundles/IOS/";
             if (!Directory.Exists(dirName))
             {
                 Directory.CreateDirectory(dirName);
@@ -37,7 +34,7 @@ namespace Convention
         [MenuItem("Convention/AssetBundle/Create for Windows")]
         static void CreatPCAssetBundleForwINDOWS()
         {
-            string path = Path.Combine(Application.streamingAssetsPath, "AssetBundle", "Windows");
+            string path = Path.Combine(Application.dataPath, "../", "AssetBundle", "Windows");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -49,7 +46,7 @@ namespace Convention
         [MenuItem("Convention/AssetBundle/Create for Mac")]
         static void CreatPCAssetBundleForMac()
         {
-            string path = Path.Combine(Application.streamingAssetsPath, "AssetBundle", "Mac");
+            string path = Path.Combine(Application.dataPath, "../", "AssetBundle", "Mac");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
