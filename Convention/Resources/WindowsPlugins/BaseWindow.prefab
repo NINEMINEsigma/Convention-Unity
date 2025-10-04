@@ -1085,6 +1085,7 @@ MonoBehaviour:
     anchorMin: {x: 0, y: 0}
     pivot: {x: 0, y: 0}
   BeforeMaximizeWindowBackgroundColorA: 1
+  IsMaximizeWindowMode: 0
   AdjustSizeToContainsRect: {fileID: 0}
 --- !u!114 &3897188892033144510
 MonoBehaviour:

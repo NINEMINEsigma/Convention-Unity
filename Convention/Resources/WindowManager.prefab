@@ -96,8 +96,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_CurrentContextKey: 0
-  m_AllContextPlane: []
-  WindowPlane: {fileID: 6262932319296346077}
+  m_AllContextPlane:
+  - plane: {fileID: 1743752460056994028}
+    root: {fileID: 6898088878883608404}
+  WindowPlane: {fileID: 2851218872878303137}
   WindowBar: {fileID: 5431686027440357681}
 --- !u!114 &8120993653923732271
 MonoBehaviour:
@@ -350,6 +352,7 @@ MonoBehaviour:
     anchorMin: {x: 0, y: 0}
     pivot: {x: 0, y: 0}
   BeforeMaximizeWindowBackgroundColorA: 1
+  IsMaximizeWindowMode: 0
   AdjustSizeToContainsRect: {fileID: 0}
 --- !u!114 &6852005934204649840
 MonoBehaviour:
@@ -707,6 +710,17 @@ PrefabInstance:
       addedObject: {fileID: 1225826108170619254}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f83398a7d855e44493acb9b240c01ca, type: 3}
+--- !u!114 &2851218872878303137 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6525725186002079832, guid: 9f83398a7d855e44493acb9b240c01ca, type: 3}
+  m_PrefabInstance: {fileID: 9007647915676817401}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 999be728ad5e8324baf45ccaf0f9c3d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6898088878883608404 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2502725167534981293, guid: 9f83398a7d855e44493acb9b240c01ca, type: 3}

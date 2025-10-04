@@ -18,7 +18,7 @@ namespace Convention.WindowsUI
 
         [Content, OnlyPlayMode, Ignore] public RectTransformInfo BeforeMaximizeWindow = null;
         [Content, OnlyPlayMode, Ignore] public float BeforeMaximizeWindowBackgroundColorA = 1f;
-        private bool IsMaximizeWindowMode = false;
+        [SerializeField] private bool IsMaximizeWindowMode = false;
         [Content, OnlyPlayMode]
         public void MaximizeWindow()
         {
