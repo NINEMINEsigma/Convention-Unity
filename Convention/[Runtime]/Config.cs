@@ -56,6 +56,19 @@ namespace Convention
         public static string PersistentDataPath => Application.persistentDataPath;
 
         public static string DataPath => Application.dataPath;
+
+        public static string CurrentWorkPath => Environment.CurrentDirectory;
+
+        public static string Combine(string a, string b) => Path.Combine(a, b);
+        public static string CombineAsDir(string a, string b)
+        {
+            string name = b.Replace("\\", "/");
+            if (name.EndsWith("/") == false)
+            {
+                name += "/";
+            }
+            return Path.Combine(a, name);
+        }
     }
 
     public static partial class Utility
