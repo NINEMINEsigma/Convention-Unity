@@ -118,6 +118,14 @@ namespace Convention.WindowsUI.Variant
             dropdownImage.eulerAngles = new(0, 0, 0);
         }
 
+        public virtual void RefreshChilds()
+        {
+            ConventionUtility.CreateSteps()
+                .Next(() => Switch())
+                .Next(() => Switch())
+                .Invoke();
+        }
+
         public List<ItemEntry> CreateSubPropertyItem([In] PropertiesWindow propertyWindow, int count)
         {
             List<ItemEntry> result = new();
