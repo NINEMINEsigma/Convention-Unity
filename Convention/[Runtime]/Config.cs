@@ -438,7 +438,7 @@ namespace Convention
         public static _T convert_xvalue<_T>([In] string str)
         {
             Type type = typeof(_T);
-            var parse_method = type.GetMethod("Parse");
+            var parse_method = type.GetMethod(nameof(int.Parse), BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(string) }, null);
             if (parse_method != null &&
                 (parse_method.ReturnType.IsSubclassOf(type) || parse_method.ReturnType == type) &&
                 parse_method.GetParameters().Length == 1 &&
