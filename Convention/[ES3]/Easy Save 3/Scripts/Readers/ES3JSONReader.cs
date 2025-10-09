@@ -22,7 +22,7 @@ namespace ES3Internal
 
 		public StreamReader baseReader;
 
-		internal ES3JSONReader(Stream stream, ES3Settings settings, bool readHeaderAndFooter = true) : base(settings, readHeaderAndFooter)
+		public ES3JSONReader(Stream stream, ES3Settings settings, bool readHeaderAndFooter = true) : base(settings, readHeaderAndFooter)
 		{
 			this.baseReader = new StreamReader(stream);
 
