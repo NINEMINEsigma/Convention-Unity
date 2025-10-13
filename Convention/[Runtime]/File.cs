@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
@@ -58,24 +57,28 @@ namespace Convention
             };
         }
 
-        private string FullPath;
+        private string OriginPath;
         private FileSystemInfo OriginInfo;
         public ToolFile(string path) 
         {
-            FullPath = Path.GetFullPath(Environment.ExpandEnvironmentVariables(path));
+            OriginPath = Environment.ExpandEnvironmentVariables(path).Replace('\\', '/');
             Refresh();
         }
         public override string ToString()
         {
-            return this.FullPath;
+            return this.OriginPath;
         }
 
         #region Path
 
-        public static implicit operator string(ToolFile data) => data.FullPath;
+        public static implicit operator string(ToolFile data) => data.OriginPath;
+        public string GetAbsPath()
+        {
+            return Path.GetFullPath(OriginPath);
+        }
         public string GetFullPath()
         {
-            return this.FullPath;
+            return this.OriginPath;
         }
         public string GetName(bool is_ignore_extension = false)
         {
@@ -86,13 +89,13 @@ namespace Convention
                 else if (OriginInfo is DirectoryInfo dinfo)
                     return dinfo.Name;
             }
-            var result = this.FullPath[..(
-                (this.FullPath.Contains('.') && is_ignore_extension)
-                    ? this.FullPath.LastIndexOf('.')
+            var result = this.OriginPath[..(
+                (this.OriginPath.Contains('.') && is_ignore_extension)
+                    ? this.OriginPath.LastIndexOf('.')
                     : ^0
                 )]
                     [..(
-                (this.FullPath[^1] == '/' || this.FullPath[^1] == '\\')
+                (this.OriginPath[^1] == '/' || this.OriginPath[^1] == '\\')
                     ? ^1
                     : ^0
                 )];
@@ -103,32 +106,32 @@ namespace Convention
         {
             if (IsDir())
                 return "";
-            return this.FullPath[(
-                (this.FullPath.Contains('.'))
-                    ? this.FullPath.LastIndexOf('.')
+            return this.OriginPath[(
+                (this.OriginPath.Contains('.'))
+                    ? this.OriginPath.LastIndexOf('.')
                     : ^0
                 )..];
         }
 
         public string GetFilename(bool is_without_extension = false)
         {
-            if (is_without_extension && Path.HasExtension(FullPath))
+            if (is_without_extension && Path.HasExtension(OriginPath))
             {
-                return Path.GetFileNameWithoutExtension(FullPath);
+                return Path.GetFileNameWithoutExtension(OriginPath);
             }
-            else if (FullPath.EndsWith(Path.DirectorySeparatorChar.ToString()) || FullPath.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
+            else if (OriginPath.EndsWith(Path.DirectorySeparatorChar.ToString()) || OriginPath.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
             {
-                return Path.GetFileName(FullPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+                return Path.GetFileName(OriginPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
             }
             else
             {
-                return Path.GetFileName(FullPath);
+                return Path.GetFileName(OriginPath);
             }
         }
 
         public string GetDir()
         {
-            return Path.GetDirectoryName(FullPath);
+            return Path.GetDirectoryName(OriginPath);
         }
 
         public ToolFile GetDirToolFile()
@@ -138,7 +141,7 @@ namespace Convention
 
         public string GetCurrentDirName()
         {
-            return Path.GetDirectoryName(FullPath);
+            return Path.GetDirectoryName(OriginPath);
         }
 
         public ToolFile GetParentDir()
@@ -150,7 +153,7 @@ namespace Convention
 
         #region Exists
 
-        public bool Exists() => File.Exists(FullPath) || Directory.Exists(FullPath);
+        public bool Exists() => File.Exists(OriginPath) || Directory.Exists(OriginPath);
 
         public static implicit operator bool(ToolFile file) => file.Exists();
 
@@ -162,13 +165,13 @@ namespace Convention
                 OriginInfo = null;
             else if (IsDir())
             {
-                OriginInfo = new DirectoryInfo(FullPath);
-                FullPath = Path.GetFullPath(FullPath);
+                OriginInfo = new DirectoryInfo(OriginPath);
+                OriginPath = Path.GetFullPath(OriginPath);
             }
             else
             {
-                OriginInfo = new FileInfo(FullPath);
-                FullPath = Path.GetFullPath(FullPath);
+                OriginInfo = new FileInfo(OriginPath);
+                OriginPath = Path.GetFullPath(OriginPath);
             }
             return this;
         }
@@ -181,7 +184,7 @@ namespace Convention
         }
         public T LoadAsJson<T>(string key = "data")
         {
-            return ES3.Load<T>(key, FullPath);
+            return ES3.Load<T>(key, OriginPath);
         }
         public string LoadAsText()
         {
@@ -217,7 +220,7 @@ namespace Convention
             if (IsFile() == false)
                 throw new InvalidOperationException("Target is not a file");
             
-            var lines = File.ReadAllLines(FullPath);
+            var lines = File.ReadAllLines(OriginPath);
             var result = new List<string[]>();
             
             foreach (var line in lines)
@@ -244,11 +247,11 @@ namespace Convention
 
         public Texture2D LoadAsImage()
         {
-            return ES3Plugin.LoadImage(FullPath);
+            return ES3Plugin.LoadImage(OriginPath);
         }
         public IEnumerator LoadAsImage([In] Action<Texture2D> callback)
         {
-            UnityWebRequest request = UnityWebRequestTexture.GetTexture(FullPath);
+            UnityWebRequest request = UnityWebRequestTexture.GetTexture(OriginPath);
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
@@ -259,11 +262,11 @@ namespace Convention
         }
         public AudioClip LoadAsAudio()
         {
-            return ES3Plugin.LoadAudio(FullPath, GetAudioType(FullPath));
+            return ES3Plugin.LoadAudio(OriginPath, GetAudioType(OriginPath));
         }
         public IEnumerator LoadAsAudio([In] Action<AudioClip> callback)
         {
-            UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(FullPath, GetAudioType(FullPath));
+            UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(OriginPath, GetAudioType(OriginPath));
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
@@ -274,18 +277,18 @@ namespace Convention
         }
         public AssetBundle LoadAsAssetBundle()
         {
-            return AssetBundle.LoadFromFile(FullPath);
+            return AssetBundle.LoadFromFile(OriginPath);
         }
         public IEnumerator LoadAsAssetBundle([In] Action<AssetBundle> callback)
         {
-            AssetBundleCreateRequest result = AssetBundle.LoadFromFileAsync(FullPath);
+            AssetBundleCreateRequest result = AssetBundle.LoadFromFileAsync(OriginPath);
             yield return result;
             callback(result.assetBundle);
             yield return null;
         }
         public IEnumerator LoadAsAssetBundle([In]Action<float> progress, [In] Action<AssetBundle> callback)
         {
-            AssetBundleCreateRequest result = AssetBundle.LoadFromFileAsync(FullPath);
+            AssetBundleCreateRequest result = AssetBundle.LoadFromFileAsync(OriginPath);
             while (result.isDone == false)
             {
                 progress(result.progress);
@@ -311,11 +314,11 @@ namespace Convention
         }
         public void SaveAsJson<T>(T data, string key = "data")
         {
-            ES3.Save(key, data,FullPath);
+            ES3.Save(key, data,OriginPath);
         }
         public void SaveAsText(string data)
         {
-            using var fs = new FileStream(FullPath, FileMode.CreateNew, FileAccess.Write);
+            using var fs = new FileStream(OriginPath, FileMode.CreateNew, FileAccess.Write);
             using var sw = new StreamWriter(fs);
             sw.Write(data);
             sw.Flush();
@@ -337,7 +340,7 @@ namespace Convention
 
         public void SaveAsBinary(byte[] data)
         {
-            SaveDataAsBinary(FullPath, data, (OriginInfo as FileInfo).OpenWrite());
+            SaveDataAsBinary(OriginPath, data, (OriginInfo as FileInfo).OpenWrite());
         }
 
         public void SaveAsCsv(List<string[]> csvData)
@@ -346,7 +349,7 @@ namespace Convention
                 throw new InvalidOperationException("Target is not a file");
             
             var lines = csvData.Select(row => string.Join(",", row));
-            File.WriteAllLines(FullPath, lines);
+            File.WriteAllLines(OriginPath, lines);
         }
 
         public void SaveAsXml(string xmlData)
@@ -380,9 +383,9 @@ namespace Convention
         {
             if (Exists())
             {
-                return Directory.Exists(this.FullPath);
+                return Directory.Exists(this.OriginPath);
             }
-            return this.FullPath[^1] == '\\' || this.FullPath[^1] == '/';
+            return this.OriginPath[^1] == '\\' || this.OriginPath[^1] == '/';
         }
 
         public bool IsFile()
@@ -420,7 +423,7 @@ namespace Convention
         {
             if (IsDir())
             {
-                return GetDirectorySize(FullPath);
+                return GetDirectorySize(OriginPath);
             }
             else
             {
@@ -459,6 +462,20 @@ namespace Convention
 
         public static ToolFile operator |(ToolFile left, string rightPath)
         {
+            if (rightPath == null)
+            {
+                return new ToolFile(left.IsDir() ? left.GetFullPath() : $"{left.GetFullPath().Replace('\\', '/')}/");
+            }
+            string first = left.GetFullPath().Replace('\\','/');
+            string second = rightPath.Replace('\\', '/');
+            if (first == "./")
+                return new ToolFile(second);
+            else if (first == "../")
+                return new ToolFile($"{new ToolFile(left.GetAbsPath()).GetParentDir()}/{second}");
+            return new ToolFile($"{first}/{second}");
+        }
+        public static ToolFile operator |(ToolFile left, ToolFile rightPath)
+        {
             string lp = left.GetFullPath();
             return new ToolFile(Path.Combine(lp, rightPath));
         }
@@ -467,19 +484,19 @@ namespace Convention
         {
             if (obj is ToolFile other)
             {
-                return Path.GetFullPath(FullPath).Equals(Path.GetFullPath(other.FullPath), StringComparison.OrdinalIgnoreCase);
+                return Path.GetFullPath(OriginPath).Equals(Path.GetFullPath(other.OriginPath), StringComparison.OrdinalIgnoreCase);
             }
             return false;
         }
 
         public override int GetHashCode()
         {
-            return Path.GetFullPath(FullPath).GetHashCode();
+            return Path.GetFullPath(OriginPath).GetHashCode();
         }
 
         public ToolFile Open(string path)
         {
-            this.FullPath = path;
+            this.OriginPath = path;
             Refresh();
             return this;
         }
@@ -492,9 +509,9 @@ namespace Convention
             if (Exists() == false)
             {
                 if (IsDir())
-                    Directory.CreateDirectory(this.FullPath);
+                    Directory.CreateDirectory(this.OriginPath);
                 else
-                    File.Create(this.FullPath).Close();
+                    File.Create(this.OriginPath).Close();
                 Refresh();
             }
             return this;
@@ -511,7 +528,7 @@ namespace Convention
                 var file = OriginInfo as FileInfo;
                 file.MoveTo(newPath);
             }
-            FullPath = newPath;
+            OriginPath = newPath;
             return this;
         }
         public ToolFile Move(string path)
@@ -537,7 +554,7 @@ namespace Convention
         public ToolFile Copy(string targetPath = null)
         {
             if (targetPath == null)
-                return new ToolFile(FullPath);
+                return new ToolFile(OriginPath);
             
             if (!Exists())
                 throw new FileNotFoundException("File not found");
@@ -547,9 +564,9 @@ namespace Convention
                 targetFile = targetFile | GetFilename();
             
             if (IsDir())
-                CopyDirectory(FullPath, targetFile.GetFullPath());
+                CopyDirectory(OriginPath, targetFile.GetFullPath());
             else
-                File.Copy(FullPath, targetFile.GetFullPath());
+                File.Copy(OriginPath, targetFile.GetFullPath());
             
             return targetFile;
         }
@@ -575,9 +592,9 @@ namespace Convention
         public ToolFile Delete()
         {
             if (IsDir())
-                Directory.Delete(FullPath);
+                Directory.Delete(OriginPath);
             else
-                File.Delete(FullPath);
+                File.Delete(OriginPath);
             return this;
         }
 
@@ -598,7 +615,7 @@ namespace Convention
         }
         public ToolFile TryCreateParentPath()
         {
-            string dirPath = Path.GetDirectoryName(FullPath);
+            string dirPath = Path.GetDirectoryName(OriginPath);
             if (!string.IsNullOrEmpty(dirPath) && !Directory.Exists(dirPath))
             {
                 Directory.CreateDirectory(dirPath);
@@ -609,14 +626,14 @@ namespace Convention
         {
             if (!IsDir())
                 throw new InvalidOperationException("Target is not a directory");
-            return Directory.GetFileSystemEntries(FullPath).ToList();
+            return Directory.GetFileSystemEntries(OriginPath).ToList();
         }
         public List<ToolFile> DirToolFileIter()
         {
             if (!IsDir())
                 throw new InvalidOperationException("Target is not a directory");
             var result = new List<ToolFile>();
-            foreach (var entry in Directory.GetFileSystemEntries(FullPath))
+            foreach (var entry in Directory.GetFileSystemEntries(OriginPath))
             {
                 result.Add(new ToolFile(entry));
             }
@@ -624,7 +641,7 @@ namespace Convention
         }
         public ToolFile BackToParentDir()
         {
-            FullPath = GetDir();
+            OriginPath = GetDir();
             Refresh();
             return this;
         }
@@ -633,7 +650,7 @@ namespace Convention
             if (!IsDir())
                 throw new InvalidOperationException("Target is not a directory");
             
-            var entries = Directory.GetFileSystemEntries(FullPath);
+            var entries = Directory.GetFileSystemEntries(OriginPath);
             if (ignore_folder)
             {
                 return entries.Count(entry => File.Exists(entry));
@@ -740,13 +757,13 @@ namespace Convention
                 {
                     if (IsDir())
                     {
-                        ZipFile.CreateFromDirectory(FullPath, outputPath);
+                        ZipFile.CreateFromDirectory(OriginPath, outputPath);
                     }
                     else
                     {
                         using (var archive = ZipFile.Open(outputPath, ZipArchiveMode.Create))
                         {
-                            archive.CreateEntryFromFile(FullPath, GetFilename());
+                            archive.CreateEntryFromFile(OriginPath, GetFilename());
                         }
                     }
                 }
@@ -778,7 +795,7 @@ namespace Convention
 
             try
             {
-                ZipFile.ExtractToDirectory(FullPath, outputPath);
+                ZipFile.ExtractToDirectory(OriginPath, outputPath);
                 return new ToolFile(outputPath);
             }
             catch (Exception ex)
@@ -897,7 +914,7 @@ namespace Convention
             try
             {
                 using (var hashAlgorithm = GetHashAlgorithm(algorithm))
-                using (var stream = File.OpenRead(FullPath))
+                using (var stream = File.OpenRead(OriginPath))
                 {
                     byte[] hash = hashAlgorithm.ComputeHash(stream);
                     return BitConverter.ToString(hash).Replace("-", "").ToLower();
@@ -955,7 +972,7 @@ namespace Convention
 
             // 注意：这是一个简化实现，实际的文件监控需要更复杂的实现
             // 可以使用 FileSystemWatcher 来实现完整功能
-            var watcher = new FileSystemWatcher(FullPath)
+            var watcher = new FileSystemWatcher(OriginPath)
             {
                 IncludeSubdirectories = recursive,
                 EnableRaisingEvents = true
@@ -1087,7 +1104,7 @@ namespace Convention
             
             try
             {
-                var fileInfo = new FileInfo(FullPath);
+                var fileInfo = new FileInfo(OriginPath);
                 var attributes = fileInfo.Attributes;
 
                 permissions["read"] = true; // 如果能获取到文件信息，说明可读
@@ -1114,7 +1131,7 @@ namespace Convention
 
             try
             {
-                var fileInfo = new FileInfo(FullPath);
+                var fileInfo = new FileInfo(OriginPath);
                 var attributes = fileInfo.Attributes;
 
                 if (write.HasValue)

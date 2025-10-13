@@ -262,30 +262,29 @@ namespace Convention
 
         public IEnumerator LoadAsAssetBundle(Action<float> progress, Action<AssetBundle> onSuccess, Action<string> onError = null)
         {
-            yield return LoadAsBinaryAsync(
-                progress,
-                data =>
+            AssetBundleCreateRequest request = null;
+            yield return LoadAsBinaryAsync(x => progress(x * 0.5f), data => request = AssetBundle.LoadFromMemoryAsync(data), onError);
+            while (request.isDone == false)
+            {
+                progress(0.5f + request.progress * 0.5f);
+            }
+            try
+            {
+                AssetBundle bundle = request.assetBundle;
+                if (bundle != null)
                 {
-                    try
-                    {
-                        AssetBundle bundle = AssetBundle.LoadFromMemory(data);
-                        if (bundle != null)
-                        {
-                            cachedData = bundle;
-                            onSuccess?.Invoke(bundle);
-                        }
-                        else
-                        {
-                            onError?.Invoke($"Failed to load AssetBundle from data.");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        onError?.Invoke($"Failed to load AssetBundle: {e.Message}");
-                    }
-                },
-                onError
-            );
+                    cachedData = bundle;
+                    onSuccess?.Invoke(bundle);
+                }
+                else
+                {
+                    onError?.Invoke($"Failed to load AssetBundle from data.");
+                }
+            }
+            catch (Exception e)
+            {
+                onError?.Invoke($"Failed to load AssetBundle: {e.Message}");
+            }
         }
 
         #endregion
