@@ -267,6 +267,7 @@ namespace Convention
             while (request.isDone == false)
             {
                 progress(0.5f + request.progress * 0.5f);
+                yield return null;
             }
             try
             {
