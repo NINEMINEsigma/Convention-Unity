@@ -318,7 +318,7 @@ namespace Convention
         }
         public void SaveAsText(string data)
         {
-            using var fs = new FileStream(OriginPath, FileMode.CreateNew, FileAccess.Write);
+            using var fs = new FileStream(OriginPath, FileMode.Create, FileAccess.Write);
             using var sw = new StreamWriter(fs);
             sw.Write(data);
             sw.Flush();
@@ -332,7 +332,7 @@ namespace Convention
             }
             else
             {
-                using var fs = new FileStream(path, FileMode.CreateNew, FileAccess.Write);
+                using var fs = new FileStream(path, FileMode.Create, FileAccess.Write);
                 fs.Write(outdata, 0, outdata.Length);
                 fs.Flush();
             }
