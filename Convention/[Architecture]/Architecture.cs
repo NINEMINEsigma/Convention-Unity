@@ -1,9 +1,6 @@
-using Convention;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Convention.Experimental.PublicType;
+using System;
+using System.Collections.Generic;
 
 namespace Convention.Experimental
 {
@@ -16,13 +13,22 @@ namespace Convention.Experimental
         /// </summary>
         /// <param name="moduleType">要创建的<see cref="GameModule"/>类型</param>
         /// <returns>要创建的<see cref="GameModule"/></returns>
-        private static GameModule CreateModule(Type moduleType)
+        private static GameModule CreateModule(Type moduleType, int stackLayer = 0)
         {
+            if (stackLayer >= 100)
+            {
+                throw new GameException($"Create module '{moduleType.FullName}' failed, recursion too deep, there may be a circular dependency.");
+            }
+
             GameModule module = (GameModule)Activator.CreateInstance(moduleType);
             if (module == null)
             {
                 throw new GameException($"Can not create module '{moduleType.FullName}'");
             }
+
+            // 递归创建依赖模块
+            foreach (var dependenceType in module.Dependences())
+                _ = GetModule(dependenceType, stackLayer + 1);
 
             LinkedListNode<GameModule> current = s_GameFrameworkModules.First;
             while (current != null)
@@ -53,7 +59,7 @@ namespace Convention.Experimental
         /// <param name="moduleType">要获取的<see cref="GameModule"/></param>
         /// <returns>要获取的<see cref="GameModule"/></returns>
         /// <remarks>如果要获取的<see cref="GameModule"/>不存在，则自动创建该<see cref="GameModule"/>实例。</remarks>
-        private static GameModule GetModule(Type moduleType)
+        private static GameModule GetModule(Type moduleType, int stackLayer = 0)
         {
             foreach (GameModule module in s_GameFrameworkModules)
             {
@@ -63,7 +69,7 @@ namespace Convention.Experimental
                 }
             }
 
-            return CreateModule(moduleType);
+            return CreateModule(moduleType, stackLayer + 1);
         }
 
         /// <summary>

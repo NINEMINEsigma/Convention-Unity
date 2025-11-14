@@ -1285,6 +1285,7 @@ namespace Convention
         }
 
         private static CoroutineMonoStarterUtil CoroutineStarter;
+        public static GameObject Singleton => CoroutineStarter.gameObject;
 
         private class CoroutineMonoStarterUtil : MonoBehaviour
         {

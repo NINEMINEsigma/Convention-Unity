@@ -1,18 +1,17 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Convention.Experimental.PublicType
 {
     /// <summary>
-    /// 游戏框架模块抽象类。
+    /// 游戏框架模块抽象类
     /// </summary>
     public abstract class GameModule
     {
         /// <summary>
-        /// 获取游戏框架模块优先级。
+        /// 获取游戏框架模块优先级
         /// </summary>
-        /// <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
+        /// <remarks>优先级较高的模块会优先轮询，优先级较低的模块会优先卸载</remarks>
         internal virtual int Priority
         {
             get
@@ -22,15 +21,20 @@ namespace Convention.Experimental.PublicType
         }
 
         /// <summary>
-        /// 游戏框架模块轮询。
+        /// 游戏框架模块轮询
         /// </summary>
-        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
-        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        internal abstract void Update(float elapseSeconds, float realElapseSeconds);
+        /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位</param>
+        /// <param name="realElapseSeconds">真实流逝时间，以秒为单位</param>
+        internal virtual void Update(float elapseSeconds, float realElapseSeconds) { }
 
         /// <summary>
-        /// 关闭并清理游戏框架模块。
+        /// 关闭并清理游戏框架模块
         /// </summary>
-        internal abstract void Shutdown();
+        internal virtual void Shutdown() { }
+
+        /// <summary>
+        /// 前置依赖的游戏框架模块类型集合
+        /// </summary>
+        internal virtual IEnumerable<Type> Dependences() => Array.Empty<Type>();
     }
 }
