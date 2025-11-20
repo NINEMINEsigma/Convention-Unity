@@ -2475,7 +2475,62 @@ namespace Convention
 
 namespace Convention
 {
-    public static partial class ConventionUtility
+    public static partial class Utility
+    {
+        /// <summary>
+        /// 生成期望类型的栈实例
+        /// </summary>
+        /// <param name="type">期望类型</param>
+        /// <returns></returns>
+        public static object CreateStack([In] Type type)
+        {
+            var stackType = typeof(Stack<>).MakeGenericType(type);
+            var stackInstance = Activator.CreateInstance(stackType);
+            return stackInstance;
+        }
+
+        /// <summary>
+        /// 生成期望类型的队列实例
+        /// </summary>
+        /// <param name="type">期望类型</param>
+        /// <returns></returns>
+        public static object CreateQueue([In] Type type)
+        {
+            var queueType = typeof(Queue<>).MakeGenericType(type);
+            var queueInstance = Activator.CreateInstance(queueType);
+            return queueInstance;
+        }
+
+        /// <summary>
+        /// 生成期望类型的列表实例
+        /// </summary>
+        /// <param name="type">期望类型</param>
+        /// <returns></returns>
+        public static object CreateList([In] Type type)
+        {
+            var listType = typeof(List<>).MakeGenericType(type);
+            var listInstance = Activator.CreateInstance(listType);
+            return listInstance;
+        }
+
+        /// <summary>
+        /// 生成期望键值对类型的字典实例
+        /// </summary>
+        /// <param name="keyType">期望键类型</param>
+        /// <param name="valueType">期望值类型</param>
+        /// <returns></returns>
+        public static object CreateDictionary([In] Type keyType, [In] Type valueType)
+        {
+            var dictType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+            var dictInstance = Activator.CreateInstance(dictType);
+            return dictInstance;
+        }
+    }
+}
+
+namespace Convention.Collections
+{
+    namespace Generic
     {
     }
 }
