@@ -36,7 +36,7 @@ namespace Convention
     }
 
     [Serializable]
-    public sealed class ToolFile
+    public class ToolFile
     {
         public static string[] TextFileExtensions = new string[] { "txt", "ini", "manifest" };
         public static string[] AudioFileExtension = new string[] { "ogg", "mp2", "mp3", "mod", "wav", "it" };
@@ -59,7 +59,7 @@ namespace Convention
 
         private string OriginPath;
         private FileSystemInfo OriginInfo;
-        public ToolFile(string path) 
+        public ToolFile(string path)
         {
             OriginPath = Environment.ExpandEnvironmentVariables(path).Replace('\\', '/');
             Refresh();
@@ -219,16 +219,16 @@ namespace Convention
         {
             if (IsFile() == false)
                 throw new InvalidOperationException("Target is not a file");
-            
+
             var lines = File.ReadAllLines(OriginPath);
             var result = new List<string[]>();
-            
+
             foreach (var line in lines)
             {
                 var fields = line.Split(',');
                 result.Add(fields);
             }
-            
+
             return result;
         }
 
@@ -286,7 +286,7 @@ namespace Convention
             callback(result.assetBundle);
             yield return null;
         }
-        public IEnumerator LoadAsAssetBundle([In]Action<float> progress, [In] Action<AssetBundle> callback)
+        public IEnumerator LoadAsAssetBundle([In] Action<float> progress, [In] Action<AssetBundle> callback)
         {
             AssetBundleCreateRequest result = AssetBundle.LoadFromFileAsync(OriginPath);
             while (result.isDone == false)
@@ -314,7 +314,7 @@ namespace Convention
         }
         public void SaveAsJson<T>(T data, string key = "data")
         {
-            ES3.Save(key, data,OriginPath);
+            ES3.Save(key, data, OriginPath);
         }
         public void SaveAsText(string data)
         {
@@ -323,7 +323,7 @@ namespace Convention
             sw.Write(data);
             sw.Flush();
         }
-        public static void SaveDataAsBinary(string path,  byte[] outdata, FileStream Stream = null)
+        public static void SaveDataAsBinary(string path, byte[] outdata, FileStream Stream = null)
         {
             if (Stream != null && Stream.CanWrite)
             {
@@ -347,7 +347,7 @@ namespace Convention
         {
             if (IsFile() == false)
                 throw new InvalidOperationException("Target is not a file");
-            
+
             var lines = csvData.Select(row => string.Join(",", row));
             File.WriteAllLines(OriginPath, lines);
         }
@@ -466,7 +466,7 @@ namespace Convention
             {
                 return new ToolFile(left.IsDir() ? left.GetFullPath() : $"{left.GetFullPath().Replace('\\', '/')}/");
             }
-            string first = left.GetFullPath().Replace('\\','/');
+            string first = left.GetFullPath().Replace('\\', '/');
             string second = rightPath.Replace('\\', '/');
             if (first == "./")
                 return new ToolFile(second);
@@ -518,7 +518,7 @@ namespace Convention
         }
         public ToolFile Rename(string newPath)
         {
-            if(IsDir())
+            if (IsDir())
             {
                 var dir = OriginInfo as DirectoryInfo;
                 dir.MoveTo(newPath);
@@ -536,7 +536,7 @@ namespace Convention
             Rename(path);
             return this;
         }
-        public ToolFile Copy(string path,out ToolFile copyTo)
+        public ToolFile Copy(string path, out ToolFile copyTo)
         {
             if (IsDir())
             {
@@ -555,19 +555,19 @@ namespace Convention
         {
             if (targetPath == null)
                 return new ToolFile(OriginPath);
-            
+
             if (!Exists())
                 throw new FileNotFoundException("File not found");
-            
+
             var targetFile = new ToolFile(targetPath);
             if (targetFile.IsDir())
                 targetFile = targetFile | GetFilename();
-            
+
             if (IsDir())
                 CopyDirectory(OriginPath, targetFile.GetFullPath());
             else
                 File.Copy(OriginPath, targetFile.GetFullPath());
-            
+
             return targetFile;
         }
 
@@ -649,7 +649,7 @@ namespace Convention
         {
             if (!IsDir())
                 throw new InvalidOperationException("Target is not a directory");
-            
+
             var entries = Directory.GetFileSystemEntries(OriginPath);
             if (ignore_folder)
             {
@@ -661,7 +661,7 @@ namespace Convention
         {
             if (!IsDir())
                 throw new InvalidOperationException("Target is not a directory");
-            
+
             foreach (var file in DirToolFileIter())
             {
                 file.Remove();
@@ -673,13 +673,13 @@ namespace Convention
         {
             if (!IsDir())
                 throw new InvalidOperationException("Cannot make file inside a file, because this object target is not a directory");
-            
+
             var result = this | data.GetFilename();
             if (is_delete_source)
                 data.Move(result.GetFullPath());
             else
                 data.Copy(result.GetFullPath());
-            
+
             return this;
         }
 
@@ -947,7 +947,7 @@ namespace Convention
         public ToolFile SaveHash(string algorithm = "MD5", string outputPath = null)
         {
             string hash = CalculateHash(algorithm);
-            
+
             if (outputPath == null)
             {
                 outputPath = GetFullPath() + "." + algorithm.ToLower();
@@ -955,7 +955,7 @@ namespace Convention
 
             var hashFile = new ToolFile(outputPath);
             hashFile.SaveAsText(hash);
-            
+
             return hashFile;
         }
 
@@ -963,8 +963,8 @@ namespace Convention
 
         #region File Monitoring
 
-        public void StartMonitoring(Action<string, string> callback, bool recursive = false, 
-            List<string> ignorePatterns = null, bool ignoreDirectories = false, 
+        public void StartMonitoring(Action<string, string> callback, bool recursive = false,
+            List<string> ignorePatterns = null, bool ignoreDirectories = false,
             bool caseSensitive = true, bool isLog = true)
         {
             if (!IsDir())
@@ -988,7 +988,7 @@ namespace Convention
 
         #region Backup
 
-        public ToolFile CreateBackup(string backupDir = null, int maxBackups = 5, 
+        public ToolFile CreateBackup(string backupDir = null, int maxBackups = 5,
             string backupFormat = "zip", bool includeMetadata = true)
         {
             if (!Exists())
@@ -1101,7 +1101,7 @@ namespace Convention
                 throw new FileNotFoundException($"File not found: {GetFullPath()}");
 
             var permissions = new Dictionary<string, bool>();
-            
+
             try
             {
                 var fileInfo = new FileInfo(OriginPath);
@@ -1123,7 +1123,7 @@ namespace Convention
             return permissions;
         }
 
-        public ToolFile SetPermissions(bool? read = null, bool? write = null, 
+        public ToolFile SetPermissions(bool? read = null, bool? write = null,
             bool? execute = null, bool? hidden = null, bool recursive = false)
         {
             if (!Exists())
@@ -1233,15 +1233,15 @@ namespace Convention
         }
         public static string[] SelectMultipleFiles(string filter = "所有文件|*.*", string title = "选择文件")
         {
-            return PluginExtenion.SelectMultipleFiles(filter,title);
+            return PluginExtenion.SelectMultipleFiles(filter, title);
         }
         public static string SelectFile(string filter = "所有文件|*.*", string title = "选择文件")
         {
-            return PluginExtenion.SelectFile(filter,title);
+            return PluginExtenion.SelectFile(filter, title);
         }
         public static string SaveFile(string filter = "所有文件|*.*", string title = "保存文件")
         {
-            return PluginExtenion.SaveFile(filter,title);
+            return PluginExtenion.SaveFile(filter, title);
         }
         public static string SelectFolder(string description = "请选择文件夹")
         {
@@ -1263,5 +1263,24 @@ namespace Convention
         }
 
         #endregion
+    }
+
+    [Serializable]
+    public class MustExistFile : ToolFile
+    {
+        public MustExistFile(string path) : base(path)
+        {
+            MustExistsPath();
+        }
+    }
+
+    [Serializable]
+    public class DependentFile : ToolFile
+    {
+        public DependentFile(string path) : base(path)
+        {
+            if (Exists() == false)
+                throw new FileNotFoundException($"Dependent file not found: {path}");
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Convention.Experimental.PublicType;
+using Convention.WindowsUI;
+using Sirenix.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,8 +10,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using Convention.WindowsUI;
-using Sirenix.Utilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -2528,9 +2529,3 @@ namespace Convention
     }
 }
 
-namespace Convention.Collections
-{
-    namespace Generic
-    {
-    }
-}

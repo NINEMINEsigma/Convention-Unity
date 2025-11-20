@@ -1,4 +1,7 @@
+using Convention.Collections;
+using Convention.Collections.Generic;
 using Convention.Experimental.PublicType;
+using Convention.ReferenceManagement;
 using System;
 using System.Collections.Generic;
 
