@@ -460,7 +460,7 @@ namespace Convention
 
         #region Operator
 
-        public static ToolFile operator |(ToolFile left, string rightPath)
+        public static ToolFile operator |(ToolFile left, [Opt] string rightPath)
         {
             if (rightPath == null)
             {
@@ -472,12 +472,7 @@ namespace Convention
                 return new ToolFile(second);
             else if (first == "../")
                 return new ToolFile($"{new ToolFile(left.GetAbsPath()).GetParentDir()}/{second}");
-            return new ToolFile($"{first}/{second}");
-        }
-        public static ToolFile operator |(ToolFile left, ToolFile rightPath)
-        {
-            string lp = left.GetFullPath();
-            return new ToolFile(Path.Combine(lp, rightPath));
+            return new ToolFile($"{first}{(first.EndsWith('/') ? "" : "/")}{second}");
         }
 
         public override bool Equals(object obj)
