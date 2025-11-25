@@ -33,7 +33,6 @@ MonoBehaviour:
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
     - Cinemachine
-    - CW.Common
     - Dreamteck.Splines
     - Dreamteck.Utilities
     - EasySave3
@@ -42,9 +41,6 @@ MonoBehaviour:
     - glTFast.dots
     - glTFast.Export
     - glTFast.Newtonsoft
-    - LeanCommon
-    - LeanGUI
-    - LeanTransition
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1

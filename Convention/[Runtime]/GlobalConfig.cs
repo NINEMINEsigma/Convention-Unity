@@ -5,9 +5,10 @@ using UnityEngine;
 
 namespace Convention
 {
+    [Serializable]
     public class GlobalConfig : IEnumerable<KeyValuePair<string, object>>
     {
-        public static string ConstConfigFile = "config.json";
+        public static string ConstConfigFile = "config.easysave";
 
         public static void InitExtensionEnv()
         {
@@ -18,7 +19,7 @@ namespace Convention
         private int configLogging_tspace = "Property not found".Length;
 
         private ToolFile DataDir;
-        private Dictionary<string, object> data_pair = new();
+        [Content, SerializeField] private Dictionary<string, object> data_pair = new();
 
         public GlobalConfig(string dataDir, bool isTryCreateDataDir = false, bool isLoad = true)
             : this(new ToolFile(dataDir), isTryCreateDataDir, isLoad) { }
@@ -124,10 +125,10 @@ namespace Convention
         public int DataSize() => data_pair.Count;
 
         [Serializable]
-        public class InternalProperty
+        public struct InternalProperty
         {
-            public Dictionary<string, object> property = new();
-            public Dictionary<string, object> find = new();
+            public Dictionary<string, object> property;
+            public Dictionary<string, object> find;
         }
 
         public GlobalConfig SaveProperties()

@@ -1,6 +1,4 @@
-﻿using Convention.Experimental.PublicType;
-using Convention.WindowsUI;
-using Sirenix.Utilities;
+﻿using Convention.WindowsUI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +12,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using UnityEngine.Scripting;
 using UnityEngine.UI;
 
 namespace UnityEditor
