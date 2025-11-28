@@ -32,7 +32,6 @@ MonoBehaviour:
     assemblyNames:
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
-    - Cinemachine
     - Dreamteck.Splines
     - Dreamteck.Utilities
     - EasySave3

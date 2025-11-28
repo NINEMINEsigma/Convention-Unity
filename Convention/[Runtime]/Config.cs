@@ -1,5 +1,4 @@
-﻿using Convention.WindowsUI;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +7,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using Convention.WindowsUI;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -2199,6 +2200,39 @@ namespace Convention
     public static class ScriptingDefineUtility
     {
 #if UNITY_EDITOR
+
+#if UNITY_6000_0_OR_NEWER
+        public static void Add(string define, NamedBuildTarget target, bool log = false)
+        {
+            string definesString = PlayerSettings.GetScriptingDefineSymbols(target);
+            if (definesString.Contains(define)) return;
+            string[] allDefines = definesString.Split(';');
+            ArrayUtility.Add(ref allDefines, define);
+            definesString = string.Join(";", allDefines);
+            PlayerSettings.SetScriptingDefineSymbols(target, definesString);
+            Debug.Log("Added \"" + define + "\" from " + EditorUserBuildSettings.selectedBuildTargetGroup + " Scripting define in Player Settings");
+        }
+
+        public static void Remove(string define, NamedBuildTarget target, bool log = false)
+        {
+            string definesString = PlayerSettings.GetScriptingDefineSymbols(target);
+            if (!definesString.Contains(define)) return;
+            string[] allDefines = definesString.Split(';');
+            ArrayUtility.Remove(ref allDefines, define);
+            definesString = string.Join(";", allDefines);
+            PlayerSettings.SetScriptingDefineSymbols(target, definesString);
+            Debug.Log("Removed \"" + define + "\" from " + EditorUserBuildSettings.selectedBuildTargetGroup + " Scripting define in Player Settings");
+        }
+        public static void Add(string define, BuildTargetGroup target, bool log = false)
+        {
+            Add(define, NamedBuildTarget.FromBuildTargetGroup(target), log);
+        }
+
+        public static void Remove(string define, BuildTargetGroup target, bool log = false)
+        {
+            Remove(define, NamedBuildTarget.FromBuildTargetGroup(target), log);
+        }
+#else
         public static void Add(string define, BuildTargetGroup target, bool log = false)
         {
             string definesString = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
@@ -2220,6 +2254,8 @@ namespace Convention
             PlayerSettings.SetScriptingDefineSymbolsForGroup(target, definesString);
             Debug.Log("Removed \"" + define + "\" from " + EditorUserBuildSettings.selectedBuildTargetGroup + " Scripting define in Player Settings");
         }
+#endif
+
 #endif
     }
 }
