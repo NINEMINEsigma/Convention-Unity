@@ -2446,33 +2446,6 @@ namespace Convention
 
 namespace Convention
 {
-    public static partial class ConventionUtility
-    {
-
-        /// <summary>
-        /// Unity engine function to disable the GC
-        /// </summary>
-        public static void GC_disable()
-        {
-#if !UNITY_EDITOR
-            GarbageCollector.GCMode = GarbageCollector.Mode.Disabled;
-#endif
-        }
-
-        /// <summary>
-        /// Unity engine function to enable the GC
-        /// </summary>
-        public static void GC_enable()
-        {
-#if !UNITY_EDITOR
-            GarbageCollector.GCMode = GarbageCollector.Mode.Enabled;
-#endif
-        }
-    }
-}
-
-namespace Convention
-{
     public static partial class Utility
     {
         /// <summary>
