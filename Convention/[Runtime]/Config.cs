@@ -9,7 +9,9 @@ using System.Text;
 using System.Threading;
 using Convention.WindowsUI;
 using UnityEditor;
+#if UNITY_EDITOR
 using UnityEditor.Build;
+#endif
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
