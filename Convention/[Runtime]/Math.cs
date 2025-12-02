@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using UnityEngine;
 #if UNITY_URP
 using static Unity.Mathematics.math;
 #endif
-using static Convention.MathExtension;
 
 namespace Convention
 {
+    [BurstCompile]
     public static partial class MathExtension
     {
         #region EaseCurve
@@ -105,6 +106,7 @@ namespace Convention
             };
         }
 
+        [BurstCompile]
         public static float Linear(float from, float to, float t)
         {
             float c = to - from;
@@ -112,6 +114,7 @@ namespace Convention
             return c * t / 1f + from;
         }
 
+        [BurstCompile]
         public static float InQuad(float from, float to, float t)
         {
             float c = to - from;
@@ -119,6 +122,7 @@ namespace Convention
             return c * t * t + from;
         }
 
+        [BurstCompile]
         public static float OutQuad(float from, float to, float t)
         {
             float c = to - from;
@@ -126,6 +130,7 @@ namespace Convention
             return -c * t * (t - 2f) + from;
         }
 
+        [BurstCompile]
         public static float InOutQuad(float from, float to, float t)
         {
             float c = to - from;
@@ -135,6 +140,7 @@ namespace Convention
             return -c / 2f * (t * (t - 2) - 1) + from;
         }
 
+        [BurstCompile]
         public static float InCubic(float from, float to, float t)
         {
             float c = to - from;
@@ -142,6 +148,7 @@ namespace Convention
             return c * t * t * t + from;
         }
 
+        [BurstCompile]
         public static float OutCubic(float from, float to, float t)
         {
             float c = to - from;
@@ -150,6 +157,7 @@ namespace Convention
             return c * (t * t * t + 1) + from;
         }
 
+        [BurstCompile]
         public static float InOutCubic(float from, float to, float t)
         {
             float c = to - from;
@@ -159,6 +167,7 @@ namespace Convention
             return c / 2f * (t * t * t + 2) + from;
         }
 
+        [BurstCompile]
         public static float InQuart(float from, float to, float t)
         {
             float c = to - from;
@@ -166,6 +175,7 @@ namespace Convention
             return c * t * t * t * t + from;
         }
 
+        [BurstCompile]
         public static float OutQuart(float from, float to, float t)
         {
             float c = to - from;
@@ -174,6 +184,7 @@ namespace Convention
             return -c * (t * t * t * t - 1) + from;
         }
 
+        [BurstCompile]
         public static float InOutQuart(float from, float to, float t)
         {
             float c = to - from;
@@ -183,6 +194,7 @@ namespace Convention
             return -c / 2f * (t * t * t * t - 2) + from;
         }
 
+        [BurstCompile]
         public static float InQuint(float from, float to, float t)
         {
             float c = to - from;
@@ -190,6 +202,7 @@ namespace Convention
             return c * t * t * t * t * t + from;
         }
 
+        [BurstCompile]
         public static float OutQuint(float from, float to, float t)
         {
             float c = to - from;
@@ -198,6 +211,7 @@ namespace Convention
             return c * (t * t * t * t * t + 1) + from;
         }
 
+        [BurstCompile]
         public static float InOutQuint(float from, float to, float t)
         {
             float c = to - from;
@@ -207,36 +221,42 @@ namespace Convention
             return c / 2f * (t * t * t * t * t + 2) + from;
         }
 
+        [BurstCompile]
         public static float InSine(float from, float to, float t)
         {
             float c = to - from;
             return -c * Mathf.Cos(t / 1f * (Mathf.PI / 2f)) + c + from;
         }
 
+        [BurstCompile]
         public static float OutSine(float from, float to, float t)
         {
             float c = to - from;
             return c * Mathf.Sin(t / 1f * (Mathf.PI / 2f)) + from;
         }
 
+        [BurstCompile]
         public static float InOutSine(float from, float to, float t)
         {
             float c = to - from;
             return -c / 2f * (Mathf.Cos(Mathf.PI * t / 1f) - 1) + from;
         }
 
+        [BurstCompile]
         public static float InExpo(float from, float to, float t)
         {
             float c = to - from;
             return c * Mathf.Pow(2, 10 * (t / 1f - 1)) + from;
         }
 
+        [BurstCompile]
         public static float OutExpo(float from, float to, float t)
         {
             float c = to - from;
             return c * (-Mathf.Pow(2, -10 * t / 1f) + 1) + from;
         }
 
+        [BurstCompile]
         public static float InOutExpo(float from, float to, float t)
         {
             float c = to - from;
@@ -246,6 +266,7 @@ namespace Convention
             return c / 2f * (-Mathf.Pow(2, -10 * t) + 2) + from;
         }
 
+        [BurstCompile]
         public static float InCirc(float from, float to, float t)
         {
             float c = to - from;
@@ -253,6 +274,7 @@ namespace Convention
             return -c * (Mathf.Sqrt(1 - t * t) - 1) + from;
         }
 
+        [BurstCompile]
         public static float OutCirc(float from, float to, float t)
         {
             float c = to - from;
@@ -261,6 +283,7 @@ namespace Convention
             return c * Mathf.Sqrt(1 - t * t) + from;
         }
 
+        [BurstCompile]
         public static float InOutCirc(float from, float to, float t)
         {
             float c = to - from;
@@ -270,12 +293,14 @@ namespace Convention
             return c / 2f * (Mathf.Sqrt(1 - t * t) + 1) + from;
         }
 
+        [BurstCompile]
         public static float InBounce(float from, float to, float t)
         {
             float c = to - from;
             return c - OutBounce(0f, c, 1f - t) + from; //does this work?
         }
 
+        [BurstCompile]
         public static float OutBounce(float from, float to, float t)
         {
             float c = to - from;
@@ -298,6 +323,7 @@ namespace Convention
             }
         }
 
+        [BurstCompile]
         public static float InOutBounce(float from, float to, float t)
         {
             float c = to - from;
@@ -306,6 +332,7 @@ namespace Convention
 
         }
 
+        [BurstCompile]
         public static float InElastic(float from, float to, float t)
         {
             float c = to - from;
@@ -316,6 +343,7 @@ namespace Convention
             return -(c * Mathf.Pow(2, 10 * (t -= 1)) * Mathf.Sin((t - s) * (2 * Mathf.PI) / p)) + from;
         }
 
+        [BurstCompile]
         public static float OutElastic(float from, float to, float t)
         {
             float c = to - from;
@@ -326,6 +354,7 @@ namespace Convention
             return (c * Mathf.Pow(2, -10 * t) * Mathf.Sin((t - s) * (2 * Mathf.PI) / p) + c + from);
         }
 
+        [BurstCompile]
         public static float InOutElastic(float from, float to, float t)
         {
             float c = to - from;
@@ -338,6 +367,7 @@ namespace Convention
             return c * Mathf.Pow(2, -10 * (t -= 1)) * Mathf.Sin((t - s) * (2f * Mathf.PI) / p) * 0.5f + c + from;
         }
 
+        [BurstCompile]
         public static float InBack(float from, float to, float t)
         {
             float c = to - from;
@@ -346,6 +376,7 @@ namespace Convention
             return c * t * t * ((s + 1) * t - s) + from;
         }
 
+        [BurstCompile]
         public static float OutBack(float from, float to, float t)
         {
             float c = to - from;
@@ -354,6 +385,7 @@ namespace Convention
             return c * (t * t * ((s + 1) * t + s) + 1) + from;
         }
 
+        [BurstCompile]
         public static float InOutBack(float from, float to, float t)
         {
             float c = to - from;
