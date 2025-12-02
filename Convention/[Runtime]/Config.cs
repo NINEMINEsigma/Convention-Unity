@@ -1319,28 +1319,30 @@ namespace Convention
 
         public class ActionStepCoroutineWrapper
         {
-            private class YieldInstructionWrapper
+            private struct YieldInstructionWrapper
             {
                 public YieldInstruction UnityYieldInstruction;
                 public CustomYieldInstruction CustomYieldInstruction;
 
-                public YieldInstructionWrapper()
-                {
-
-                }
-
-                public YieldInstructionWrapper(YieldInstruction unityYieldInstruction)
+                public YieldInstructionWrapper(YieldInstruction unityYieldInstruction, CustomYieldInstruction customYieldInstruction)
                 {
                     this.UnityYieldInstruction = unityYieldInstruction;
+                    this.CustomYieldInstruction = customYieldInstruction;
                 }
 
-                public YieldInstructionWrapper(CustomYieldInstruction customYieldInstruction)
+                public static YieldInstructionWrapper Make(YieldInstruction unityYieldInstruction)
                 {
-                    this.CustomYieldInstruction = customYieldInstruction;
+                    return new(unityYieldInstruction, null);
+                }
+
+                public static YieldInstructionWrapper Make(CustomYieldInstruction customYieldInstruction)
+                {
+                    return new(null, customYieldInstruction);
                 }
             }
 
             private List<KeyValuePair<YieldInstructionWrapper, Action>> steps = new();
+
             public ActionStepCoroutineWrapper Update(Action action)
             {
                 steps.Add(new(new(), action));
@@ -1348,33 +1350,33 @@ namespace Convention
             }
             public ActionStepCoroutineWrapper Wait(float time, Action action)
             {
-                steps.Add(new(new(new WaitForSeconds(time)), action));
+                steps.Add(new(YieldInstructionWrapper.Make(new WaitForSeconds(time)), action));
                 return this;
             }
             public ActionStepCoroutineWrapper FixedUpdate(Action action)
             {
-                steps.Add(new(new (new WaitForFixedUpdate()), action));
+                steps.Add(new(YieldInstructionWrapper.Make(new WaitForFixedUpdate()), action));
                 return this;
             }
             public ActionStepCoroutineWrapper Next(Action action)
             {
-                steps.Add(new(new(new WaitForEndOfFrame()), action));
+                steps.Add(new(YieldInstructionWrapper.Make(new WaitForEndOfFrame()), action));
                 return this;
             }
             public ActionStepCoroutineWrapper Until(Func<bool> pr, Action action)
             {
-                steps.Add(new(new(new WaitUntil(pr)), action));
+                steps.Add(new(YieldInstructionWrapper.Make(new WaitUntil(pr)), action));
                 return this;
             }
             private static IEnumerator Execute(List<KeyValuePair<YieldInstructionWrapper, Action>> steps)
             {
                 foreach (var (waiting, action) in steps)
                 {
-                    action();
                     if (waiting.UnityYieldInstruction != null)
                         yield return waiting.UnityYieldInstruction;
                     else
                         yield return waiting.CustomYieldInstruction;
+                    action();
                 }
             }
             ~ActionStepCoroutineWrapper()
