@@ -201,18 +201,7 @@ namespace Convention
         {
             if (IsFile() == false)
                 throw new InvalidOperationException("Target is not a file");
-            var file = this.OriginInfo as FileInfo;
-            const int BlockSize = 1024;
-            long FileSize = file.Length;
-            byte[] result = new byte[FileSize];
-            long offset = 0;
-            using (var fs = file.OpenRead())
-            {
-                fs.ReadAsync(result[(int)(offset)..(int)(offset + BlockSize)], 0, (int)(offset + BlockSize) - (int)(offset));
-                offset += BlockSize;
-                offset = System.Math.Min(offset, FileSize);
-            }
-            return result;
+            return File.ReadAllBytes(OriginPath);
         }
 
         public List<string[]> LoadAsCsv()
@@ -340,7 +329,8 @@ namespace Convention
 
         public void SaveAsBinary(byte[] data)
         {
-            SaveDataAsBinary(OriginPath, data, (OriginInfo as FileInfo).OpenWrite());
+            using var fs = (OriginInfo as FileInfo).OpenWrite();
+            SaveDataAsBinary(OriginPath, data, fs);
         }
 
         public void SaveAsCsv(List<string[]> csvData)
