@@ -109,6 +109,7 @@ namespace Convention.Experimental.Modules
                 }
                 else
                 {
+                    Debug.LogError("This object does not belong to any pool.", instance);
                     throw new PublicType.GameException("This object does not belong to any pool.");
                 }
             }
