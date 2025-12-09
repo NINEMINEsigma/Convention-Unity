@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Convention.WindowsUI;
+using Demo.Game;
 using UnityEditor;
 #if UNITY_EDITOR
 using UnityEditor.Build;
@@ -1271,7 +1272,11 @@ namespace Convention
 #endif
         public static void InitExtensionEnv()
         {
-            UnityEngine.Application.quitting += () => CoroutineStarter = null;
+            UnityEngine.Application.quitting += () =>
+            {
+                GameObject.Destroy(s_CoroutineStarter.gameObject);
+                s_CoroutineStarter = null;
+            };
 
             InitExtensionEnvCalls();
             GlobalConfig.InitExtensionEnv();
@@ -1285,27 +1290,65 @@ namespace Convention
             return MainThreadID == Thread.CurrentThread.ManagedThreadId;
         }
 
-        private static CoroutineMonoStarterUtil CoroutineStarter;
+        private static CoroutineMonoStarterUtil s_CoroutineStarter;
+        private static CoroutineMonoStarterUtil CoroutineStarter
+        {
+            get
+            {
+                if (s_CoroutineStarter == null)
+                {
+                    s_CoroutineStarter = new GameObject($"{nameof(ConventionUtility)}-{nameof(CoroutineStarter)}").AddComponent<CoroutineMonoStarterUtil>();
+                }
+                return s_CoroutineStarter;
+            }
+        }
+
         public static GameObject Singleton => CoroutineStarter.gameObject;
 
         private class CoroutineMonoStarterUtil : MonoBehaviour
         {
+            internal float waitClock;
             private void Update()
             {
+                waitClock = Time.realtimeSinceStartup;
                 MainThreadID = Thread.CurrentThread.ManagedThreadId;
             }
 
             private void OnDestroy()
             {
-                CoroutineStarter = null;
+                s_CoroutineStarter = null;
+            }
+        }
+        /// <summary>
+        /// 包装即将用于协程的迭代器成为一个防止假死机的迭代器
+        /// </summary>
+        /// <param name="ir"></param>
+        /// <returns></returns>
+        public static IEnumerator AvoidFakeStop(IEnumerator ir, float fps = 5)
+        {
+            Stack<IEnumerator> loadingTask = new();
+            loadingTask.Push(ir);
+            float maxWaitClock = 1 / fps;
+            while (loadingTask.Count > 0)
+            {
+                // 防止大量无延迟函数的使用导致假死机
+                if (Time.realtimeSinceStartup - CoroutineStarter.waitClock > maxWaitClock)
+                {
+                    yield return null;
+                }
+                if (loadingTask.Peek().MoveNext())
+                {
+                    if (loadingTask.Peek().Current is IEnumerator next)
+                        loadingTask.Push(next);
+                }
+                else
+                {
+                    loadingTask.Pop();
+                }
             }
         }
         public static Coroutine StartCoroutine(IEnumerator coroutine)
         {
-            if (CoroutineStarter == null)
-            {
-                CoroutineStarter = new GameObject($"{nameof(ConventionUtility)}-{nameof(CoroutineStarter)}").AddComponent<CoroutineMonoStarterUtil>();
-            }
             return CoroutineStarter.StartCoroutine(coroutine);
         }
         public static void CloseCoroutine(Coroutine coroutine)
