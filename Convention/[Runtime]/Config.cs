@@ -1332,7 +1332,7 @@ namespace Convention
             while (loadingTask.Count > 0)
             {
                 // 防止大量无延迟函数的使用导致假死机
-                if (Time.realtimeSinceStartup - CoroutineStarter.waitClock > maxWaitClock)
+                //if (Time.realtimeSinceStartup - CoroutineStarter.waitClock > maxWaitClock)
                 {
                     yield return null;
                 }
@@ -1344,6 +1344,23 @@ namespace Convention
                 else
                 {
                     loadingTask.Pop();
+                }
+            }
+        }
+        /// <summary>
+        /// 包装即将用于协程的迭代器成为一个防止假死机的迭代器
+        /// </summary>
+        /// <param name="ir"></param>
+        /// <returns></returns>
+        public static IEnumerator AvoidFakeStopWithoutDeepStack(IEnumerator ir, float fps = 5)
+        {
+            float maxWaitClock = 1 / fps;
+            while (ir.MoveNext())
+            {
+                // 防止大量无延迟函数的使用导致假死机
+                if (Time.realtimeSinceStartup - CoroutineStarter.waitClock > maxWaitClock)
+                {
+                    yield return null;
                 }
             }
         }
