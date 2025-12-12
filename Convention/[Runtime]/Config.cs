@@ -9,12 +9,14 @@ using System.Text;
 using System.Threading;
 using Convention.WindowsUI;
 using Demo.Game;
+using Unity.Collections;
 using UnityEditor;
 #if UNITY_EDITOR
 using UnityEditor.Build;
 #endif
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -2599,3 +2601,307 @@ namespace Convention
     }
 }
 
+namespace Convention
+{
+    public static class BinarySerializeUtility
+    {
+        #region Base
+
+        public static void WriteBool(BinaryWriter writer, bool data)
+        {
+            writer.Write(data);
+        }
+        public static bool ReadBool(BinaryReader reader)
+        {
+            return reader.ReadBoolean();
+        }
+        public static void WriteInt(BinaryWriter writer, int data)
+        {
+            writer.Write(data);
+        }
+        public static int ReadInt(BinaryReader reader)
+        {
+            return reader.ReadInt32();
+        }
+        public static void WriteFloat(BinaryWriter writer, float data)
+        {
+            writer.Write(data);
+        }
+        public static float ReadFloat(BinaryReader reader)
+        {
+            return reader.ReadSingle();
+        }
+        public static void WriteChar(BinaryWriter writer, char data)
+        {
+            writer.Write(data);
+        }
+        public static char ReadChar(BinaryReader reader)
+        {
+            return reader.ReadChar();
+        }
+        public static void WriteString(BinaryWriter writer, string data)
+        {
+            writer.Write(data);
+        }
+        public static string ReadString(BinaryReader reader)
+        {
+            return reader.ReadString();
+        }
+        public static void WriteVec3(BinaryWriter writer, Vector3 data)
+        {
+            writer.Write(data.x);
+            writer.Write(data.y);
+            writer.Write(data.z);
+        }
+        public static Vector3 ReadVec3(BinaryReader reader)
+        {
+            float x, y, z;
+            x = reader.ReadSingle();
+            y = reader.ReadSingle();
+            z = reader.ReadSingle();
+            return new Vector3(x, y, z);
+        }
+        public static void WriteVec2(BinaryWriter writer, Vector2 data)
+        {
+            writer.Write(data.x);
+            writer.Write(data.y);
+        }
+        public static Vector2 ReadVec2(BinaryReader reader)
+        {
+            float x, y;
+            x = reader.ReadSingle();
+            y = reader.ReadSingle();
+            return new Vector2(x, y);
+        }
+
+        #endregion
+
+        #region Serialize
+
+        #region Int
+
+        public static void SerializeNativeArray(BinaryWriter writer, NativeArray<int> array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start++]);
+            }
+        }
+        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<int> array, int start = 0)
+        {
+            int count = reader.ReadInt32();
+            if (array.Length < count)
+                array.ResizeArray(count);
+            for (int i = 0; i < count; i++)
+            {
+                array[start + i] = reader.ReadInt32();
+            }
+            return count;
+        }
+        public static void SerializeArray(BinaryWriter writer, int[] array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start++]);
+            }
+        }
+        public static int[] DeserializeIntArray(BinaryReader reader, int start = 0)
+        {
+            int count = reader.ReadInt32();
+            int[] array = new int[count];
+            for (int i = 0; i < count; i++)
+            {
+                array[start + i] = reader.ReadInt32();
+            }
+            return array;
+        }
+
+        #endregion
+
+        #region Float
+
+        public static void SerializeNativeArray(BinaryWriter writer, NativeArray<float> array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start++]);
+            }
+        }
+        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<float> array, int start = 0)
+        {
+            int count = reader.ReadInt32();
+            if (array.Length < count)
+                array.ResizeArray(count);
+            for (int i = 0; i < count; i++)
+            {
+                array[start + i] = reader.ReadSingle();
+            }
+            return count;
+        }
+        public static void SerializeArray(BinaryWriter writer, float[] array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start++]);
+            }
+        }
+        public static float[] DeserializeFloatArray(BinaryReader reader, int start = 0)
+        {
+            int count = reader.ReadInt32();
+            float[] array = new float[count];
+            for (int i = 0; i < count; i++)
+            {
+                array[start + i] = reader.ReadSingle();
+            }
+            return array;
+        }
+
+        #endregion
+
+        #region String
+
+        public static void SerializeArray(BinaryWriter writer, string[] array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start++]);
+            }
+        }
+        public static string[] DeserializeStringArray(BinaryReader reader, int start = 0)
+        {
+            int count = reader.ReadInt32();
+            string[] array = new string[count];
+            for (int i = 0; i < count; i++)
+            {
+                array[start + i] = reader.ReadString();
+            }
+            return array;
+        }
+
+        #endregion
+
+        #region Vector3
+
+        public static void SerializeNativeArray(BinaryWriter writer, NativeArray<Vector3> array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start].x);
+                writer.Write(array[start].y);
+                writer.Write(array[start].z);
+                start++;
+            }
+        }
+        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<Vector3> array, int start = 0)
+        {
+            int count = reader.ReadInt32();
+            if (array.Length < count)
+                array.ResizeArray(count);
+            float x, y, z;
+            for (int i = 0; i < count; i++)
+            {
+                x = reader.ReadSingle();
+                y = reader.ReadSingle();
+                z = reader.ReadSingle();
+                array[start + i] = new(x, y, z);
+            }
+            return count;
+        }
+        public static void SerializeArray(BinaryWriter writer, Vector3[] array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start].x);
+                writer.Write(array[start].y);
+                writer.Write(array[start].z);
+                start++;
+            }
+        }
+        public static Vector3[] DeserializeVec3Array(BinaryReader reader, int start = 0)
+        {
+            int count = reader.ReadInt32();
+            Vector3[] array = new Vector3[count];
+            float x, y, z;
+            for (int i = 0; i < count; i++)
+            {
+                x = reader.ReadSingle();
+                y = reader.ReadSingle();
+                z = reader.ReadSingle();
+                array[start + i] = new(x, y, z);
+            }
+            return array;
+        }
+
+        #endregion
+
+        #region Vector2
+
+        public static void SerializeNativeArray(BinaryWriter writer, NativeArray<Vector2> array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start].x);
+                writer.Write(array[start].y);
+                start++;
+            }
+        }
+        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<Vector2> array, int start = 0)
+        {
+            int count = reader.ReadInt32();
+            if (array.Length < count)
+                array.ResizeArray(count);
+            float x, y;
+            for (int i = 0; i < count; i++)
+            {
+                x = reader.ReadSingle();
+                y = reader.ReadSingle();
+                array[start + i] = new(x, y);
+            }
+            return count;
+        }
+        public static void SerializeArray(BinaryWriter writer, Vector2[] array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start].x);
+                writer.Write(array[start].y);
+                start++;
+            }
+        }
+        public static Vector2[] DeserializeVec2Array(BinaryReader reader, int start = 0)
+        {
+            int count = reader.ReadInt32();
+            Vector2[] array = new Vector2[count];
+            float x, y;
+            for (int i = 0; i < count; i++)
+            {
+                x = reader.ReadSingle();
+                y = reader.ReadSingle();
+                array[start + i] = new(x, y);
+            }
+            return array;
+        }
+
+        #endregion
+
+        #endregion
+    }
+}
