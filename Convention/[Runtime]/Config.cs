@@ -2904,4 +2904,74 @@ namespace Convention
 
         #endregion
     }
+
+    public static partial class Utility
+    {
+        /// <summary>
+        /// 获取类型的友好显示名称，支持泛型、数组等复杂类型
+        /// </summary>
+        public static string GetFriendlyName(this Type type)
+        {
+            if (type == null) return null;
+
+            // 处理泛型类型
+            if (type.IsGenericType)
+            {
+                // 特殊处理可空类型（Nullable<T>）
+                if (type.IsNullable())
+                {
+                    return $"{GetFriendlyName(type.GetGenericArguments()[0])}?";
+                }
+
+                var sb = new StringBuilder();
+                // 获取类型基础名称（移除 `1, `2 等后缀）
+                string baseName = type.Name.Contains('`') ? type.Name[..type.Name.IndexOf('`')] : type.Name;
+                sb.Append(baseName);
+                sb.Append('<');
+
+                // 递归处理泛型参数
+                Type[] args = type.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i > 0) sb.Append(", ");
+                    sb.Append(GetFriendlyName(args[i]));
+                }
+
+                sb.Append('>');
+                return sb.ToString();
+            }
+
+            // 处理数组类型
+            if (type.IsArray)
+            {
+                string elementName = GetFriendlyName(type.GetElementType());
+                int rank = type.GetArrayRank();
+                return rank == 1 ? $"{elementName}[]" : $"{elementName}[{new string(',', rank - 1)}]";
+            }
+
+            // 处理指针类型
+            if (type.IsPointer)
+            {
+                return $"{GetFriendlyName(type.GetElementType())}*";
+            }
+
+            // 处理引用类型（ref/out 参数）
+            if (type.IsByRef)
+            {
+                return $"{GetFriendlyName(type.GetElementType())}&";
+            }
+
+            // 普通类型直接返回名称
+            return type.Name;
+        }
+
+        /// <summary>
+        /// 判断是否为可空类型
+        /// </summary>
+        public static bool IsNullable(this Type type)
+        {
+            return type.IsGenericType &&
+                   type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+    }
 }
