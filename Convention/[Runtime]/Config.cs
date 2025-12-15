@@ -2680,7 +2680,7 @@ namespace Convention
 
         #region Int
 
-        public static void SerializeNativeArray(BinaryWriter writer, NativeArray<int> array, int start = 0, int end = int.MaxValue)
+        public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<int> array, int start = 0, int end = int.MaxValue)
         {
             int e = Mathf.Min(array.Length, end);
             writer.Write(e - start);
@@ -2700,7 +2700,7 @@ namespace Convention
             }
             return count;
         }
-        public static void SerializeArray(BinaryWriter writer, int[] array, int start = 0, int end = int.MaxValue)
+        public static void SerializeArray(BinaryWriter writer, in int[] array, int start = 0, int end = int.MaxValue)
         {
             int e = Mathf.Min(array.Length, end);
             writer.Write(e - start);
@@ -2724,7 +2724,7 @@ namespace Convention
 
         #region Float
 
-        public static void SerializeNativeArray(BinaryWriter writer, NativeArray<float> array, int start = 0, int end = int.MaxValue)
+        public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<float> array, int start = 0, int end = int.MaxValue)
         {
             int e = Mathf.Min(array.Length, end);
             writer.Write(e - start);
@@ -2744,7 +2744,7 @@ namespace Convention
             }
             return count;
         }
-        public static void SerializeArray(BinaryWriter writer, float[] array, int start = 0, int end = int.MaxValue)
+        public static void SerializeArray(BinaryWriter writer, in float[] array, int start = 0, int end = int.MaxValue)
         {
             int e = Mathf.Min(array.Length, end);
             writer.Write(e - start);
@@ -2768,7 +2768,7 @@ namespace Convention
 
         #region String
 
-        public static void SerializeArray(BinaryWriter writer, string[] array, int start = 0, int end = int.MaxValue)
+        public static void SerializeArray(BinaryWriter writer, in string[] array, int start = 0, int end = int.MaxValue)
         {
             int e = Mathf.Min(array.Length, end);
             writer.Write(e - start);
@@ -2792,7 +2792,7 @@ namespace Convention
 
         #region Vector3
 
-        public static void SerializeNativeArray(BinaryWriter writer, NativeArray<Vector3> array, int start = 0, int end = int.MaxValue)
+        public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<Vector3> array, int start = 0, int end = int.MaxValue)
         {
             int e = Mathf.Min(array.Length, end);
             writer.Write(e - start);
@@ -2819,7 +2819,7 @@ namespace Convention
             }
             return count;
         }
-        public static void SerializeArray(BinaryWriter writer, Vector3[] array, int start = 0, int end = int.MaxValue)
+        public static void SerializeArray(BinaryWriter writer, in Vector3[] array, int start = 0, int end = int.MaxValue)
         {
             int e = Mathf.Min(array.Length, end);
             writer.Write(e - start);
@@ -2850,7 +2850,7 @@ namespace Convention
 
         #region Vector2
 
-        public static void SerializeNativeArray(BinaryWriter writer, NativeArray<Vector2> array, int start = 0, int end = int.MaxValue)
+        public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<Vector2> array, int start = 0, int end = int.MaxValue)
         {
             int e = Mathf.Min(array.Length, end);
             writer.Write(e - start);
@@ -2875,7 +2875,7 @@ namespace Convention
             }
             return count;
         }
-        public static void SerializeArray(BinaryWriter writer, Vector2[] array, int start = 0, int end = int.MaxValue)
+        public static void SerializeArray(BinaryWriter writer, in Vector2[] array, int start = 0, int end = int.MaxValue)
         {
             int e = Mathf.Min(array.Length, end);
             writer.Write(e - start);
