@@ -2615,7 +2615,7 @@ namespace Convention
         {
             return reader.ReadBoolean();
         }
-        public static void WriteInt(BinaryWriter writer, int data)
+        public static void WriteInt(BinaryWriter writer, in int data)
         {
             writer.Write(data);
         }
@@ -2623,7 +2623,7 @@ namespace Convention
         {
             return reader.ReadInt32();
         }
-        public static void WriteFloat(BinaryWriter writer, float data)
+        public static void WriteFloat(BinaryWriter writer, in float data)
         {
             writer.Write(data);
         }
@@ -2631,7 +2631,7 @@ namespace Convention
         {
             return reader.ReadSingle();
         }
-        public static void WriteChar(BinaryWriter writer, char data)
+        public static void WriteChar(BinaryWriter writer, in char data)
         {
             writer.Write(data);
         }
@@ -2639,15 +2639,15 @@ namespace Convention
         {
             return reader.ReadChar();
         }
-        public static void WriteString(BinaryWriter writer, string data)
+        public static void WriteString(BinaryWriter writer, in string data)
         {
-            writer.Write(data);
+            writer.Write(data ?? "");
         }
         public static string ReadString(BinaryReader reader)
         {
             return reader.ReadString();
         }
-        public static void WriteVec3(BinaryWriter writer, Vector3 data)
+        public static void WriteVec3(BinaryWriter writer, in Vector3 data)
         {
             writer.Write(data.x);
             writer.Write(data.y);
@@ -2661,7 +2661,7 @@ namespace Convention
             z = reader.ReadSingle();
             return new Vector3(x, y, z);
         }
-        public static void WriteVec2(BinaryWriter writer, Vector2 data)
+        public static void WriteVec2(BinaryWriter writer, in Vector2 data)
         {
             writer.Write(data.x);
             writer.Write(data.y);
@@ -2672,6 +2672,22 @@ namespace Convention
             x = reader.ReadSingle();
             y = reader.ReadSingle();
             return new Vector2(x, y);
+        }
+        public static void WriteColor(BinaryWriter writer, in Color data)
+        {
+            writer.Write(data.r);
+            writer.Write(data.g);
+            writer.Write(data.b);
+            writer.Write(data.a);
+        }
+        public static Color ReadColor(BinaryReader reader)
+        {
+            float r, g, b, a;
+            r = reader.ReadSingle();
+            g = reader.ReadSingle();
+            b = reader.ReadSingle();
+            a = reader.ReadSingle();
+            return new(r, g, b, a);
         }
 
         #endregion
@@ -2689,14 +2705,14 @@ namespace Convention
                 writer.Write(array[start++]);
             }
         }
-        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<int> array, int start = 0)
+        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<int> array)
         {
             int count = reader.ReadInt32();
             if (array.Length < count)
                 array.ResizeArray(count);
             for (int i = 0; i < count; i++)
             {
-                array[start + i] = reader.ReadInt32();
+                array[i] = reader.ReadInt32();
             }
             return count;
         }
@@ -2709,13 +2725,13 @@ namespace Convention
                 writer.Write(array[start++]);
             }
         }
-        public static int[] DeserializeIntArray(BinaryReader reader, int start = 0)
+        public static int[] DeserializeIntArray(BinaryReader reader)
         {
             int count = reader.ReadInt32();
             int[] array = new int[count];
             for (int i = 0; i < count; i++)
             {
-                array[start + i] = reader.ReadInt32();
+                array[i] = reader.ReadInt32();
             }
             return array;
         }
@@ -2733,14 +2749,14 @@ namespace Convention
                 writer.Write(array[start++]);
             }
         }
-        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<float> array, int start = 0)
+        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<float> array)
         {
             int count = reader.ReadInt32();
             if (array.Length < count)
                 array.ResizeArray(count);
             for (int i = 0; i < count; i++)
             {
-                array[start + i] = reader.ReadSingle();
+                array[i] = reader.ReadSingle();
             }
             return count;
         }
@@ -2753,13 +2769,13 @@ namespace Convention
                 writer.Write(array[start++]);
             }
         }
-        public static float[] DeserializeFloatArray(BinaryReader reader, int start = 0)
+        public static float[] DeserializeFloatArray(BinaryReader reader)
         {
             int count = reader.ReadInt32();
             float[] array = new float[count];
             for (int i = 0; i < count; i++)
             {
-                array[start + i] = reader.ReadSingle();
+                array[i] = reader.ReadSingle();
             }
             return array;
         }
@@ -2774,16 +2790,16 @@ namespace Convention
             writer.Write(e - start);
             while (start < e)
             {
-                writer.Write(array[start++]);
+                writer.Write(array[start++] ?? "");
             }
         }
-        public static string[] DeserializeStringArray(BinaryReader reader, int start = 0)
+        public static string[] DeserializeStringArray(BinaryReader reader)
         {
             int count = reader.ReadInt32();
             string[] array = new string[count];
             for (int i = 0; i < count; i++)
             {
-                array[start + i] = reader.ReadString();
+                array[i] = reader.ReadString();
             }
             return array;
         }
@@ -2804,7 +2820,7 @@ namespace Convention
                 start++;
             }
         }
-        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<Vector3> array, int start = 0)
+        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<Vector3> array)
         {
             int count = reader.ReadInt32();
             if (array.Length < count)
@@ -2815,7 +2831,7 @@ namespace Convention
                 x = reader.ReadSingle();
                 y = reader.ReadSingle();
                 z = reader.ReadSingle();
-                array[start + i] = new(x, y, z);
+                array[i] = new(x, y, z);
             }
             return count;
         }
@@ -2861,7 +2877,7 @@ namespace Convention
                 start++;
             }
         }
-        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<Vector2> array, int start = 0)
+        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<Vector2> array)
         {
             int count = reader.ReadInt32();
             if (array.Length < count)
@@ -2871,7 +2887,7 @@ namespace Convention
             {
                 x = reader.ReadSingle();
                 y = reader.ReadSingle();
-                array[start + i] = new(x, y);
+                array[i] = new(x, y);
             }
             return count;
         }
@@ -2886,7 +2902,7 @@ namespace Convention
                 start++;
             }
         }
-        public static Vector2[] DeserializeVec2Array(BinaryReader reader, int start = 0)
+        public static Vector2[] DeserializeVec2Array(BinaryReader reader)
         {
             int count = reader.ReadInt32();
             Vector2[] array = new Vector2[count];
@@ -2895,7 +2911,55 @@ namespace Convention
             {
                 x = reader.ReadSingle();
                 y = reader.ReadSingle();
-                array[start + i] = new(x, y);
+                array[i] = new(x, y);
+            }
+            return array;
+        }
+
+        #endregion
+
+        #region Color
+
+        public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<Color> array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                WriteColor(writer, array[start]);
+                start++;
+            }
+        }
+        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<Color> array)
+        {
+            int count = reader.ReadInt32();
+            if (array.Length < count)
+                array.ResizeArray(count);
+            float x, y, z;
+            for (int i = 0; i < count; i++)
+            {
+                array[i] = ReadColor(reader);
+            }
+            return count;
+        }
+        public static void SerializeArray(BinaryWriter writer, in Color[] array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                WriteColor(writer, array[start]);
+                start++;
+            }
+        }
+        public static Color[] DeserializeVec3Array(BinaryReader reader)
+        {
+            int count = reader.ReadInt32();
+            Color[] array = new Color[count];
+            float x, y, z;
+            for (int i = 0; i < count; i++)
+            {
+                array[i] = ReadColor(reader);
             }
             return array;
         }
