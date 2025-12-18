@@ -1334,14 +1334,19 @@ namespace Convention
             while (loadingTask.Count > 0)
             {
                 // 防止大量无延迟函数的使用导致假死机
-                //if (Time.realtimeSinceStartup - CoroutineStarter.waitClock > maxWaitClock)
+                if (Time.realtimeSinceStartup - CoroutineStarter.waitClock > maxWaitClock)
                 {
                     yield return null;
                 }
                 if (loadingTask.Peek().MoveNext())
                 {
-                    if (loadingTask.Peek().Current is IEnumerator next)
+                    var current = loadingTask.Peek().Current;
+                    if (current is IEnumerator next)
                         loadingTask.Push(next);
+                    else if (current is YieldInstruction yieldInstruction)
+                        yield return yieldInstruction;
+                    else if (current is CustomYieldInstruction customYieldInstruction)
+                        yield return customYieldInstruction;
                 }
                 else
                 {
@@ -1362,7 +1367,7 @@ namespace Convention
                 // 防止大量无延迟函数的使用导致假死机
                 if (Time.realtimeSinceStartup - CoroutineStarter.waitClock > maxWaitClock)
                 {
-                    yield return null;
+                    yield return ir.Current;
                 }
             }
         }
@@ -2698,7 +2703,7 @@ namespace Convention
 
         public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<int> array, int start = 0, int end = int.MaxValue)
         {
-            int e = Mathf.Min(array.Length, end);
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
             writer.Write(e - start);
             while (start < e)
             {
@@ -2718,7 +2723,7 @@ namespace Convention
         }
         public static void SerializeArray(BinaryWriter writer, in int[] array, int start = 0, int end = int.MaxValue)
         {
-            int e = Mathf.Min(array.Length, end);
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
             writer.Write(e - start);
             while (start < e)
             {
@@ -2742,7 +2747,7 @@ namespace Convention
 
         public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<float> array, int start = 0, int end = int.MaxValue)
         {
-            int e = Mathf.Min(array.Length, end);
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
             writer.Write(e - start);
             while (start < e)
             {
@@ -2762,7 +2767,7 @@ namespace Convention
         }
         public static void SerializeArray(BinaryWriter writer, in float[] array, int start = 0, int end = int.MaxValue)
         {
-            int e = Mathf.Min(array.Length, end);
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
             writer.Write(e - start);
             while (start < e)
             {
@@ -2786,7 +2791,7 @@ namespace Convention
 
         public static void SerializeArray(BinaryWriter writer, in string[] array, int start = 0, int end = int.MaxValue)
         {
-            int e = Mathf.Min(array.Length, end);
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
             writer.Write(e - start);
             while (start < e)
             {
@@ -2810,7 +2815,7 @@ namespace Convention
 
         public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<Vector3> array, int start = 0, int end = int.MaxValue)
         {
-            int e = Mathf.Min(array.Length, end);
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
             writer.Write(e - start);
             while (start < e)
             {
@@ -2837,7 +2842,7 @@ namespace Convention
         }
         public static void SerializeArray(BinaryWriter writer, in Vector3[] array, int start = 0, int end = int.MaxValue)
         {
-            int e = Mathf.Min(array.Length, end);
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
             writer.Write(e - start);
             while (start < e)
             {
@@ -2868,7 +2873,7 @@ namespace Convention
 
         public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<Vector2> array, int start = 0, int end = int.MaxValue)
         {
-            int e = Mathf.Min(array.Length, end);
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
             writer.Write(e - start);
             while (start < e)
             {
@@ -2893,7 +2898,7 @@ namespace Convention
         }
         public static void SerializeArray(BinaryWriter writer, in Vector2[] array, int start = 0, int end = int.MaxValue)
         {
-            int e = Mathf.Min(array.Length, end);
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
             writer.Write(e - start);
             while (start < e)
             {
