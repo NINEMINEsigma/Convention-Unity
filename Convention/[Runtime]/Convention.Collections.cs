@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Unity.Collections;
 
@@ -1433,6 +1436,107 @@ namespace Convention.Collections
             public int T1Count => t1Count;
             public int T2Count => t2Count;
             public int PValue => p;
+        }
+    }
+}
+
+namespace Convention
+{
+    public static class EasyManifest
+    {
+        public enum Format
+        {
+            Default
+        }
+
+        private static void MakeMarkdownManifest(object manifestData, StreamWriter writer, int maxDepth = 10)
+        {
+            var fields = manifestData.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).ToList();
+            var contentField = from field in fields where field.HasAttribute<ContentAttribute>() select field;
+            var resourcesField = from field in fields where field.HasAttribute < ResourcesAttribute>() select field;
+            var settingField = from field in fields where field.HasAttribute < SettingAttribute>() select field;
+            fields.RemoveAll(x => x.HasAttribute<ProjectContextLabelAttribute>());
+
+            void DrawItem([Opt]string name,int depth,object data)
+            {
+                while (depth-- > 0)
+                    writer.Write("  ");
+                writer.Write("- ");
+                if (name != null)
+                {
+                    writer.Write($"[{name}]");
+                }
+                if (data == null)
+                {
+                    writer.WriteLine($"null");
+                }
+                else if (data.GetType() == typeof(string))
+                {
+                    writer.WriteLine($"\"{data}\"");
+                }
+                else if (data.GetType().IsValueType == false && depth < maxDepth)
+                {
+                    if (data is IEnumerable enumer)
+                    {
+                        foreach (var iter in enumer)
+                        {
+                            DrawItem(null, depth + 1, iter);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var iter in data.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+                        {
+                            DrawItem(iter.Name, depth + 1, iter.GetValue(data));
+                        }
+                    }
+                }
+                else
+                {
+                    writer.WriteLine($"{data}");
+                }
+            }
+
+            void Draw(object item, IEnumerable<FieldInfo> fields)
+            {
+                foreach (FieldInfo field in fields)
+                {
+                    DrawItem(field.Name, 0, field.GetValue(item));
+                }
+            }
+
+            if (contentField.Count() > 0)
+            {
+                writer.WriteLine("# Content");
+                Draw(manifestData, contentField);
+            }
+            if (resourcesField.Count() > 0)
+            {
+                writer.WriteLine("# Resources");
+                Draw(manifestData, resourcesField);
+            }
+            if (settingField.Count()>0)
+            {
+                writer.WriteLine("# Setting");
+                Draw(manifestData, settingField);
+            }
+            if (fields.Count() > 0)
+            {
+                writer.WriteLine("# Others");
+                Draw(manifestData, fields);
+            }
+        }
+
+        public static void MakeManifest(object data, StreamWriter writer, Format format = Format.Default)
+        {
+            switch (format)
+            {
+                case Format.Default:
+                    MakeMarkdownManifest(data, writer);
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
         }
     }
 }

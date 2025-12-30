@@ -667,6 +667,16 @@ namespace Convention
                 return (T)System.Runtime.InteropServices.Marshal.PtrToStructure(s_CachedHGlobalPtr, typeof(T));
             }
         }
+
+        public static bool HasAttribute(this MemberInfo self, Type attrType)
+        {
+            return (from item in self.GetCustomAttributes(true) where item.GetType().IsSubclassOf(attrType) select item).Count() != 0;
+        }
+
+        public static bool HasAttribute<T>(this MemberInfo self) where T : Attribute
+        {
+            return (from item in self.GetCustomAttributes(true) where item.GetType().IsSubclassOf(typeof(T)) select item).Count() != 0;
+        }
     }
 }
 
