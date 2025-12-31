@@ -1,3 +1,4 @@
+using Dreamteck;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -1449,17 +1450,17 @@ namespace Convention
             Default
         }
 
-        private static void MakeMarkdownManifest(object manifestData, StreamWriter writer, int maxDepth = 10)
+        public static void MakeMarkdownManifest(object manifestData, StreamWriter writer, int initDepth, int maxDepth = 10)
         {
             var fields = manifestData.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).ToList();
             var contentField = from field in fields where field.HasAttribute<ContentAttribute>() select field;
-            var resourcesField = from field in fields where field.HasAttribute < ResourcesAttribute>() select field;
-            var settingField = from field in fields where field.HasAttribute < SettingAttribute>() select field;
+            var resourcesField = from field in fields where field.HasAttribute<ResourcesAttribute>() select field;
+            var settingField = from field in fields where field.HasAttribute<SettingAttribute>() select field;
             fields.RemoveAll(x => x.HasAttribute<ProjectContextLabelAttribute>());
 
-            void DrawItem([Opt]string name,int depth,object data)
+            void DrawItem([Opt] string name, int depth, object data)
             {
-                while (depth-- > 0)
+                for (int i = depth; i-- > 0;)
                     writer.Write("  ");
                 writer.Write("- ");
                 if (name != null)
@@ -1476,6 +1477,7 @@ namespace Convention
                 }
                 else if (data.GetType().IsValueType == false && depth < maxDepth)
                 {
+                    writer.Write("\n");
                     if (data is IEnumerable enumer)
                     {
                         foreach (var iter in enumer)
@@ -1501,38 +1503,67 @@ namespace Convention
             {
                 foreach (FieldInfo field in fields)
                 {
-                    DrawItem(field.Name, 0, field.GetValue(item));
+                    DrawItem(field.Name, initDepth, field.GetValue(item));
                 }
+            }
+
+            var ctype = manifestData.GetType();
+            if (ctype == typeof(string))
+            {
+                for (int depth = initDepth; depth-- > 0;)
+                    writer.Write("  ");
+                writer.WriteLine(manifestData.ToString());
+                return;
+            }
+            else if (ctype.IsValueType)
+            {
+                DrawItem(null, initDepth, manifestData);
+                return;
             }
 
             if (contentField.Count() > 0)
             {
+                for (int depth = initDepth; depth-- > 0;)
+                    writer.Write("  ");
                 writer.WriteLine("# Content");
                 Draw(manifestData, contentField);
             }
             if (resourcesField.Count() > 0)
             {
+                for (int depth = initDepth; depth-- > 0;)
+                    writer.Write("  ");
                 writer.WriteLine("# Resources");
                 Draw(manifestData, resourcesField);
             }
-            if (settingField.Count()>0)
+            if (settingField.Count() > 0)
             {
+                for (int depth = initDepth; depth-- > 0;)
+                    writer.Write("  ");
                 writer.WriteLine("# Setting");
                 Draw(manifestData, settingField);
             }
             if (fields.Count() > 0)
             {
-                writer.WriteLine("# Others");
+                for (int depth = initDepth; depth-- > 0;)
+                    writer.Write("  ");
+                if (contentField.Count() + resourcesField.Count() + settingField.Count() > 0)
+                {
+                    writer.WriteLine("# Others");
+                }
+                else
+                {
+                    writer.WriteLine("# Items");
+                }
                 Draw(manifestData, fields);
             }
         }
 
-        public static void MakeManifest(object data, StreamWriter writer, Format format = Format.Default)
+        public static void MakeManifest(object data, StreamWriter writer, int depth, int maxDepth = 10, Format format = Format.Default)
         {
             switch (format)
             {
                 case Format.Default:
-                    MakeMarkdownManifest(data, writer);
+                    MakeMarkdownManifest(data, writer, depth, maxDepth);
                     break;
                 default:
                     throw new NotSupportedException();
