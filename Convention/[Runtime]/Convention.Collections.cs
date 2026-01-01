@@ -1468,20 +1468,19 @@ namespace Convention
                 {
                     writer.Write($"[{name}]");
                 }
-                Type dataType = data.GetType();
                 if (data == null)
                 {
                     writer.WriteLine($"null");
                 }
-                else if(dataType.IsSubclassOf(typeof(UnityEngine.Object)))
+                else if(data.GetType().IsSubclassOf(typeof(UnityEngine.Object)))
                 {
                     writer.WriteLine($"{data}(UObject)");
                 }
-                else if (dataType == typeof(string))
+                else if (data.GetType() == typeof(string))
                 {
                     writer.WriteLine($"\"{data}\"");
                 }
-                else if (dataType.IsValueType == false && depth < maxDepth)
+                else if (data.GetType().IsValueType == false && depth < maxDepth)
                 {
                     writer.Write("\n");
                     if (data is IEnumerable enumer)
@@ -1493,7 +1492,7 @@ namespace Convention
                     }
                     else
                     {
-                        foreach (var iter in dataType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+                        foreach (var iter in data.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                         {
                             DrawItem(iter.Name, depth + 1, iter.GetValue(data));
                         }
