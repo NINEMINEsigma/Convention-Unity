@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Unity.Collections;
+using UnityEngine;
 
 namespace Convention.Collections
 {
@@ -21,9 +22,9 @@ namespace Convention.Collections
             private readonly LinkedList<T> m_LinkedList;
             /// <summary>
             /// 之所以需要这套缓存机制，主要有三点好处：
-            /// <list type="bullet">减少 GC 压力：大量频繁的插入/删除会产生很多短生命周期的节点对象，通过复用可以显著降低托管堆的分配与回收次数</list>
-            /// <list type="bullet">提升性能：避免频繁 new 和 GC，能减少停顿时间，提高链表在高频操作场景下的吞吐</list>
-            /// <list type="bullet">便于观察与管理：类中还提供了 CachedNodeCount 方便调试统计缓存规模，必要时可通过 ClearCachedNodes 主动释放</list>
+            /// <list dataType="bullet">减少 GC 压力：大量频繁的插入/删除会产生很多短生命周期的节点对象，通过复用可以显著降低托管堆的分配与回收次数</list>
+            /// <list dataType="bullet">提升性能：避免频繁 new 和 GC，能减少停顿时间，提高链表在高频操作场景下的吞吐</list>
+            /// <list dataType="bullet">便于观察与管理：类中还提供了 CachedNodeCount 方便调试统计缓存规模，必要时可通过 ClearCachedNodes 主动释放</list>
             /// 适用场景是节点使用模式“高频增删但总量有限”，此时缓存能稳定性能；若链表规模始终在增长且很少释放，缓存收益会较低。
             /// </summary>
             private readonly Queue<LinkedListNode<T>> m_CachedNodes;
@@ -1467,15 +1468,20 @@ namespace Convention
                 {
                     writer.Write($"[{name}]");
                 }
+                Type dataType = data.GetType();
                 if (data == null)
                 {
                     writer.WriteLine($"null");
                 }
-                else if (data.GetType() == typeof(string))
+                else if(dataType.IsSubclassOf(typeof(UnityEngine.Object)))
+                {
+                    writer.WriteLine($"{data}(UObject)");
+                }
+                else if (dataType == typeof(string))
                 {
                     writer.WriteLine($"\"{data}\"");
                 }
-                else if (data.GetType().IsValueType == false && depth < maxDepth)
+                else if (dataType.IsValueType == false && depth < maxDepth)
                 {
                     writer.Write("\n");
                     if (data is IEnumerable enumer)
@@ -1487,7 +1493,7 @@ namespace Convention
                     }
                     else
                     {
-                        foreach (var iter in data.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+                        foreach (var iter in dataType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
                         {
                             DrawItem(iter.Name, depth + 1, iter.GetValue(data));
                         }
@@ -1525,6 +1531,8 @@ namespace Convention
             {
                 for (int depth = initDepth; depth-- > 0;)
                     writer.Write("  ");
+                for (int depth = initDepth; depth-- > 0;)
+                    writer.Write("#");
                 writer.WriteLine("# Content");
                 Draw(manifestData, contentField);
             }
@@ -1532,6 +1540,8 @@ namespace Convention
             {
                 for (int depth = initDepth; depth-- > 0;)
                     writer.Write("  ");
+                for (int depth = initDepth; depth-- > 0;)
+                    writer.Write("#");
                 writer.WriteLine("# Resources");
                 Draw(manifestData, resourcesField);
             }
@@ -1539,6 +1549,8 @@ namespace Convention
             {
                 for (int depth = initDepth; depth-- > 0;)
                     writer.Write("  ");
+                for (int depth = initDepth; depth-- > 0;)
+                    writer.Write("#");
                 writer.WriteLine("# Setting");
                 Draw(manifestData, settingField);
             }
@@ -1546,6 +1558,8 @@ namespace Convention
             {
                 for (int depth = initDepth; depth-- > 0;)
                     writer.Write("  ");
+                for (int depth = initDepth; depth-- > 0;)
+                    writer.Write("#");
                 if (contentField.Count() + resourcesField.Count() + settingField.Count() > 0)
                 {
                     writer.WriteLine("# Others");
