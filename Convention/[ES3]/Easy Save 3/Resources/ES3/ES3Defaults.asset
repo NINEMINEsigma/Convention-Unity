@@ -31,15 +31,7 @@ MonoBehaviour:
     serializationDepthLimit: 64
     assemblyNames:
     - Assembly-CSharp
-    - Assembly-CSharp-firstpass
-    - Dreamteck.Splines
-    - Dreamteck.Utilities
     - EasySave3
-    - glTFast
-    - glTFast.Documentation.Examples
-    - glTFast.dots
-    - glTFast.Export
-    - glTFast.Newtonsoft
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1

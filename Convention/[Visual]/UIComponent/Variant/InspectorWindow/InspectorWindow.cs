@@ -84,20 +84,13 @@ namespace Convention.WindowsUI.Variant
                 m_ThisHashCodeField.text = target.GetHashCode().ToString();
         }
 
-        /// <summary>
-        /// ���������Լ���Ӧ��tab
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="item"></param>
-        /// <returns>�Ƿ��봫���target��ͬ</returns>
-        [return: When("�������target�뱻����Ϊtarget��ʵ����ͬ")]
         public bool SetTarget([In] object target, [In, Opt] HierarchyItem item)
         {
-            if (item != null && IsWorkWithHierarchyWindow)
-            {
-                throw new InvalidOperationException($"This {nameof(InspectorWindow)} is set {nameof(IsWorkWithHierarchyWindow)}={IsWorkWithHierarchyWindow}, but Argument" +
-                    $"{nameof(item)}={item} not null");
-            }
+            //if (item != null && IsWorkWithHierarchyWindow)
+            //{
+            //    throw new InvalidOperationException($"This {nameof(InspectorWindow)} is set {nameof(IsWorkWithHierarchyWindow)}={IsWorkWithHierarchyWindow}, but Argument" +
+            //        $"{nameof(item)}={item} not null");
+            //}
             bool result = true;
             if (target is GameObject go)
             {

@@ -76,13 +76,13 @@ namespace Convention.WindowsUI.Variant
         }
     }
 
-    public class InspectorItem : PropertyListItem,ITitle
+    public class InspectorItem : PropertyListItem, ITitle
     {
         [Resources, OnlyNotNullMode, SerializeField] private Text Title;
         [Resources, OnlyNotNullMode, SerializeField, Header("Inspector Components")]
         private InspectorDrawer m_TransformModule;
         [Resources, OnlyNotNullMode, SerializeField]
-        private InspectorDrawer m_TextModule, m_ToggleModule, m_ImageModule, m_ReferenceModule, 
+        private InspectorDrawer m_TextModule, m_ToggleModule, m_ImageModule, m_ReferenceModule,
             m_ButtonModule, m_StructureModule, m_DictionaryItemModule, m_EnumItemModule;
         private Dictionary<InspectorDrawType, InspectorDrawer> m_AllUIModules = new();
         private List<ItemEntry> m_DynamicSubEntries = new();
@@ -216,7 +216,7 @@ namespace Convention.WindowsUI.Variant
             InitModules();
             RebulidImmediate();
         }
-        public void SetTarget([In] object target,ValueWrapper wrapper)
+        public void SetTarget([In] object target, ValueWrapper wrapper)
         {
             this.target = target;
             this.targetMemberInfo = null;
@@ -225,7 +225,7 @@ namespace Convention.WindowsUI.Variant
             InitModules();
             RebulidImmediate();
         }
-        public void SetTarget([In] object target,Action action)
+        public void SetTarget([In] object target, Action action)
         {
             this.target = target;
             this.targetMemberInfo = null;
@@ -385,11 +385,13 @@ namespace Convention.WindowsUI.Variant
             }
         }
 
+        [Content, OnlyPlayMode]
         protected override void FoldChilds()
         {
             base.FoldChilds();
             CurrentModule.gameObject.SetActive(false);
         }
+        [Content, OnlyPlayMode]
         protected override void UnfoldChilds()
         {
             base.UnfoldChilds();
