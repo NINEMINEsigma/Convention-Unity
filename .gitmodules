@@ -1,0 +1,4 @@
+[submodule ".cursor"]
+	path = .cursor
+	url = http://gitea.liubai.site/ninemine/.cursor.git
+	branch = main

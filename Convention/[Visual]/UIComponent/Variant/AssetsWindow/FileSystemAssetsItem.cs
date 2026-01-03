@@ -354,7 +354,7 @@ namespace Convention.WindowsUI.Variant
             item.HasChildLayer = item.ChildCount() != 0 ||
                 ((m_File != null && m_File.Exists()) && (m_File.IsDir() || m_File.IsAssetBundle));
             FileSystemAssets.instance.CurrentSelectFilename.title = ItemPathName;
-            InspectorWindow.instance.SetTarget(this, null);
+            InspectorWindow.instance.SetTarget(this);
         }
 
         public void OnAssetsItemInvoke([In] AssetsItem item)

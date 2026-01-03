@@ -73,7 +73,7 @@ namespace Convention.WindowsUI.Variant
             {
                 if (InspectorWindow.instance != null)
                 {
-                    InspectorWindow.instance.SetTarget(target, this);
+                    InspectorWindow.instance.SetTarget(target);
                 }
                 if(target is IHierarchyItemClickEventListener listener)
                 {
