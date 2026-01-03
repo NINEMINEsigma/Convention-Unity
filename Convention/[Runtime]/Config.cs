@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using Convention.WindowsUI;
-using Demo.Game;
 using Unity.Collections;
 using UnityEditor;
 #if UNITY_EDITOR
