@@ -458,6 +458,7 @@ namespace Convention.Collections
         }
     }
 
+#if UNITY_6000_0_OR_NEWER
     namespace Cache
     {
         /// <summary>
@@ -1438,6 +1439,7 @@ namespace Convention.Collections
             public int PValue => p;
         }
     }
+#endif
 }
 
 namespace Convention

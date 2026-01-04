@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEngine;
 
 namespace Convention.WindowsUI.Variant
@@ -43,5 +39,8 @@ namespace Convention.WindowsUI.Variant
                 this.target = target;
             }
         }
+
+        [Header("Inspector Items")]
+        [Resources, SerializeField] private InspectorBaseItem TextFieldPrefab;
     }
 }

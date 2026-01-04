@@ -2,11 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-#if UNITY_6000_0_OR_NEWER
 using Unity.Cinemachine;
-#else
-using Cinemachine;
-#endif
 using System.Linq;
 using UnityEngine.UI;
 

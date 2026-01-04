@@ -372,9 +372,17 @@ PrefabInstance:
       propertyPath: m_text
       value: Hierarchy
       objectReference: {fileID: 0}
+    - target: {fileID: 2372686228853117434, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2372686229198948587, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
       propertyPath: m_text
       value: Hierarchy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2372686229198948587, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 2814737429463080094, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
       propertyPath: m_Name
@@ -553,6 +561,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2814737429463080094, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5551824027870255850}
+    - targetCorrespondingSourceObject: {fileID: 7372040660896824969, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 732687173686223759}
   m_SourcePrefab: {fileID: 100100000, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
 --- !u!114 &1053894969927359569 stripped
 MonoBehaviour:
@@ -601,6 +612,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windowManager: {fileID: 1053894969927359569}
   m_PropertiesWindow: {fileID: 5519511324717522623}
+--- !u!1 &7141852545006791213 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7372040660896824969, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
+  m_PrefabInstance: {fileID: 383451248258765988}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &732687173686223759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7141852545006791213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 0
+  m_VerticalFit: 1
 --- !u!224 &8975345697986449064 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8781068999274584588, guid: 14851ab435cb18448974bf76e92d8952, type: 3}

@@ -15,9 +15,9 @@ namespace ES3Types
 		protected override void WriteComponent(object obj, ES3Writer writer)
 		{
 			var instance = (UnityEngine.Rigidbody)obj;
-			
+#if UNITY_6000_0_OR_NEWER
 			writer.WriteProperty("velocity", instance.linearVelocity, ES3Type_Vector3.Instance);
-			writer.WriteProperty("angularVelocity", instance.angularVelocity, ES3Type_Vector3.Instance);
+            writer.WriteProperty("angularVelocity", instance.angularVelocity, ES3Type_Vector3.Instance);
 			writer.WriteProperty("drag", instance.linearDamping, ES3Type_float.Instance);
 			writer.WriteProperty("angularDrag", instance.angularDamping, ES3Type_float.Instance);
 			writer.WriteProperty("mass", instance.mass, ES3Type_float.Instance);
@@ -36,7 +36,29 @@ namespace ES3Types
 			writer.WriteProperty("sleepThreshold", instance.sleepThreshold, ES3Type_float.Instance);
 			writer.WriteProperty("maxAngularVelocity", instance.maxAngularVelocity, ES3Type_float.Instance);
 			writer.WriteProperty("solverVelocityIterations", instance.solverVelocityIterations, ES3Type_int.Instance);
-		}
+#else
+            writer.WriteProperty("velocity", instance.velocity, ES3Type_Vector3.Instance);
+            writer.WriteProperty("angularVelocity", instance.angularVelocity, ES3Type_Vector3.Instance);
+            writer.WriteProperty("drag", instance.drag, ES3Type_float.Instance);
+            writer.WriteProperty("angularDrag", instance.angularDrag, ES3Type_float.Instance);
+            writer.WriteProperty("mass", instance.mass, ES3Type_float.Instance);
+            writer.WriteProperty("useGravity", instance.useGravity, ES3Type_bool.Instance);
+            writer.WriteProperty("maxDepenetrationVelocity", instance.maxDepenetrationVelocity, ES3Type_float.Instance);
+            writer.WriteProperty("isKinematic", instance.isKinematic, ES3Type_bool.Instance);
+            writer.WriteProperty("freezeRotation", instance.freezeRotation, ES3Type_bool.Instance);
+            writer.WriteProperty("constraints", instance.constraints);
+            writer.WriteProperty("collisionDetectionMode", instance.collisionDetectionMode);
+            writer.WriteProperty("centerOfMass", instance.centerOfMass, ES3Type_Vector3.Instance);
+            writer.WriteProperty("detectCollisions", instance.detectCollisions, ES3Type_bool.Instance);
+            writer.WriteProperty("position", instance.position, ES3Type_Vector3.Instance);
+            writer.WriteProperty("rotation", instance.rotation, ES3Type_Quaternion.Instance);
+            writer.WriteProperty("interpolation", instance.interpolation);
+            writer.WriteProperty("solverIterations", instance.solverIterations, ES3Type_int.Instance);
+            writer.WriteProperty("sleepThreshold", instance.sleepThreshold, ES3Type_float.Instance);
+            writer.WriteProperty("maxAngularVelocity", instance.maxAngularVelocity, ES3Type_float.Instance);
+            writer.WriteProperty("solverVelocityIterations", instance.solverVelocityIterations, ES3Type_int.Instance);
+#endif
+        }
 
 		protected override void ReadComponent<T>(ES3Reader reader, object obj)
 		{
@@ -44,8 +66,8 @@ namespace ES3Types
 			foreach(string propertyName in reader.Properties)
 			{
 				switch(propertyName)
-				{
-					
+                {
+#if UNITY_6000_0_OR_NEWER
 					case "velocity":
 						instance.linearVelocity = reader.Read<UnityEngine.Vector3>(ES3Type_Vector3.Instance);
 						break;
@@ -58,7 +80,21 @@ namespace ES3Types
 					case "angularDrag":
 						instance.angularDamping = reader.Read<System.Single>(ES3Type_float.Instance);
 						break;
-					case "mass":
+#else
+                    case "velocity":
+                        instance.velocity = reader.Read<UnityEngine.Vector3>(ES3Type_Vector3.Instance);
+                        break;
+                    case "angularVelocity":
+                        instance.angularVelocity = reader.Read<UnityEngine.Vector3>(ES3Type_Vector3.Instance);
+                        break;
+                    case "drag":
+                        instance.drag = reader.Read<System.Single>(ES3Type_float.Instance);
+                        break;
+                    case "angularDrag":
+                        instance.angularDrag = reader.Read<System.Single>(ES3Type_float.Instance);
+                        break;
+#endif
+                    case "mass":
 						instance.mass = reader.Read<System.Single>(ES3Type_float.Instance);
 						break;
 					case "useGravity":
