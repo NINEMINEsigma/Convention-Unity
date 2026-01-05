@@ -149,11 +149,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1734320433790600580, guid: a16009d6f48e8d54f87555c221c917b3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000017285347
+      value: 0.0000001482467
       objectReference: {fileID: 0}
     - target: {fileID: 1734320433790600580, guid: a16009d6f48e8d54f87555c221c917b3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00029348244
+      value: 0.000020863989
       objectReference: {fileID: 0}
     - target: {fileID: 1796705000294821201, guid: a16009d6f48e8d54f87555c221c917b3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -201,7 +201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8720518990438846047, guid: a16009d6f48e8d54f87555c221c917b3, type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8889871271887443601, guid: a16009d6f48e8d54f87555c221c917b3, type: 3}
       propertyPath: m_Pivot.x
@@ -440,7 +440,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6279050909353911363, guid: 4e6810693c07dfb4399ed0c7c7a3ce39, type: 3}
-      propertyPath: m_ActiveFontFeatures.Array.data[0]
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 8550121131508064702, guid: 4e6810693c07dfb4399ed0c7c7a3ce39, type: 3}
@@ -593,7 +593,7 @@ PrefabInstance:
       value: Inspector
       objectReference: {fileID: 0}
     - target: {fileID: 2372686228853117434, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
-      propertyPath: m_ActiveFontFeatures.Array.data[0]
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 2372686229198948587, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
@@ -601,7 +601,7 @@ PrefabInstance:
       value: Inspector
       objectReference: {fileID: 0}
     - target: {fileID: 2372686229198948587, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
-      propertyPath: m_ActiveFontFeatures.Array.data[0]
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 2814737429463080094, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
@@ -811,6 +811,7 @@ MonoBehaviour:
   ReferFieldPrefab: {fileID: 5205943165560749867, guid: 9d7b47485adc4f44ebdc7fa3add71df5, type: 3}
   Vec2FieldPrefab: {fileID: 2056308664869761539, guid: 6165b122430e3da4a9890f59a70c3336, type: 3}
   Vec3FieldPrefab: {fileID: 4171669979414867407, guid: 060f71a07b059ec4b85fd7741d557585, type: 3}
+  TransformFieldPrefab: {fileID: 1413214086170503766, guid: 597656d733ef7294db277e29f68322c9, type: 3}
 --- !u!224 &3709766065348511635 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1397725728417784005, guid: 14851ab435cb18448974bf76e92d8952, type: 3}

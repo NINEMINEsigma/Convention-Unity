@@ -17,6 +17,7 @@ namespace Convention.WindowsUI.Variant
                 throw new InvalidProgramException("mutil-InspectorWindow is awake");
             }
             instance = this;
+            DrawPlaneFieldCache.Clear();
         }
 
         private object target;
@@ -49,13 +50,54 @@ namespace Convention.WindowsUI.Variant
             return item;
         }
 
+        public void CreateItem(InspectorDrawType type, object target, string title, Type targetType = null)
+        {
+            if (targetType == null)
+                targetType = target.GetType();
+            var item = type switch
+            {
+                InspectorDrawType.Auto => throw new InvalidOperationException("cannot create by auto"),
+                InspectorDrawType.Text => (InspectorBaseItem)CreateItem(TextFieldPrefab),
+                InspectorDrawType.Toggle => CreateItem(ToggleFieldPrefab),
+                InspectorDrawType.Texture => CreateItem(TextureFieldPrefab),
+                InspectorDrawType.Reference => CreateItem(ReferFieldPrefab),
+                InspectorDrawType.Method => CreateItem(MethodFieldPrefab),
+                InspectorDrawType.Vector3 => CreateItem(Vec3FieldPrefab),
+                InspectorDrawType.Vector2 => CreateItem(Vec2FieldPrefab),
+                //case InspectorDrawType.Color:
+                //    break;
+                _ => throw new NotImplementedException(),
+            };
+            item.SetTarget(target, null, targetType, new() { IsInteractable = false, size = 1 });
+            item.title = title;
+        }
+
+        private readonly Dictionary<Type, List<MemberInfo>> DrawPlaneFieldCache = new();
+
         private void DrawInspector(object target, Type type)
         {
             ClassTypeField.text = type.GetFriendlyName();
-            var fields = from field
-                         in type.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                         where field.HasAttribute<InspectorDrawAttribute>()
-                         select field;
+            if (DrawPlaneFieldCache.TryGetValue(type, out var fields) == false)
+            {
+                fields = (from field
+                          in type.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                          where field.HasAttribute<InspectorDrawAttribute>()
+                          select field).ToList();
+                fields.Sort((x, y) =>
+                {
+                    int a = 0, b = 0;
+                    if (x is MethodInfo)
+                        a = 0;
+                    else if (ConventionUtility.GetMemberValueType(x).IsSubclassOf(typeof(Transform)))
+                        a = 1;
+                    if (y is MethodInfo)
+                        b = 0;
+                    else if (ConventionUtility.GetMemberValueType(y).IsSubclassOf(typeof(Transform)))
+                        b = 1;
+                    return a - b;
+                });
+                DrawPlaneFieldCache.Add(type, fields);
+            }
             foreach (var field in fields)
             {
                 var attr = field.GetCustomAttribute<InspectorDrawAttribute>();
@@ -104,6 +146,11 @@ namespace Convention.WindowsUI.Variant
                             var vec3Field = CreateItem(Vec3FieldPrefab);
                             vec3Field.SetTarget(target, fieldName, fieldType, config);
                         }
+                        else if (fieldType.IsSubclassOf(typeof(Transform)))
+                        {
+                            var transField = CreateItem(TransformFieldPrefab);
+                            transField.SetTarget(target, fieldName, fieldType, config);
+                        }
                         else
                         {
                             var textField = CreateItem(TextFieldPrefab);
@@ -125,6 +172,7 @@ namespace Convention.WindowsUI.Variant
                             InspectorDrawType.Method => (InspectorBaseItem)MethodFieldPrefab,
                             InspectorDrawType.Vector2 => (InspectorBaseItem)Vec2FieldPrefab,
                             InspectorDrawType.Vector3 => (InspectorBaseItem)Vec3FieldPrefab,
+                            InspectorDrawType.Transform => (InspectorBaseItem)TransformFieldPrefab,
                             _ => null
                         };
                         if (prefab)
@@ -189,6 +237,12 @@ namespace Convention.WindowsUI.Variant
                 var vec3Field = CreateItem(Vec3FieldPrefab);
                 vec3Field.SetTarget(target, null, type, defaultConfig);
             }
+            else if (type.IsSubclassOf(typeof(Transform)))
+            {
+                defaultConfig.IsInteractable = true;
+                var transField = CreateItem(TransformFieldPrefab);
+                transField.SetTarget(target, null, type, defaultConfig);
+            }
             else if (type.IsValueType)
             {
                 var textField = CreateItem(TextFieldPrefab);
@@ -208,6 +262,33 @@ namespace Convention.WindowsUI.Variant
         [Resources, SerializeField, OnlyNotNullMode] private InspectorReference ReferFieldPrefab;
         [Resources, SerializeField, OnlyNotNullMode] private InspectorVec2 Vec2FieldPrefab;
         [Resources, SerializeField, OnlyNotNullMode] private InspectorVec3 Vec3FieldPrefab;
-
+        [Resources, SerializeField, OnlyNotNullMode] private InspectorTransform TransformFieldPrefab;
+#if UNITY_EDITOR
+        [Content,OnlyPlayMode]
+        public void TestTextField()
+        {
+            CreateItem(TextFieldPrefab);
+        }
+        [Content, OnlyPlayMode]
+        public void TestToggleField()
+        {
+            CreateItem(ToggleFieldPrefab);
+        }
+        [Content, OnlyPlayMode]
+        public void TestTextureField()
+        {
+            CreateItem(TextureFieldPrefab);
+        }
+        [Content, OnlyPlayMode]
+        public void TestMethodField()
+        {
+            CreateItem(MethodFieldPrefab);
+        }
+        [Content, OnlyPlayMode]
+        public void TestVec3Field()
+        {
+            CreateItem(Vec3FieldPrefab);
+        }
+#endif
     }
 }

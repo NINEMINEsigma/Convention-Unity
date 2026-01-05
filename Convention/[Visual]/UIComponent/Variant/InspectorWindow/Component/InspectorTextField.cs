@@ -7,7 +7,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
         [Header("Text")]
         [Resources, SerializeField, OnlyNotNullMode] private InputField MyTextField;
         [Setting, SerializeField] private int UnitSize = 50;
-        private int CacheSize;
+        private int CacheSize = 50;
 
         public override void SetFolder(bool status)
         {

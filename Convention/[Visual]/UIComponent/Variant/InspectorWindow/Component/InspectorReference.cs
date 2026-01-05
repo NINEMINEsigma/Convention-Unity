@@ -28,7 +28,10 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
             {
                 var obj = GetValue<object>();
                 if (obj == null)
+                {
                     InspectorWindow.instance.ClearWindow();
+                    InspectorWindow.instance.CreateItem(InspectorDrawType.Text, null, SafeMemberName, typeof(string));
+                }
                 else
                     InspectorWindow.instance.SetTarget(obj);
             });

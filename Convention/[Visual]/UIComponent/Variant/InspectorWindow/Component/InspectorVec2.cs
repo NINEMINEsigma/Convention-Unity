@@ -20,7 +20,9 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
 
         public override void UpdateValue()
         {
-            throw new System.NotImplementedException();
+            var value = GetValue<Vector2>();
+            MyXField.text = value.x.ToString();
+            MyYField.text = value.y.ToString();
         }
 
         protected override void InitBindingEvent()

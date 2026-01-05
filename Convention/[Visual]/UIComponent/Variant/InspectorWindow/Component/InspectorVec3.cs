@@ -21,7 +21,10 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
 
         public override void UpdateValue()
         {
-            throw new System.NotImplementedException();
+            var value = GetValue<Vector3>();
+            MyXField.text = value.x.ToString();
+            MyYField.text = value.y.ToString();
+            MyZField.text = value.z.ToString();
         }
 
         protected override void InitBindingEvent()

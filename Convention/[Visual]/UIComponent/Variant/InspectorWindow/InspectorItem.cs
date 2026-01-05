@@ -25,6 +25,8 @@ namespace Convention.WindowsUI.Variant
         Vector2 = 1 << 6,
         // Color
         Color = 1 << 7,
+        // Transform
+        Transform = 1 << 8,
     }
 
     public struct InspectorDrawConfig
@@ -63,10 +65,13 @@ namespace Convention.WindowsUI.Variant
     {
         private object target = null;
         private string memberName = null;
+        public string SafeMemberName => memberName ?? "null";
         private Type type;
         private const BindingFlags DefaultBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         public T GetValue<T>()
         {
+            if (typeof(T) == typeof(object))
+                return (T)target;
             if (target == null)
                 return (T)ConventionUtility.GetDefault(typeof(T));
             if (string.IsNullOrEmpty(memberName))
@@ -80,7 +85,7 @@ namespace Convention.WindowsUI.Variant
             if (value == null)
                 ConventionUtility.PushValue(target, ConventionUtility.GetDefault(type), memberName, DefaultBindingFlags);
             else
-                ConventionUtility.PushValue(target, Convert.ChangeType(value, type), memberName, DefaultBindingFlags);
+                ConventionUtility.PushValue(target, type == typeof(object) ? value : Convert.ChangeType(value, type), memberName, DefaultBindingFlags);
         }
         public void InvokeMember()
         {
