@@ -13,18 +13,18 @@ namespace Convention.WindowsUI.Variant
         Text = 0,
         // Bool
         Toggle = 1 << 1,
-        // Sripte
-        Image = 1 << 2,
-        // Transform
-        Transform = 1 << 3,
-        // Container
-        List = 1 << 4 + 1, Dictionary = 1 << 5 + 1, Array = 1 << 6 + 1,
+        // Texture
+        Texture = 1 << 2,
         // Object
-        Reference = 1 << 7, Structure = 1 << 8,
+        Reference = 1 << 3,
         // Method
-        Button = 1 << 9,
-        // Enum
-        Enum = 1 << 10
+        Method = 1 << 4,
+        // Vec3
+        Vector3 = 1 << 5,
+        // Vec2
+        Vector2 = 1 << 6,
+        // Color
+        Color = 1 << 7,
     }
 
     public struct InspectorDrawConfig
@@ -81,6 +81,13 @@ namespace Convention.WindowsUI.Variant
                 ConventionUtility.PushValue(target, ConventionUtility.GetDefault(type), memberName, DefaultBindingFlags);
             else
                 ConventionUtility.PushValue(target, Convert.ChangeType(value, type), memberName, DefaultBindingFlags);
+        }
+        public void InvokeMember()
+        {
+            if (memberName == null)
+                throw new InvalidOperationException("Cannot invoke null memberName");
+            if (ConventionUtility.TryInvokeMember(target.GetType().GetMethod(memberName, DefaultBindingFlags), target, out var _) == false)
+                Debug.LogWarning($"Invoke member {memberName} failed");
         }
         public const int LabelSize = 20;
 

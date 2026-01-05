@@ -18,5 +18,11 @@ namespace Convention.WindowsUI
             if (m_RawImage == null)
                 m_RawImage = GetComponent<RawImage>();
         }
+
+        public Texture texture
+        {
+            get => m_RawImage.texture;
+            set => m_RawImage.texture = value;
+        }
     }
 }

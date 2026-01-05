@@ -89,6 +89,21 @@ namespace Convention.WindowsUI.Variant
                             var toggleField = CreateItem(ToggleFieldPrefab);
                             toggleField.SetTarget(target, fieldName, fieldType, config);
                         }
+                        else if (fieldType.IsSubclassOf(typeof(Texture)))
+                        {
+                            var textureField = CreateItem(TextureFieldPrefab);
+                            textureField.SetTarget(target, fieldName, fieldType, config);
+                        }
+                        else if (fieldType == typeof(Vector2))
+                        {
+                            var vec2Field = CreateItem(Vec2FieldPrefab);
+                            vec2Field.SetTarget(target, fieldName, fieldType, config);
+                        }
+                        else if (fieldType == typeof(Vector3))
+                        {
+                            var vec3Field = CreateItem(Vec3FieldPrefab);
+                            vec3Field.SetTarget(target, fieldName, fieldType, config);
+                        }
                         else
                         {
                             var textField = CreateItem(TextFieldPrefab);
@@ -104,7 +119,12 @@ namespace Convention.WindowsUI.Variant
                         var prefab = drawType switch
                         {
                             InspectorDrawType.Text => (InspectorBaseItem)TextFieldPrefab,
-                            InspectorDrawType.Toggle => ToggleFieldPrefab,
+                            InspectorDrawType.Toggle => (InspectorBaseItem)ToggleFieldPrefab,
+                            InspectorDrawType.Texture => (InspectorBaseItem)TextFieldPrefab,
+                            InspectorDrawType.Reference => (InspectorBaseItem)ReferFieldPrefab,
+                            InspectorDrawType.Method => (InspectorBaseItem)MethodFieldPrefab,
+                            InspectorDrawType.Vector2 => (InspectorBaseItem)Vec2FieldPrefab,
+                            InspectorDrawType.Vector3 => (InspectorBaseItem)Vec3FieldPrefab,
                             _ => null
                         };
                         if (prefab)
@@ -126,38 +146,53 @@ namespace Convention.WindowsUI.Variant
         public void SetTarget(object target)
         {
             if (this.target == target)
+            {
+                foreach (var item in InspectorItemList)
+                {
+                    item.UpdateValue();
+                }
                 return;
+            }
             ClearWindow();
             if (target == null)
                 return;
             this.target = target;
             var type = target.GetType();
+            var defaultConfig = new InspectorDrawConfig()
+            {
+                IsInteractable = false,
+                size = 1
+            };
             if (type == typeof(string) || Utility.IsNumber(type))
             {
                 var textField = CreateItem(TextFieldPrefab);
-                textField.SetTarget(target.ToString(), null, type, new InspectorDrawConfig()
-                {
-                    IsInteractable = false,
-                    size = 1
-                });
+                textField.SetTarget(target.ToString(), null, type, defaultConfig);
             }
             else if (type == typeof(bool))
             {
                 var toggleField = CreateItem(ToggleFieldPrefab);
-                toggleField.SetTarget(target, null, type, new InspectorDrawConfig()
-                {
-                    IsInteractable = false,
-                    size = 1
-                });
+                toggleField.SetTarget(target, null, type, defaultConfig);
+            }
+            else if (type.IsSubclassOf(typeof(Texture)))
+            {
+                var textureField = CreateItem(TextureFieldPrefab);
+                textureField.SetTarget(target, null, type, defaultConfig);
+            }
+            else if (type == typeof(Vector2))
+            {
+                var vec2Field = CreateItem(Vec2FieldPrefab);
+                vec2Field.SetTarget(target, null, type, defaultConfig);
+
+            }
+            else if (type == typeof(Vector3))
+            {
+                var vec3Field = CreateItem(Vec3FieldPrefab);
+                vec3Field.SetTarget(target, null, type, defaultConfig);
             }
             else if (type.IsValueType)
             {
                 var textField = CreateItem(TextFieldPrefab);
-                textField.SetTarget($"Unsupport {type.GetFriendlyName()}", null, type, new InspectorDrawConfig()
-                {
-                    IsInteractable = false,
-                    size = 1
-                });
+                textField.SetTarget($"Unsupport {type.GetFriendlyName()}", null, type, defaultConfig);
             }
             else
             {
@@ -168,5 +203,11 @@ namespace Convention.WindowsUI.Variant
         [Header("Inspector Items")]
         [Resources, SerializeField, OnlyNotNullMode] private InspectorTextField TextFieldPrefab;
         [Resources, SerializeField, OnlyNotNullMode] private InspectorToggle ToggleFieldPrefab;
+        [Resources, SerializeField, OnlyNotNullMode] private InspectorImage TextureFieldPrefab;
+        [Resources, SerializeField, OnlyNotNullMode] private InspectorButton MethodFieldPrefab;
+        [Resources, SerializeField, OnlyNotNullMode] private InspectorReference ReferFieldPrefab;
+        [Resources, SerializeField, OnlyNotNullMode] private InspectorVec2 Vec2FieldPrefab;
+        [Resources, SerializeField, OnlyNotNullMode] private InspectorVec3 Vec3FieldPrefab;
+
     }
 }

@@ -173,7 +173,7 @@ namespace Convention.WindowsUI.Variant
             [Content, IsInstantiated(true)] public GameObject last;
             private Image image;
 
-            [InspectorDraw(InspectorDrawType.Button), Content]
+            [InspectorDraw(InspectorDrawType.Method), Content]
             public void ReleaseGameObjectToScene()
             {
                 if (target != null)
@@ -182,7 +182,7 @@ namespace Convention.WindowsUI.Variant
                     target = null;
                 }
             }
-            [InspectorDraw(InspectorDrawType.Button), Content]
+            [InspectorDraw(InspectorDrawType.Method), Content]
             public void DestroyCurrentSelect()
             {
                 if (target != null)
