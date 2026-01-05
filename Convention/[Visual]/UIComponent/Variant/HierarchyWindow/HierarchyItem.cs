@@ -48,7 +48,7 @@ namespace Convention.WindowsUI.Variant
         }
         private void OnDestroy()
         {
-            if (InspectorWindow.instance != null && InspectorWindow.instance.GetTarget() == target)
+            if (target != null && InspectorWindow.instance != null && InspectorWindow.instance.GetTarget() == target)
             {
                 InspectorWindow.instance.ClearWindow();
             }

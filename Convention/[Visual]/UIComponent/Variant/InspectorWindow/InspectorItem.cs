@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Convention.WindowsUI.Variant
 {
@@ -63,40 +64,48 @@ namespace Convention.WindowsUI.Variant
         private object target = null;
         private string memberName = null;
         private Type type;
-        public object GetValue()
+        private const BindingFlags DefaultBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+        public T GetValue<T>()
         {
-            return ConventionUtility.SeekValue(target, memberName, type, BindingFlags.Default);
+            if (target == null)
+                return (T)ConventionUtility.GetDefault(typeof(T));
+            if (string.IsNullOrEmpty(memberName))
+                return (T)Convert.ChangeType(target, typeof(T));
+            return (T)Convert.ChangeType(ConventionUtility.SeekValue(target, memberName, type, DefaultBindingFlags), typeof(T));
         }
         public void SetValue(object value)
         {
-            ConventionUtility.PushValue(target, value, memberName, BindingFlags.Default);
+            if (memberName == null)
+                throw new InvalidOperationException("Cannot set value to null memberName");
+            if (value == null)
+                ConventionUtility.PushValue(target, ConventionUtility.GetDefault(type), memberName, DefaultBindingFlags);
+            else
+                ConventionUtility.PushValue(target, Convert.ChangeType(value, type), memberName, DefaultBindingFlags);
         }
         public const int LabelSize = 20;
 
         [Setting, SerializeField, OnlyPlayMode] private bool isFolder = false;
+        public bool IsFolder => isFolder;
         [Header("Inspector Item")]
         [Resources, SerializeField, OnlyNotNullMode] private Text ItemTitle;
         [Resources, SerializeField, OnlyNotNullMode] private UnityEngine.UI.Button FoldButton;
 
         private void Start()
         {
-            FoldButton.onClick.AddListener(() =>
-            {
-                SetFolder(!isFolder); 
-            });
+            FoldButton.onClick.AddListener(SwitchFolder);
             InitBindingEvent();
         }
         protected abstract void InitBindingEvent();
 
         public string title { get => ((ITitle)ItemTitle).title; set => ((ITitle)ItemTitle).title = value; }
 
-        public void SetTarget([In] object target, [In]string name, [In]Type type, [In] InspectorDrawConfig config)
+        public void SetTarget([In] object target, [Opt] string memberName, [In] Type type, [In] InspectorDrawConfig config)
         {
             if (this.target != target)
             {
                 this.target = target;
-                this.title = name;
-                this.memberName = name;
+                this.title = string.IsNullOrEmpty(memberName) ? type.GetFriendlyName() : memberName;
+                this.memberName = memberName;
                 this.type = type;
                 SetContainerSize(config.size);
                 SetInteractable(config.IsInteractable);
@@ -106,13 +115,13 @@ namespace Convention.WindowsUI.Variant
         public abstract void SetFolder(bool status);
         protected abstract void SetContainerSize(int size);
         protected abstract void SetInteractable(bool isInteractable);
-        [Setting]
+        [Setting, OnlyPlayMode]
         public void SwitchFolder()
         {
             isFolder = !isFolder;
             SetFolder(isFolder);
         }
-        [Setting]
+        [Setting, OnlyPlayMode]
         public abstract void UpdateValue();
     }
 }

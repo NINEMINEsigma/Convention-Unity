@@ -521,7 +521,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6279050909353911363, guid: 4e6810693c07dfb4399ed0c7c7a3ce39, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 8550121131508064702, guid: 4e6810693c07dfb4399ed0c7c7a3ce39, type: 3}
@@ -663,7 +663,7 @@ PrefabInstance:
       value: Inspector
       objectReference: {fileID: 0}
     - target: {fileID: 2372686228853117434, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 2372686229198948587, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
@@ -671,7 +671,7 @@ PrefabInstance:
       value: Inspector
       objectReference: {fileID: 0}
     - target: {fileID: 2372686229198948587, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 2814737429463080094, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
@@ -871,7 +871,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a86b441edb5f434fb07b2f3e6e0837c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InspectorItemList: []
+  ContentPlane: {fileID: 0}
+  ClassTypeField: {fileID: 0}
   TextFieldPrefab: {fileID: 0}
+  ToggleFieldPrefab: {fileID: 0}
 --- !u!224 &3709766065348511635 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1397725728417784005, guid: 14851ab435cb18448974bf76e92d8952, type: 3}
@@ -930,7 +934,7 @@ PrefabInstance:
       value: Input Field - Multi-Line<ignore rect>
       objectReference: {fileID: 0}
     - target: {fileID: 3241788777676767022, guid: 37924db2d27cd6e49bf8002531a08095, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 3241788777981816896, guid: 37924db2d27cd6e49bf8002531a08095, type: 3}
@@ -1070,7 +1074,7 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3241788778569828111, guid: 37924db2d27cd6e49bf8002531a08095, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 3241788778710343308, guid: 37924db2d27cd6e49bf8002531a08095, type: 3}
@@ -1098,7 +1102,7 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3241788778710343315, guid: 37924db2d27cd6e49bf8002531a08095, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
       value: 1801810542
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1156,7 +1160,7 @@ PrefabInstance:
       value: Input Field - Multi-Line<ignore rect>
       objectReference: {fileID: 0}
     - target: {fileID: 3241788777676767022, guid: 37924db2d27cd6e49bf8002531a08095, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 3241788777981816896, guid: 37924db2d27cd6e49bf8002531a08095, type: 3}
@@ -1296,7 +1300,7 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3241788778569828111, guid: 37924db2d27cd6e49bf8002531a08095, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 3241788778710343308, guid: 37924db2d27cd6e49bf8002531a08095, type: 3}
@@ -1324,7 +1328,7 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3241788778710343315, guid: 37924db2d27cd6e49bf8002531a08095, type: 3}
-      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      propertyPath: m_ActiveFontFeatures.Array.data[0]
       value: 1801810542
       objectReference: {fileID: 0}
     m_RemovedComponents: []

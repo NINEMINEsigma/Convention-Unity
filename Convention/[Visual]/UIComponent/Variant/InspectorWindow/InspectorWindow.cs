@@ -1,4 +1,8 @@
+using Convention.WindowsUI.Variant.InspectorComponent;
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace Convention.WindowsUI.Variant
@@ -15,7 +19,10 @@ namespace Convention.WindowsUI.Variant
             instance = this;
         }
 
-        [Content] private object target;
+        private object target;
+        [Content, SerializeField] private List<InspectorBaseItem> InspectorItemList = new();
+        [Resources] public RectTransform ContentPlane;
+        [Resources, SerializeField] private Text ClassTypeField;
 
         public object GetTarget()
         {
@@ -25,22 +32,141 @@ namespace Convention.WindowsUI.Variant
         [Content]
         public void ClearWindow()
         {
-            if (target != null)
+            if (target == null)
+                return;
+            foreach (var item in InspectorItemList)
             {
-                target = null;
+                GameObject.Destroy(item.gameObject);
+            }
+            target = null;
+        }
 
+        private T CreateItem<T>(T prefab) where T : InspectorBaseItem
+        {
+            var item = GameObject.Instantiate<T>(prefab, ContentPlane);
+            item.gameObject.SetActive(true);
+            InspectorItemList.Add(item);
+            return item;
+        }
+
+        private void DrawInspector(object target, Type type)
+        {
+            ClassTypeField.text = type.GetFriendlyName();
+            var fields = from field
+                         in type.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                         where field.HasAttribute<InspectorDrawAttribute>()
+                         select field;
+            foreach (var field in fields)
+            {
+                var attr = field.GetCustomAttribute<InspectorDrawAttribute>();
+                var drawType = InspectorDrawType.Auto;
+                var config = new InspectorDrawConfig()
+                {
+                    IsInteractable = false,
+                    size = 1
+                };
+                if (attr != null)
+                {
+                    drawType = attr.drawType;
+                    config = attr.config;
+                }
+                if (field is MethodInfo methodInfo)
+                {
+                }
+                else
+                {
+                    var fieldType = ConventionUtility.GetMemberValueType(field);
+                    var fieldName = field.Name;
+                    if (drawType == InspectorDrawType.Auto)
+                    {
+                        if (fieldType == typeof(string) || Utility.IsNumber(fieldType))
+                        {
+                            var textField = CreateItem(TextFieldPrefab);
+                            textField.SetTarget(target, fieldName, fieldType, config);
+                        }
+                        else if (fieldType == typeof(bool))
+                        {
+                            var toggleField = CreateItem(ToggleFieldPrefab);
+                            toggleField.SetTarget(target, fieldName, fieldType, config);
+                        }
+                        else
+                        {
+                            var textField = CreateItem(TextFieldPrefab);
+                            textField.SetTarget($"Unsupport {fieldType.GetFriendlyName()}", null, typeof(string), new InspectorDrawConfig()
+                            {
+                                IsInteractable = false,
+                                size = 1
+                            });
+                        }
+                    }
+                    else
+                    {
+                        var prefab = drawType switch
+                        {
+                            InspectorDrawType.Text => (InspectorBaseItem)TextFieldPrefab,
+                            InspectorDrawType.Toggle => ToggleFieldPrefab,
+                            _ => null
+                        };
+                        if (prefab)
+                            CreateItem(prefab).SetTarget(target, fieldName, fieldType, config);
+                        else
+                        {
+                            var textField = CreateItem(TextFieldPrefab);
+                            textField.SetTarget($"Unsupport {fieldType.GetFriendlyName()}", null, type, new InspectorDrawConfig()
+                            {
+                                IsInteractable = false,
+                                size = 1
+                            });
+                        }
+                    }
+                }
             }
         }
 
         public void SetTarget(object target)
         {
-            if (this.target != target)
+            if (this.target == target)
+                return;
+            ClearWindow();
+            if (target == null)
+                return;
+            this.target = target;
+            var type = target.GetType();
+            if (type == typeof(string) || Utility.IsNumber(type))
             {
-                this.target = target;
+                var textField = CreateItem(TextFieldPrefab);
+                textField.SetTarget(target.ToString(), null, type, new InspectorDrawConfig()
+                {
+                    IsInteractable = false,
+                    size = 1
+                });
+            }
+            else if (type == typeof(bool))
+            {
+                var toggleField = CreateItem(ToggleFieldPrefab);
+                toggleField.SetTarget(target, null, type, new InspectorDrawConfig()
+                {
+                    IsInteractable = false,
+                    size = 1
+                });
+            }
+            else if (type.IsValueType)
+            {
+                var textField = CreateItem(TextFieldPrefab);
+                textField.SetTarget($"Unsupport {type.GetFriendlyName()}", null, type, new InspectorDrawConfig()
+                {
+                    IsInteractable = false,
+                    size = 1
+                });
+            }
+            else
+            {
+                DrawInspector(target, type);
             }
         }
 
         [Header("Inspector Items")]
-        [Resources, SerializeField] private InspectorBaseItem TextFieldPrefab;
+        [Resources, SerializeField, OnlyNotNullMode] private InspectorTextField TextFieldPrefab;
+        [Resources, SerializeField, OnlyNotNullMode] private InspectorToggle ToggleFieldPrefab;
     }
 }

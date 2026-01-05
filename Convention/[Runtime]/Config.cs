@@ -669,12 +669,12 @@ namespace Convention
 
         public static bool HasAttribute(this MemberInfo self, Type attrType)
         {
-            return (from item in self.GetCustomAttributes(true) where item.GetType().IsSubclassOf(attrType) select item).Count() != 0;
+            return self.GetCustomAttribute(attrType, true) != null;
         }
 
         public static bool HasAttribute<T>(this MemberInfo self) where T : Attribute
         {
-            return (from item in self.GetCustomAttributes(true) where item.GetType().IsSubclassOf(typeof(T)) select item).Count() != 0;
+            return self.GetCustomAttribute<T>(true) != null;
         }
     }
 }
@@ -797,6 +797,7 @@ namespace Convention
             {
                 return property.GetValue(obj);
             }
+            Debug.LogError($"SeekValue failed: objType={type}, name={name}, valueType={valueType}");
             return null;
         }
         public static bool PushValue([In] object obj, [In] object value, [In] string name, BindingFlags flags)
@@ -1562,6 +1563,7 @@ namespace Convention
             {
                 return property.PropertyType;
             }
+            Debug.LogError($"{member.Name} is not FieldInfo or PropertyInfo");
             return null;
         }
         public static bool GetMemberValueType([In] MemberInfo member, [Out] out Type type)
