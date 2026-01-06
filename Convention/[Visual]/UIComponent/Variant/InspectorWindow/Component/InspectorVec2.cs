@@ -8,9 +8,9 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
     {
         [Header("Vec2")]
         [Resources, SerializeField, OnlyNotNullMode] private GameObject MyPlane;
-        [Resources, SerializeField, OnlyNotNullMode] private ModernUIInputField MyXField;
-        [Resources, SerializeField, OnlyNotNullMode] private ModernUIInputField MyYField;
-        [Setting, SerializeField] private int UnitSize = 70;
+        [Resources, SerializeField, OnlyNotNullMode] private TMPro.TMP_InputField MyXField;
+        [Resources, SerializeField, OnlyNotNullMode] private TMPro.TMP_InputField MyYField;
+        [Setting, SerializeField] private int UnitSize = 30;
 
         public override void SetFolder(bool status)
         {
@@ -27,7 +27,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
 
         protected override void InitBindingEvent()
         {
-            MyXField.AddListener((string value) =>
+            MyXField.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out var x))
                 {
@@ -36,7 +36,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
                     SetValue(vec);
                 }
             });
-            MyYField.AddListener((string value) =>
+            MyYField.onEndEdit.AddListener((string value) =>
             {
                 if (float.TryParse(value, out var y))
                 {
@@ -52,7 +52,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
             // fixed size
         }
 
-        protected override void SetInteractable(bool isInteractable)
+        public override void SetInteractable(bool isInteractable)
         {
             MyXField.interactable = isInteractable;
             MyYField.interactable = isInteractable;

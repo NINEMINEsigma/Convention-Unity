@@ -34,7 +34,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
             // toggle only fixed size
         }
 
-        protected override void SetInteractable(bool isInteractable)
+        public override void SetInteractable(bool isInteractable)
         {
             MyToggle.interactable = isInteractable;
         }

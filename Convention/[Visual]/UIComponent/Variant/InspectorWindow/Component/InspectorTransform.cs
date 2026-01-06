@@ -130,7 +130,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
             // fixed size
         }
 
-        protected override void SetInteractable(bool isInteractable)
+        public override void SetInteractable(bool isInteractable)
         {
             PosXField.interactable = isInteractable;
             PosYField.interactable = isInteractable;

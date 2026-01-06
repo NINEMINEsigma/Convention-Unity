@@ -2,17 +2,16 @@ using UnityEngine;
 
 namespace Convention.WindowsUI.Variant.InspectorComponent
 {
-    public class InspectorTextField : InspectorBaseItem
+    public class InspectorNumberField : InspectorBaseItem
     {
         [Header("Text")]
-        [Resources, SerializeField, OnlyNotNullMode] private InputField MyTextField;
-        [Setting, SerializeField] private int UnitSize = 50;
-        private int CacheSize = 50;
+        [Resources, SerializeField, OnlyNotNullMode] private TMPro.TMP_InputField MyTextField;
+        [Setting, SerializeField] private int UnitSize = 30;
 
         public override void SetFolder(bool status)
         {
             MyTextField.gameObject.SetActive(status == false);
-            rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, (status ? 0 : CacheSize) + LabelSize);
+            rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, (status ? 0 : UnitSize) + LabelSize);
         }
 
         public override void UpdateValue()
@@ -22,7 +21,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
 
         protected override void InitBindingEvent()
         {
-            MyTextField.AddListener((string value) =>
+            MyTextField.onEndEdit.AddListener((string value) =>
             {
                 SetValue(value);
             });
@@ -30,9 +29,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
 
         protected override void SetContainerSize(int size)
         {
-            CacheSize = size * UnitSize;
-            if (IsFolder == false)
-                rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CacheSize + LabelSize);
+            // fixed size
         }
 
         public override void SetInteractable(bool isInteractable)

@@ -31,7 +31,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
             // image only fixed size
         }
 
-        protected override void SetInteractable(bool isInteractable)
+        public override void SetInteractable(bool isInteractable)
         {
             // image cannot interact
         }

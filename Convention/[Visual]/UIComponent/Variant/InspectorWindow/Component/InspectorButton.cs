@@ -35,7 +35,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
             // button only fixed size
         }
 
-        protected override void SetInteractable(bool isInteractable)
+        public override void SetInteractable(bool isInteractable)
         {
             MyButton.interactable = isInteractable;
         }

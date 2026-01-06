@@ -27,6 +27,12 @@ namespace Convention.WindowsUI.Variant
         Color = 1 << 7,
         // Transform
         Transform = 1 << 8,
+        // Number
+        Number = 1 << 9,
+        // Structure
+        Structure = 1 << 10,
+        // Array
+        Array = 1 << 11,
     }
 
     public struct InspectorDrawConfig
@@ -67,11 +73,17 @@ namespace Convention.WindowsUI.Variant
         private string memberName = null;
         public string SafeMemberName => memberName ?? "null";
         private Type type;
+        public Type SafeType => type ?? typeof(object);
         private const BindingFlags DefaultBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         public T GetValue<T>()
         {
             if (typeof(T) == typeof(object))
-                return (T)target;
+            {
+                if (string.IsNullOrEmpty(memberName))
+                    return (T)target;
+                else
+                    return (T)ConventionUtility.SeekValue(target, memberName, type, DefaultBindingFlags);
+            }
             if (target == null)
                 return (T)ConventionUtility.GetDefault(typeof(T));
             if (string.IsNullOrEmpty(memberName))
@@ -126,7 +138,7 @@ namespace Convention.WindowsUI.Variant
         }
         public abstract void SetFolder(bool status);
         protected abstract void SetContainerSize(int size);
-        protected abstract void SetInteractable(bool isInteractable);
+        public abstract void SetInteractable(bool isInteractable);
         [Setting, OnlyPlayMode]
         public void SwitchFolder()
         {

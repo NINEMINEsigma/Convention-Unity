@@ -6,12 +6,12 @@ namespace Convention
 {
     public class FreeSceneCamera : MonoSingleton<FreeSceneCamera>, ILoadedInHierarchy
     {
-        [Resources, InspectorDraw(InspectorDrawType.Transform)] public Transform TargetFollow;
+        [Resources, InspectorDraw] public Transform TargetFollow;
         //[Resources, InspectorDraw(InspectorDrawType.Reference)] public CinemachineVirtualCamera VirtualCamera;
-        [Setting, InspectorDraw(InspectorDrawType.Text)] public float moveSpeed = 1;
-        [Setting, InspectorDraw(InspectorDrawType.Text)] public float rotationSpeed = 1;
+        [Setting, InspectorDraw] public float moveSpeed = 1;
+        [Setting, InspectorDraw] public float rotationSpeed = 1;
         private bool m_IsFocus = false;
-        [Setting, InspectorDraw(InspectorDrawType.Toggle)]
+        [Setting, InspectorDraw]
         public bool isFocus
         {
             get => m_IsFocus;
