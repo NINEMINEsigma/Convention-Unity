@@ -461,6 +461,8 @@ namespace Convention.WindowsUI.Variant
             [InspectorDraw] public Color colorTest = Color.red;
             [InspectorDraw] public int[] intArray = new int[6] {1,2,3,4,5,6 };
             [InspectorDraw] public NativeArray<float> floatArray = new NativeArray<float>(new float[4] { 0.1f, 0.2f, 0.3f, 0.4f }, Allocator.Persistent);
+            [InspectorDraw] public MyTestClass[] classArray = new MyTestClass[3];
+            [InspectorDraw] public MyTestStruct[] structArray = new MyTestStruct[3];
         }
         [Content, OnlyPlayMode]
         public void TestClass()

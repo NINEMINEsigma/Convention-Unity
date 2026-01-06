@@ -2951,7 +2951,6 @@ namespace Convention
             int count = reader.ReadInt32();
             if (array.Length < count)
                 array.ResizeArray(count);
-            float x, y, z;
             for (int i = 0; i < count; i++)
             {
                 array[i] = ReadColor(reader);
@@ -2972,7 +2971,6 @@ namespace Convention
         {
             int count = reader.ReadInt32();
             Color[] array = new Color[count];
-            float x, y, z;
             for (int i = 0; i < count; i++)
             {
                 array[i] = ReadColor(reader);
