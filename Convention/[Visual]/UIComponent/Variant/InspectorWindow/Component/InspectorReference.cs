@@ -9,6 +9,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
     {
         [Header("Button")]
         [Resources, SerializeField, OnlyNotNullMode] private Button MyButton;
+        [Resources, SerializeField, OnlyNotNullMode] private TMPro.TMP_Text MyText;
         [Setting, SerializeField] private int UnitSize = 30;
 
         public override void SetFolder(bool status)
@@ -19,7 +20,8 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
 
         public override void UpdateValue()
         {
-
+            var obj = GetValue<object>();
+            MyText.text = obj == null ? "null" : obj.ToString();
         }
 
         protected override void InitBindingEvent()
@@ -27,12 +29,7 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
             MyButton.onClick.AddListener(() =>
             {
                 var obj = GetValue<object>();
-                if (obj == null)
-                {
-                    InspectorWindow.instance.ClearWindow();
-                    InspectorWindow.instance.CreateItem(InspectorDrawType.Text, null, SafeMemberName, typeof(string));
-                }
-                else
+                if (obj != null)
                     InspectorWindow.instance.SetTarget(obj);
             });
         }
