@@ -233,18 +233,51 @@ namespace Convention.WindowsUI.Variant
 
         public static void DrawArray(object target, RectTransform ContentPlane, List<InspectorBaseItem> InspectorItemList)
         {
+            if (target == null)
+            {
+
+            }
             if (target is IEnumerable enumer)
             {
-                InspectorDrawConfig config = new()
+                var targetType = target.GetType();
+                var itemOperator = targetType.GetProperty("Item");
+                if (itemOperator == null)
                 {
-                    IsInteractable = false,
-                    size = 1
-                };
-                int i = 0;
-                foreach (var item in enumer)
+                    InspectorDrawConfig config = new()
+                    {
+                        IsInteractable = false,
+                        size = 1
+                    };
+                    int i = 0;
+                    foreach (var item in enumer)
+                    {
+                        CreateItemByAuto(item, ContentPlane, InspectorItemList, null, config, item == null ? typeof(string) : item.GetType())
+                        .title = i++.ToString();
+                    }
+                }
+                else
                 {
-                    CreateItemByAuto(item, ContentPlane, InspectorItemList, null, config, item == null ? typeof(string) : item.GetType())
-                    .title = i++.ToString();
+                    InspectorDrawConfig config = new()
+                    {
+                        IsInteractable = true,
+                        size = 1
+                    };
+                    int i = 0;
+                    foreach (var item in enumer)
+                    {
+                        var arrayItem = CreateItemByAuto(item, ContentPlane, InspectorItemList, null, config, item == null ? typeof(string) : item.GetType());
+                        int index = i;
+                        arrayItem.title = index.ToString();
+                        arrayItem.overrideGetter = () =>
+                        {
+                            return itemOperator.GetValue(target, new object[] { index });
+                        };
+                        arrayItem.overrideSetter = (value) =>
+                        {
+                            itemOperator.SetValue(target, value, new object[] { index });
+                        };
+                        i++;
+                    }
                 }
             }
             else

@@ -35,12 +35,23 @@ namespace Convention.WindowsUI.Variant.InspectorComponent
             this.isInteractable = isInteractable;
         }
 
+        public void ClearDraw()
+        {
+            foreach (var item in InspectorItemList)
+            {
+                Destroy(item.gameObject);
+            }
+            InspectorItemList.Clear();
+        }
+
         public override void UpdateValue()
         {
+            ClearDraw();
             InspectorUtility.DrawArray(GetValue<object>(), ContentPlane, InspectorItemList);
             foreach (var item in InspectorItemList)
             {
                 item.SetInteractable(isInteractable);
+                item.UpdateValue();
             }
         }
     }

@@ -70,6 +70,8 @@ namespace Convention.WindowsUI.Variant
     public abstract class InspectorBaseItem : WindowsComponent, ITitle
     {
         private object target = null;
+        public Func<object> overrideGetter = null;
+        public Action<object> overrideSetter = null;
         private string memberName = null;
         public string SafeMemberName => memberName ?? "null";
         private Type type;
@@ -77,6 +79,13 @@ namespace Convention.WindowsUI.Variant
         private const BindingFlags DefaultBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         public T GetValue<T>()
         {
+            if (overrideGetter != null)
+            {
+                var result = overrideGetter();
+                if (result.GetType().IsAssignableFrom(typeof(T)))
+                    return (T)result;
+                return (T)Convert.ChangeType(overrideGetter(), typeof(T));
+            }
             if (typeof(T) == typeof(object))
             {
                 if (string.IsNullOrEmpty(memberName))
@@ -92,6 +101,14 @@ namespace Convention.WindowsUI.Variant
         }
         public void SetValue(object value)
         {
+            if (overrideSetter != null)
+            {
+                if (value == null)
+                    overrideSetter(ConventionUtility.GetDefault(type));
+                else
+                    overrideSetter(type == typeof(object) ? value : Convert.ChangeType(value, type));
+                return;
+            }
             if (memberName == null)
                 throw new InvalidOperationException("Cannot set value to null memberName");
             if (value == null)
