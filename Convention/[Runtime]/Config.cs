@@ -37,6 +37,20 @@ namespace Convention
         public static bool IsPlatformLinux => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
         public static bool IsPlatformOsx => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
         public static bool IsPlatformX64 => System.Environment.Is64BitOperatingSystem;
+        public static string PlatformName
+        {
+            get
+            {
+                if (IsPlatformWindows)
+                    return "Windows";
+                else if (IsPlatformLinux)
+                    return "Linux";
+                else if (IsPlatformOsx)
+                    return "OSX";
+                else
+                    return "Unknown";
+            }
+        }   
 
         static PlatformIndicator()
         {
@@ -2721,6 +2735,15 @@ namespace Convention
                 writer.Write(array[start++]);
             }
         }
+        public static void SerializeEnumAsIntNativeArray<TEnum>(BinaryWriter writer, in NativeArray<TEnum> array, int start = 0, int end = int.MaxValue) where TEnum : struct
+        {
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(Convert.ToInt32(array[start++]));
+            }
+        }
         public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<int> array)
         {
             int count = reader.ReadInt32();
@@ -2729,6 +2752,17 @@ namespace Convention
             for (int i = 0; i < count; i++)
             {
                 array[i] = reader.ReadInt32();
+            }
+            return count;
+        }
+        public static int DeserializeEnumAsIntNativeArray<TEnum>(BinaryReader reader, ref NativeArray<TEnum> array) where TEnum : struct
+        {
+            int count = reader.ReadInt32();
+            if (array.Length < count)
+                array.ResizeArray(count);
+            for (int i = 0; i < count; i++)
+            {
+                array[i] = (TEnum)Convert.ChangeType(reader.ReadInt32(), typeof(TEnum));
             }
             return count;
         }
