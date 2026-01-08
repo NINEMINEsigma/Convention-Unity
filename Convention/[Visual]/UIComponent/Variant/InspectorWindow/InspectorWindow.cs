@@ -62,17 +62,15 @@ namespace Convention.WindowsUI.Variant
             if (DrawPlaneFieldCache.TryGetValue(type, out var fields) == false)
             {
                 fields = (from field
-                          in type.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                          in ConventionUtility.SeekMemberInfoFromType(type, new Type[] { typeof(InspectorDrawAttribute) }, null, null)
                           where field.HasAttribute<InspectorDrawAttribute>()
-                          select field).ToList();
-                if (fields.Count == 0)
-                {
-                    var temp = (from field
-                                in type.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                                select field).ToList();
-                    if (temp.Count < 5)
-                        fields = temp;
-                }
+                          where field is FieldInfo || field is PropertyInfo
+                          select field
+                         ).ToList();
+                    //      (from field
+                    //      in type.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    //      where field.HasAttribute<InspectorDrawAttribute>()
+                    //      select field).ToList();
                 fields.Sort((x, y) =>
                 {
                     int a = 0, b = 0;

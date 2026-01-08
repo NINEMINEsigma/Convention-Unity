@@ -2790,6 +2790,50 @@ namespace Convention
 
         #region Float
 
+        public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<bool> array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start++]);
+            }
+        }
+        public static int DeserializeNativeArray(BinaryReader reader, ref NativeArray<bool> array)
+        {
+            int count = reader.ReadInt32();
+            if (array.Length < count)
+                array.ResizeArray(count);
+            for (int i = 0; i < count; i++)
+            {
+                array[i] = reader.ReadBoolean();
+            }
+            return count;
+        }
+        public static void SerializeArray(BinaryWriter writer, in bool[] array, int start = 0, int end = int.MaxValue)
+        {
+            int e = Mathf.Min(array == null ? 0 : array.Length, end);
+            writer.Write(e - start);
+            while (start < e)
+            {
+                writer.Write(array[start++]);
+            }
+        }
+        public static bool[] DeserializeBoolArray(BinaryReader reader)
+        {
+            int count = reader.ReadInt32();
+            bool[] array = new bool[count];
+            for (int i = 0; i < count; i++)
+            {
+                array[i] = reader.ReadBoolean();
+            }
+            return array;
+        }
+
+        #endregion
+
+        #region Float
+
         public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<float> array, int start = 0, int end = int.MaxValue)
         {
             int e = Mathf.Min(array == null ? 0 : array.Length, end);
