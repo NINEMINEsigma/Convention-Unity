@@ -2652,6 +2652,14 @@ namespace Convention
         {
             return reader.ReadInt32();
         }
+        public static void WriteEnum<TEnum>(BinaryWriter writer, in TEnum data) where TEnum : struct
+        {
+            writer.Write((int)Convert.ChangeType(data, typeof(int)));
+        }
+        public static TEnum ReadEnum<TEnum>(BinaryReader reader) where TEnum : struct
+        {
+            return (TEnum)Convert.ChangeType(reader.ReadInt32(), typeof(TEnum));
+        }
         public static void WriteFloat(BinaryWriter writer, in float data)
         {
             writer.Write(data);
@@ -2787,7 +2795,7 @@ namespace Convention
 
         #endregion
 
-        #region Float
+        #region Bool
 
         public static void SerializeNativeArray(BinaryWriter writer, in NativeArray<bool> array, int start = 0, int end = int.MaxValue)
         {

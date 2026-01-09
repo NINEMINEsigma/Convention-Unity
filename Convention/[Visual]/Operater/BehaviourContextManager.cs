@@ -323,20 +323,20 @@ namespace Convention.WindowsUI
             return locationValid?.Invoke(sp, eventCamera) ?? true;
         }
 
-        private void Awake()
-        {
-            foreach (var item in GetComponents<IBehaviourOperator>())
-            {
-                Destroy(item as MonoBehaviour);
-            }
-        }
-        private void OnDestroy()
-        {
-            foreach (var item in GetComponents<IBehaviourOperator>())
-            {
-                Destroy(item as MonoBehaviour);
-            }
-        }
+        //private void Awake()
+        //{
+        //    foreach (var item in GetComponents<IBehaviourOperator>())
+        //    {
+        //        Destroy(item as MonoBehaviour);
+        //    }
+        //}
+        //private void OnDestroy()
+        //{
+        //    foreach (var item in GetComponents<IBehaviourOperator>())
+        //    {
+        //        Destroy(item as MonoBehaviour);
+        //    }
+        //}
     }
 }
 
