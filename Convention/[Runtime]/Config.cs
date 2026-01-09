@@ -1653,11 +1653,10 @@ namespace Convention
             )
         {
             List<MemberInfo> result = new();
-            result.AddRange(targetType.GetMembers(BindingFlags.Public | BindingFlags.Instance));
             while (targetType != null && targetType != typeof(object) && targetType != untilBase)
             {
                 result.AddRange(
-                    from info in targetType.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance)
+                    from info in targetType.GetMembers(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                     where attrs == null || HasCustomAttribute(info, attrs)
                     where types == null || (GetMemberValueType(info, out var type) && types.Contains(type))
                     select info
