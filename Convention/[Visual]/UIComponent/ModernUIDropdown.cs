@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +39,17 @@ namespace Convention.WindowsUI
         [Content] public List<Item> dropdownItems = new();
 
         // Other variables
-        bool isOn;
+        private bool isOn = false;
+        [Setting] public UnityEvent<bool> DropdownOnEvent = new();
+        private bool IsOn
+        {
+            get => isOn;
+            set
+            {
+                isOn = value;
+                DropdownOnEvent.Invoke(value);
+            }
+        }
         [Content] public int siblingIndex = 0;
 
         private bool m_interactable = true;
@@ -234,10 +244,10 @@ namespace Convention.WindowsUI
 
         public void Animate()
         {
-            if (isOn == false && animationType == AnimationType.FADING)
+            if (IsOn == false && animationType == AnimationType.FADING)
             {
                 dropdownAnimator.Play("Fading In");
-                isOn = true;
+                IsOn = true;
 
                 if (isListItem == true)
                 {
@@ -246,10 +256,10 @@ namespace Convention.WindowsUI
                 }
             }
 
-            else if (isOn == true && animationType == AnimationType.FADING)
+            else if (IsOn == true && animationType == AnimationType.FADING)
             {
                 dropdownAnimator.Play("Fading Out");
-                isOn = false;
+                IsOn = false;
 
                 if (isListItem == true)
                 {
@@ -258,10 +268,10 @@ namespace Convention.WindowsUI
                 }
             }
 
-            else if (isOn == false && animationType == AnimationType.SLIDING)
+            else if (IsOn == false && animationType == AnimationType.SLIDING)
             {
                 dropdownAnimator.Play("Sliding In");
-                isOn = true;
+                IsOn = true;
 
                 if (isListItem == true)
                 {
@@ -270,10 +280,10 @@ namespace Convention.WindowsUI
                 }
             }
 
-            else if (isOn == true && animationType == AnimationType.SLIDING)
+            else if (IsOn == true && animationType == AnimationType.SLIDING)
             {
                 dropdownAnimator.Play("Sliding Out");
-                isOn = false;
+                IsOn = false;
 
                 if (isListItem == true)
                 {
@@ -282,10 +292,10 @@ namespace Convention.WindowsUI
                 }
             }
 
-            else if (isOn == false && animationType == AnimationType.STYLISH)
+            else if (IsOn == false && animationType == AnimationType.STYLISH)
             {
                 dropdownAnimator.Play("Stylish In");
-                isOn = true;
+                IsOn = true;
 
                 if (isListItem == true)
                 {
@@ -294,10 +304,10 @@ namespace Convention.WindowsUI
                 }
             }
 
-            else if (isOn == true && animationType == AnimationType.STYLISH)
+            else if (IsOn == true && animationType == AnimationType.STYLISH)
             {
                 dropdownAnimator.Play("Stylish Out");
-                isOn = false;
+                IsOn = false;
                 if (isListItem == true)
                 {
                     gameObject.transform.SetParent(currentListParent, true);
@@ -308,10 +318,10 @@ namespace Convention.WindowsUI
             StopCoroutine(nameof(ResizeBroadcast));
             StartCoroutine(nameof(ResizeBroadcast));
 
-            if (enableTrigger == true && isOn == false)
+            if (enableTrigger == true && IsOn == false)
                 triggerObject.SetActive(false);
 
-            else if (enableTrigger == true && isOn == true)
+            else if (enableTrigger == true && IsOn == true)
                 triggerObject.SetActive(true);
 
             if (outOnPointerExit == true)
@@ -325,10 +335,10 @@ namespace Convention.WindowsUI
         {
             if (outOnPointerExit == true)
             {
-                if (isOn == true)
+                if (IsOn == true)
                 {
                     Animate();
-                    isOn = false;
+                    IsOn = false;
                 }
 
                 if (isListItem == true)
@@ -377,14 +387,18 @@ namespace Convention.WindowsUI
             RefreshImmediate();
         }
 
-        public void Select(string option)
+        public bool Select(string option)
         {
-            var target = dropdownItems.FirstOrDefault(T => T.itemName == option);
-            if (target != default)
+            foreach (var item in dropdownItems)
             {
-                target.ToggleItem.isOn = true;
-                title = option;
+                if (item.itemName == option)
+                {
+                    item.ToggleItem.isOn = true;
+                    title = option;
+                    return true;
+                }
             }
+            return false;
         }
 
         public IActionInvoke<string> AddListener(params UnityAction<string>[] action)

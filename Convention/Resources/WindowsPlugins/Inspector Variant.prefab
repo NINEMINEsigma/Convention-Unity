@@ -816,6 +816,7 @@ MonoBehaviour:
   ColorFieldPrefab: {fileID: 5637592491111863730, guid: 521da1cdb76b79c4fa09570d3c5129d2, type: 3}
   StructFieldPrefab: {fileID: 4230610738434633037, guid: b3cb1bdeb2bc98e4ea6a45e6f0d5b826, type: 3}
   ArrayFieldPrefab: {fileID: 1490802686259949583, guid: fd601ed8e206ec543993b8fc5307e93d, type: 3}
+  EnumFieldPrefab: {fileID: 0}
 --- !u!224 &3709766065348511635 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1397725728417784005, guid: 14851ab435cb18448974bf76e92d8952, type: 3}

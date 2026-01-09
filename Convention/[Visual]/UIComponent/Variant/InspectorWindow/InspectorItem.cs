@@ -33,6 +33,8 @@ namespace Convention.WindowsUI.Variant
         Structure = 1 << 10,
         // Array
         Array = 1 << 11,
+        // Enum
+        Enum = 1 << 12,
     }
 
     public struct InspectorDrawConfig

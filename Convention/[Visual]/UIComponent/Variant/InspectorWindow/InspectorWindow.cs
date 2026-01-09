@@ -23,6 +23,7 @@ namespace Convention.WindowsUI.Variant
         private static InspectorColor ColorFieldPrefab => InspectorWindow.instance.ColorFieldPrefab;
         private static InspectorStructure StructFieldPrefab => InspectorWindow.instance.StructFieldPrefab;
         private static InspectorArray ArrayFieldPrefab => InspectorWindow.instance.ArrayFieldPrefab;
+        private static InspectorEnum EnumFieldPrefab => InspectorWindow.instance.EnumFieldPrefab;
         private static Dictionary<Type, List<MemberInfo>> DrawPlaneFieldCache => InspectorWindow.instance.DrawPlaneFieldCache;
         public static T CreateItem<T>(T prefab, RectTransform ContentPlane, List<InspectorBaseItem> InspectorItemList) where T : InspectorBaseItem
         {
@@ -51,6 +52,7 @@ namespace Convention.WindowsUI.Variant
                 InspectorDrawType.Number => CreateItem(NumberFieldPrefab, ContentPlane, InspectorItemList),
                 InspectorDrawType.Structure => CreateItem(StructFieldPrefab, ContentPlane, InspectorItemList),
                 InspectorDrawType.Array => CreateItem(ArrayFieldPrefab, ContentPlane, InspectorItemList),
+                InspectorDrawType.Enum => CreateItem(EnumFieldPrefab, ContentPlane, InspectorItemList),
                 _ => throw new NotImplementedException(),
             };
             item.SetTarget(target, null, targetType, new() { IsInteractable = false, size = 1 });
@@ -128,6 +130,7 @@ namespace Convention.WindowsUI.Variant
                             InspectorDrawType.Color => (InspectorBaseItem)ColorFieldPrefab,
                             InspectorDrawType.Structure => (InspectorBaseItem)StructFieldPrefab,
                             InspectorDrawType.Array => (InspectorBaseItem)ArrayFieldPrefab,
+                            InspectorDrawType.Enum => (InspectorBaseItem)EnumFieldPrefab,
                             _ => null
                         };
                         if (prefab)
@@ -159,6 +162,12 @@ namespace Convention.WindowsUI.Variant
                 var numberField = CreateItem(NumberFieldPrefab, ContentPlane, InspectorItemList);
                 numberField.SetTarget(target, fieldName, fieldType, config);
                 return numberField;
+            }
+            else if(fieldType.IsEnum)
+            {
+                var enumField = CreateItem(EnumFieldPrefab, ContentPlane, InspectorItemList);
+                enumField.SetTarget(target, fieldName, fieldType, config);
+                return enumField;
             }
             else if (fieldType == typeof(bool))
             {
@@ -425,6 +434,7 @@ namespace Convention.WindowsUI.Variant
         [Resources, SerializeField, OnlyNotNullMode] internal InspectorColor ColorFieldPrefab;
         [Resources, SerializeField, OnlyNotNullMode] internal InspectorStructure StructFieldPrefab;
         [Resources, SerializeField, OnlyNotNullMode] internal InspectorArray ArrayFieldPrefab;
+        [Resources, SerializeField, OnlyNotNullMode] internal InspectorEnum EnumFieldPrefab;
 
 #if UNITY_EDITOR
         [Content, OnlyPlayMode]
