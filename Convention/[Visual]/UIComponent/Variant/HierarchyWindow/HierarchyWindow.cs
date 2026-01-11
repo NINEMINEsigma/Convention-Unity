@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static Convention.WindowsUI.Variant.PropertiesWindow;
 
@@ -38,6 +40,7 @@ namespace Convention.WindowsUI.Variant
         public HierarchyItem GetReferenceItem([In] object reference) => this.AllReferenceItemLinker[reference];
         public bool ContainsReference(int code) => this.AllReferenceLinker.ContainsKey(code);
         public bool ContainsReference(object reference) => this.AllReferenceLinker_R.ContainsKey(reference);
+        public IEnumerable<object> GetAllReferenceLinker() => this.AllReferenceLinker.Values;
 
         public void SetHierarchyItemParent([In] HierarchyItem childItemTab, [In] HierarchyItem parentItemTab)
         {

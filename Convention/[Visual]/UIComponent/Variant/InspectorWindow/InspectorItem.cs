@@ -113,10 +113,19 @@ namespace Convention.WindowsUI.Variant
             }
             if (memberName == null)
                 throw new InvalidOperationException("Cannot set value to null memberName");
-            if (value == null)
-                ConventionUtility.PushValue(target, ConventionUtility.GetDefault(type), memberName, DefaultBindingFlags);
-            else
-                ConventionUtility.PushValue(target, type == typeof(object) ? value : Convert.ChangeType(value, type), memberName, DefaultBindingFlags);
+            try
+            {
+                if (value == null)
+                    ConventionUtility.PushValue(target, ConventionUtility.GetDefault(type), memberName, DefaultBindingFlags);
+                else if (type.IsAssignableFrom(value.GetType()))
+                    ConventionUtility.PushValue(target, value, memberName, DefaultBindingFlags);
+                else
+                    ConventionUtility.PushValue(target, type == typeof(object) ? value : Convert.ChangeType(value, type), memberName, DefaultBindingFlags);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"{nameof(SetValue)} failed where: value={value}, target={target}, type={type}, memberName={memberName}", ex);
+            }
         }
         public void InvokeMember()
         {

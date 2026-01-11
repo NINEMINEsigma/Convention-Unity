@@ -24,6 +24,15 @@ namespace Convention.WindowsUI
         private Animator dropdownAnimator;
         [Resources, OnlyNotNullMode] public TextMeshProUGUI m_Title;
         private Button m_RawButton;
+        public Button RawButton
+        {
+            get
+            {
+                if (m_RawButton == null)
+                    m_RawButton = GetComponent<Button>();
+                return m_RawButton;
+            }
+        }
 
         // Settings
         [Setting] public bool enableTrigger = true;
@@ -61,6 +70,7 @@ namespace Convention.WindowsUI
                 if (m_interactable != value)
                 {
                     m_interactable = value;
+                    RawButton.interactable = value;
                     RefreshImmediate();
                 }
             }
@@ -128,8 +138,6 @@ namespace Convention.WindowsUI
 
         private void Start()
         {
-            m_RawButton = GetComponent<Button>();
-
             try
             {
                 dropdownAnimator = this.GetComponent<Animator>();
