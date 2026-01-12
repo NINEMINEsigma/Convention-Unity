@@ -2769,7 +2769,7 @@ namespace Convention
                 array.ResizeArray(count);
             for (int i = 0; i < count; i++)
             {
-                array[i] = (TEnum)Convert.ChangeType(reader.ReadInt32(), typeof(TEnum));
+                array[i] = (TEnum)(object)reader.ReadInt32();
             }
             return count;
         }
