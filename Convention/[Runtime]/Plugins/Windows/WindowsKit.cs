@@ -99,7 +99,13 @@ namespace Convention
 
             if (GetOpenFileName(ofn))
             {
-                current_initialDir = Path.GetDirectoryName(ofn.file);
+                try
+                {
+                    current_initialDir = Path.GetDirectoryName(ofn.file.TrimEnd('\0'));
+                }
+                catch
+                {
+                }
                 return ofn.file.Split('\0');
             }
             return null;
@@ -120,8 +126,15 @@ namespace Convention
 
             if (GetSaveFileName(ofn))
             {
-                current_initialDir = Path.GetDirectoryName(ofn.file);
-                return ofn.file;
+
+                try
+                {
+                    current_initialDir = Path.GetDirectoryName(ofn.file.TrimEnd('\0'));
+                }
+                catch
+                {
+                }
+                return ofn.file.TrimEnd('\0');
             }
             return null;
         }
