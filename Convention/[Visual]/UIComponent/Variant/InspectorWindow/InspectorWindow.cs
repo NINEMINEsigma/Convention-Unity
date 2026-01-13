@@ -66,7 +66,7 @@ namespace Convention.WindowsUI.Variant
                 fields = (from field
                           in ConventionUtility.SeekMemberInfoFromType(type, new Type[] { typeof(InspectorDrawAttribute) }, null, null)
                           where field.HasAttribute<InspectorDrawAttribute>()
-                          where field is FieldInfo || field is PropertyInfo
+                          where field is FieldInfo || field is PropertyInfo || field is MethodInfo
                           select field
                          ).ToList();
                     //      (from field
