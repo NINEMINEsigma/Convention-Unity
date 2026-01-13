@@ -17,7 +17,7 @@ namespace Convention
         }
 
         [ExecuteAlways]
-        public class FullscreenEffectBase<T> : MonoAnyBehaviour where T : FullscreenPassBase, new()
+        public class FullscreenEffectBase<T> : MonoBehaviour where T : FullscreenPassBase, new()
         {
             [Ignore] private T _pass;
 
@@ -39,7 +39,7 @@ namespace Convention
             private CameraType _cameraType = CameraType.Game | CameraType.SceneView;
 
 
-            private void OnEnable()
+            protected virtual void OnEnable()
             {
                 SetupPass();
 
