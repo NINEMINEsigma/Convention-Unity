@@ -423,9 +423,10 @@ namespace Convention
             bool ContentNotEmpty = ContentFields.Count() != 0;
             bool ResourcesNotEmpty = ResourcesFields.Count() != 0;
             bool SettingNotEmpty = SettingFields.Count() != 0;
-            List<GUIContent> toolbarTabs = new();
-            if ((ContentNotEmpty ? 1 : 0) + (ResourcesNotEmpty ? 1 : 0) + (SettingNotEmpty ? 1 : 0) != 1)
-                toolbarTabs.Add(new GUIContent("Origin"));
+            List<GUIContent> toolbarTabs = new()
+            {
+                new GUIContent("Origin")
+            };
             if (ContentNotEmpty)
                 toolbarTabs.Add(new GUIContent("Content"));
             if (ResourcesFields.Count() != 0)

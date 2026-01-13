@@ -21,7 +21,7 @@ namespace Convention
         {
             [Ignore] private T _pass;
 
-            [Ignore] public Material PassMaterial { get => _pass.material; }
+            [Ignore] public Material PassMaterial { get => _pass == null ? null : _pass.material; }
 
             [SerializeField, Setting]
             private string _passName = "Fullscreen Pass";
