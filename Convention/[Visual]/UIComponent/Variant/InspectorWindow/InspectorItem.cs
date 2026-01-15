@@ -81,25 +81,38 @@ namespace Convention.WindowsUI.Variant
         private const BindingFlags DefaultBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         public T GetValue<T>()
         {
+            object currentValue = null;
             if (overrideGetter != null)
+                currentValue = overrideGetter();
+            else
             {
-                var result = overrideGetter();
-                if (result.GetType().IsAssignableFrom(typeof(T)))
-                    return (T)result;
-                return (T)Convert.ChangeType(overrideGetter(), typeof(T));
-            }
-            if (typeof(T) == typeof(object))
-            {
-                if (string.IsNullOrEmpty(memberName))
-                    return (T)target;
+                currentValue = target;
+                if (typeof(T) == typeof(object))
+                {
+                    if (!string.IsNullOrEmpty(memberName))
+                        currentValue = ConventionUtility.SeekValue(currentValue, memberName, type, DefaultBindingFlags);
+                }
                 else
-                    return (T)ConventionUtility.SeekValue(target, memberName, type, DefaultBindingFlags);
+                {
+                    if (!string.IsNullOrEmpty(memberName))
+                        currentValue = ConventionUtility.SeekValue(target, memberName, type, DefaultBindingFlags);
+                }
             }
-            if (target == null)
+            if (typeof(T) == typeof(string))
+                return (T)(object)currentValue.ToString();
+            if (currentValue == null)
                 return (T)ConventionUtility.GetDefault(typeof(T));
-            if (string.IsNullOrEmpty(memberName))
-                return (T)Convert.ChangeType(target, typeof(T));
-            return (T)Convert.ChangeType(ConventionUtility.SeekValue(target, memberName, type, DefaultBindingFlags), typeof(T));
+            if (typeof(T).IsAssignableFrom(currentValue.GetType()))
+                return (T)currentValue;
+            try
+            {
+                return (T)Convert.ChangeType(currentValue, typeof(T));
+            }
+            catch
+            {
+                Debug.LogError($"type={type}, currentValue={currentValue}({(currentValue == null ? "null" : currentValue.GetType())})");
+                throw;
+            }
         }
         public void SetValue(object value)
         {

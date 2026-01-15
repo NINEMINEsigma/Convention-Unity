@@ -2658,7 +2658,7 @@ namespace Convention
         }
         public static TEnum ReadEnum<TEnum>(BinaryReader reader) where TEnum : struct
         {
-            return (TEnum)Convert.ChangeType(reader.ReadInt32(), typeof(TEnum));
+            return (TEnum)(object)reader.ReadInt32();
         }
         public static void WriteFloat(BinaryWriter writer, in float data)
         {
