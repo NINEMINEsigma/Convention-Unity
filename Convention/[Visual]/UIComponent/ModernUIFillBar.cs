@@ -35,7 +35,7 @@ namespace Convention.WindowsUI
         public void Start()
         {
             var Context = this.GetOrAddComponent<BehaviourContextManager>();
-            Context.OnDragEvent = BehaviourContextManager.InitializeContextSingleEvent(Context.OnDragEvent, OnDrag);
+            Context.OnDragEvent = BehaviourContextManager.AddContextSingleEvent(Context.OnDragEvent, OnDrag);
             this.currentPercent = loadingBar.fillAmount = this.lastPercent = value;
             textPercent.text = (IsPercent ? currentPercent * 100 : currentPercent).ToString("F2") + (IsPercent ? "%" : "");
             textValue.text = GetValue().ToString("F2");

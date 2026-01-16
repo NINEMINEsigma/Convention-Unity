@@ -77,7 +77,7 @@ namespace Convention.WindowsUI
         public void ResetContext()
         {
             var Context = this.GetOrAddComponent<BehaviourContextManager>();
-            Context.OnPointerDownEvent = BehaviourContextManager.InitializeContextSingleEvent(Context.OnPointerDownEvent, OnPointerDown);
+            Context.OnPointerDownEvent = BehaviourContextManager.AddContextSingleEvent(Context.OnPointerDownEvent, OnPointerDown);
 
         }
         public void UpdateUI()

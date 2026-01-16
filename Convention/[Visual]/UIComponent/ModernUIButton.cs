@@ -168,9 +168,9 @@ namespace Convention.WindowsUI
         public void ResetContext()
         {
             var Context = this.GetOrAddComponent<BehaviourContextManager>();
-            Context.OnPointerDownEvent = BehaviourContextManager.InitializeContextSingleEvent(Context.OnPointerDownEvent, OnPointerDown);
-            Context.OnPointerEnterEvent = BehaviourContextManager.InitializeContextSingleEvent(Context.OnPointerEnterEvent, OnPointerEnter);
-            Context.OnPointerExitEvent = BehaviourContextManager.InitializeContextSingleEvent(Context.OnPointerExitEvent, OnPointerExit);
+            Context.OnPointerDownEvent = BehaviourContextManager.AddContextSingleEvent(Context.OnPointerDownEvent, OnPointerDown);
+            Context.OnPointerEnterEvent = BehaviourContextManager.AddContextSingleEvent(Context.OnPointerEnterEvent, OnPointerEnter);
+            Context.OnPointerExitEvent = BehaviourContextManager.AddContextSingleEvent(Context.OnPointerExitEvent, OnPointerExit);
 
         }
         public void Reset()

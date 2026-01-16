@@ -20,7 +20,7 @@ namespace Convention.WindowsUI
             if (Context == null)
                 Context = this.GetOrAddComponent<BehaviourContextManager>();
 
-            Context.OnPointerClickEvent = BehaviourContextManager.InitializeContextSingleEvent(Context.OnPointerClickEvent, point =>
+            Context.OnPointerClickEvent = BehaviourContextManager.AddContextSingleEvent(Context.OnPointerClickEvent, point =>
             {
                 if (point.button == PointerEventData.InputButton.Left)
                 {

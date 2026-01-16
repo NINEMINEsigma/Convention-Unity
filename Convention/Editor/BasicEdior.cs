@@ -420,9 +420,9 @@ namespace Convention
             GUILayout.EndHorizontal();
             GUILayout.Space(-42);
 
-            bool ContentNotEmpty = ContentFields.Count() != 0;
-            bool ResourcesNotEmpty = ResourcesFields.Count() != 0;
-            bool SettingNotEmpty = SettingFields.Count() != 0;
+            bool ContentNotEmpty = ContentFields.Count() + ContentMethods.Count() != 0;
+            bool ResourcesNotEmpty = ResourcesFields.Count() + ResourcesMethods.Count() != 0;
+            bool SettingNotEmpty = SettingFields.Count() + SettingMethods.Count() != 0;
             List<GUIContent> toolbarTabs = new()
             {
                 new GUIContent("Origin")
