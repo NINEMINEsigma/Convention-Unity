@@ -55,6 +55,9 @@ namespace Convention
         static PlatformIndicator()
         {
             MainThreadID = Thread.CurrentThread.ManagedThreadId;
+            CompanyName = Application.companyName;
+            ProductName = Application.productName;
+            ApplicationPath = System.AppDomain.CurrentDomain.BaseDirectory;
         }
 
         public static int MainThreadID { get; private set; }
@@ -63,11 +66,11 @@ namespace Convention
             return MainThreadID == Thread.CurrentThread.ManagedThreadId;
         }
 
-        public static string CompanyName = Application.companyName;
+        public static readonly string CompanyName;
 
-        public static string ProductName = Application.productName;
+        public static readonly string ProductName;
 
-        public static string ApplicationPath => throw new NotSupportedException("Not support to get ApplicationPath");
+        public static readonly string ApplicationPath;
 
         public static string StreamingAssetsPath => Application.streamingAssetsPath;
 
@@ -76,6 +79,9 @@ namespace Convention
         public static string DataPath => Application.dataPath;
 
         public static string CurrentWorkPath => Environment.CurrentDirectory;
+
+        public static char GetFileSeparator(bool is_not_this_platform = false) => IsPlatformWindows && !is_not_this_platform ? '\\' : '/';
+        public static string GetFileSeparatorAsStr(bool is_not_this_platform = false) => IsPlatformWindows && !is_not_this_platform ? "\\" : "/";
 
         public static string Combine(string a, string b) => Path.Combine(a, b);
         public static string CombineAsDir(string a, string b)

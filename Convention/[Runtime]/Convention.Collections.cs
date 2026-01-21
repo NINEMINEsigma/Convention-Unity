@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -12,23 +12,23 @@ namespace Convention.Collections
     namespace Generic
     {
         /// <summary>
-        /// ¸½´øÓĞ»º´æ»úÖÆµÄÁ´±íÀà
+        /// é™„å¸¦æœ‰ç¼“å­˜æœºåˆ¶çš„é“¾è¡¨ç±»
         /// </summary>
-        /// <typeparam name="T">Ö¸¶¨Á´±íµÄÔªËØÀàĞÍ</typeparam>
+        /// <typeparam name="T">æŒ‡å®šé“¾è¡¨çš„å…ƒç´ ç±»å‹</typeparam>
         public sealed class LinkedCacheList<T> : ICollection<T>, IEnumerable<T>, ICollection, IEnumerable
         {
             private readonly LinkedList<T> m_LinkedList;
             /// <summary>
-            /// Ö®ËùÒÔĞèÒªÕâÌ×»º´æ»úÖÆ£¬Ö÷ÒªÓĞÈıµãºÃ´¦£º
-            /// <list dataType="bullet">¼õÉÙ GC Ñ¹Á¦£º´óÁ¿Æµ·±µÄ²åÈë/É¾³ı»á²úÉúºÜ¶à¶ÌÉúÃüÖÜÆÚµÄ½Úµã¶ÔÏó£¬Í¨¹ı¸´ÓÃ¿ÉÒÔÏÔÖø½µµÍÍĞ¹Ü¶ÑµÄ·ÖÅäÓë»ØÊÕ´ÎÊı</list>
-            /// <list dataType="bullet">ÌáÉıĞÔÄÜ£º±ÜÃâÆµ·± new ºÍ GC£¬ÄÜ¼õÉÙÍ£¶ÙÊ±¼ä£¬Ìá¸ßÁ´±íÔÚ¸ßÆµ²Ù×÷³¡¾°ÏÂµÄÍÌÍÂ</list>
-            /// <list dataType="bullet">±ãÓÚ¹Û²ìÓë¹ÜÀí£ºÀàÖĞ»¹Ìá¹©ÁË CachedNodeCount ·½±ãµ÷ÊÔÍ³¼Æ»º´æ¹æÄ££¬±ØÒªÊ±¿ÉÍ¨¹ı ClearCachedNodes Ö÷¶¯ÊÍ·Å</list>
-            /// ÊÊÓÃ³¡¾°ÊÇ½ÚµãÊ¹ÓÃÄ£Ê½¡°¸ßÆµÔöÉ¾µ«×ÜÁ¿ÓĞÏŞ¡±£¬´ËÊ±»º´æÄÜÎÈ¶¨ĞÔÄÜ£»ÈôÁ´±í¹æÄ£Ê¼ÖÕÔÚÔö³¤ÇÒºÜÉÙÊÍ·Å£¬»º´æÊÕÒæ»á½ÏµÍ¡£
+            /// ä¹‹æ‰€ä»¥éœ€è¦è¿™å¥—ç¼“å­˜æœºåˆ¶ï¼Œä¸»è¦æœ‰ä¸‰ç‚¹å¥½å¤„ï¼š
+            /// <list dataType="bullet">å‡å°‘ GC å‹åŠ›ï¼šå¤§é‡é¢‘ç¹çš„æ’å…¥/åˆ é™¤ä¼šäº§ç”Ÿå¾ˆå¤šçŸ­ç”Ÿå‘½å‘¨æœŸçš„èŠ‚ç‚¹å¯¹è±¡ï¼Œé€šè¿‡å¤ç”¨å¯ä»¥æ˜¾è‘—é™ä½æ‰˜ç®¡å †çš„åˆ†é…ä¸å›æ”¶æ¬¡æ•°</list>
+            /// <list dataType="bullet">æå‡æ€§èƒ½ï¼šé¿å…é¢‘ç¹ new å’Œ GCï¼Œèƒ½å‡å°‘åœé¡¿æ—¶é—´ï¼Œæé«˜é“¾è¡¨åœ¨é«˜é¢‘æ“ä½œåœºæ™¯ä¸‹çš„åå</list>
+            /// <list dataType="bullet">ä¾¿äºè§‚å¯Ÿä¸ç®¡ç†ï¼šç±»ä¸­è¿˜æä¾›äº† CachedNodeCount æ–¹ä¾¿è°ƒè¯•ç»Ÿè®¡ç¼“å­˜è§„æ¨¡ï¼Œå¿…è¦æ—¶å¯é€šè¿‡ ClearCachedNodes ä¸»åŠ¨é‡Šæ”¾</list>
+            /// é€‚ç”¨åœºæ™¯æ˜¯èŠ‚ç‚¹ä½¿ç”¨æ¨¡å¼â€œé«˜é¢‘å¢åˆ ä½†æ€»é‡æœ‰é™â€ï¼Œæ­¤æ—¶ç¼“å­˜èƒ½ç¨³å®šæ€§èƒ½ï¼›è‹¥é“¾è¡¨è§„æ¨¡å§‹ç»ˆåœ¨å¢é•¿ä¸”å¾ˆå°‘é‡Šæ”¾ï¼Œç¼“å­˜æ”¶ç›Šä¼šè¾ƒä½ã€‚
             /// </summary>
             private readonly Queue<LinkedListNode<T>> m_CachedNodes;
 
             /// <summary>
-            /// ³õÊ¼»¯ÓÎÏ·¿ò¼ÜÁ´±íÀàµÄĞÂÊµÀı
+            /// åˆå§‹åŒ–æ¸¸æˆæ¡†æ¶é“¾è¡¨ç±»çš„æ–°å®ä¾‹
             /// </summary>
             public LinkedCacheList()
             {
@@ -37,7 +37,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// »ñÈ¡Á´±íÖĞÊµ¼Ê°üº¬µÄ½áµãÊıÁ¿
+            /// è·å–é“¾è¡¨ä¸­å®é™…åŒ…å«çš„ç»“ç‚¹æ•°é‡
             /// </summary>
             public int Count
             {
@@ -48,7 +48,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// »ñÈ¡Á´±í½áµã»º´æÊıÁ¿
+            /// è·å–é“¾è¡¨ç»“ç‚¹ç¼“å­˜æ•°é‡
             /// </summary>
             public int CachedNodeCount
             {
@@ -59,7 +59,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// »ñÈ¡Á´±íµÄµÚÒ»¸ö½áµã
+            /// è·å–é“¾è¡¨çš„ç¬¬ä¸€ä¸ªç»“ç‚¹
             /// </summary>
             public LinkedListNode<T> First
             {
@@ -70,7 +70,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// »ñÈ¡Á´±íµÄ×îºóÒ»¸ö½áµã
+            /// è·å–é“¾è¡¨çš„æœ€åä¸€ä¸ªç»“ç‚¹
             /// </summary>
             public LinkedListNode<T> Last
             {
@@ -81,7 +81,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// »ñÈ¡Ò»¸öÖµ£¬¸ÃÖµÖ¸Ê¾ <see cref="ICollection{T}"/> ÊÇ·ñÎªÖ»¶Á
+            /// è·å–ä¸€ä¸ªå€¼ï¼Œè¯¥å€¼æŒ‡ç¤º <see cref="ICollection{T}"/> æ˜¯å¦ä¸ºåªè¯»
             /// </summary>
             public bool IsReadOnly
             {
@@ -92,7 +92,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// »ñÈ¡¿ÉÓÃÓÚÍ¬²½¶Ô <see cref="ICollection"/> µÄ·ÃÎÊµÄ¶ÔÏó¡£
+            /// è·å–å¯ç”¨äºåŒæ­¥å¯¹ <see cref="ICollection"/> çš„è®¿é—®çš„å¯¹è±¡ã€‚
             /// </summary>
             public object SyncRoot
             {
@@ -103,7 +103,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// »ñÈ¡Ò»¸öÖµ£¬¸ÃÖµÖ¸Ê¾ÊÇ·ñÍ¬²½¶Ô <see cref="ICollection"/> µÄ·ÃÎÊ£¨Ïß³Ì°²È«£©¡£
+            /// è·å–ä¸€ä¸ªå€¼ï¼Œè¯¥å€¼æŒ‡ç¤ºæ˜¯å¦åŒæ­¥å¯¹ <see cref="ICollection"/> çš„è®¿é—®ï¼ˆçº¿ç¨‹å®‰å…¨ï¼‰ã€‚
             /// </summary>
             public bool IsSynchronized
             {
@@ -114,11 +114,11 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ÔÚÁ´±íÖĞÖ¸¶¨µÄÏÖÓĞ½áµãºóÌí¼Ó°üº¬Ö¸¶¨ÖµµÄĞÂ½áµã
+            /// åœ¨é“¾è¡¨ä¸­æŒ‡å®šçš„ç°æœ‰ç»“ç‚¹åæ·»åŠ åŒ…å«æŒ‡å®šå€¼çš„æ–°ç»“ç‚¹
             /// </summary>
-            /// <param name="node">Ö¸¶¨µÄÏÖÓĞ½áµã</param>
-            /// <param name="value">Ö¸¶¨Öµ</param>
-            /// <returns>°üº¬Ö¸¶¨ÖµµÄĞÂ½áµã</returns>
+            /// <param name="node">æŒ‡å®šçš„ç°æœ‰ç»“ç‚¹</param>
+            /// <param name="value">æŒ‡å®šå€¼</param>
+            /// <returns>åŒ…å«æŒ‡å®šå€¼çš„æ–°ç»“ç‚¹</returns>
             public LinkedListNode<T> AddAfter(LinkedListNode<T> node, T value)
             {
                 LinkedListNode<T> newNode = AcquireNode(value);
@@ -127,21 +127,21 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ÔÚÁ´±íÖĞÖ¸¶¨µÄÏÖÓĞ½áµãºóÌí¼ÓÖ¸¶¨µÄĞÂ½áµã
+            /// åœ¨é“¾è¡¨ä¸­æŒ‡å®šçš„ç°æœ‰ç»“ç‚¹åæ·»åŠ æŒ‡å®šçš„æ–°ç»“ç‚¹
             /// </summary>
-            /// <param name="node">Ö¸¶¨µÄÏÖÓĞ½áµã</param>
-            /// <param name="newNode">Ö¸¶¨µÄĞÂ½áµã</param>
+            /// <param name="node">æŒ‡å®šçš„ç°æœ‰ç»“ç‚¹</param>
+            /// <param name="newNode">æŒ‡å®šçš„æ–°ç»“ç‚¹</param>
             public void AddAfter(LinkedListNode<T> node, LinkedListNode<T> newNode)
             {
                 m_LinkedList.AddAfter(node, newNode);
             }
 
             /// <summary>
-            /// ÔÚÁ´±íÖĞÖ¸¶¨µÄÏÖÓĞ½áµãÇ°Ìí¼Ó°üº¬Ö¸¶¨ÖµµÄĞÂ½áµã
+            /// åœ¨é“¾è¡¨ä¸­æŒ‡å®šçš„ç°æœ‰ç»“ç‚¹å‰æ·»åŠ åŒ…å«æŒ‡å®šå€¼çš„æ–°ç»“ç‚¹
             /// </summary>
-            /// <param name="node">Ö¸¶¨µÄÏÖÓĞ½áµã</param>
-            /// <param name="value">Ö¸¶¨Öµ</param>
-            /// <returns>°üº¬Ö¸¶¨ÖµµÄĞÂ½áµã</returns>
+            /// <param name="node">æŒ‡å®šçš„ç°æœ‰ç»“ç‚¹</param>
+            /// <param name="value">æŒ‡å®šå€¼</param>
+            /// <returns>åŒ…å«æŒ‡å®šå€¼çš„æ–°ç»“ç‚¹</returns>
             public LinkedListNode<T> AddBefore(LinkedListNode<T> node, T value)
             {
                 LinkedListNode<T> newNode = AcquireNode(value);
@@ -150,20 +150,20 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ÔÚÁ´±íÖĞÖ¸¶¨µÄÏÖÓĞ½áµãÇ°Ìí¼ÓÖ¸¶¨µÄĞÂ½áµã
+            /// åœ¨é“¾è¡¨ä¸­æŒ‡å®šçš„ç°æœ‰ç»“ç‚¹å‰æ·»åŠ æŒ‡å®šçš„æ–°ç»“ç‚¹
             /// </summary>
-            /// <param name="node">Ö¸¶¨µÄÏÖÓĞ½áµã</param>
-            /// <param name="newNode">Ö¸¶¨µÄĞÂ½áµã</param>
+            /// <param name="node">æŒ‡å®šçš„ç°æœ‰ç»“ç‚¹</param>
+            /// <param name="newNode">æŒ‡å®šçš„æ–°ç»“ç‚¹</param>
             public void AddBefore(LinkedListNode<T> node, LinkedListNode<T> newNode)
             {
                 m_LinkedList.AddBefore(node, newNode);
             }
 
             /// <summary>
-            /// ÔÚÁ´±íµÄ¿ªÍ·´¦Ìí¼Ó°üº¬Ö¸¶¨ÖµµÄĞÂ½áµã
+            /// åœ¨é“¾è¡¨çš„å¼€å¤´å¤„æ·»åŠ åŒ…å«æŒ‡å®šå€¼çš„æ–°ç»“ç‚¹
             /// </summary>
-            /// <param name="value">Ö¸¶¨Öµ</param>
-            /// <returns>°üº¬Ö¸¶¨ÖµµÄĞÂ½áµã</returns>
+            /// <param name="value">æŒ‡å®šå€¼</param>
+            /// <returns>åŒ…å«æŒ‡å®šå€¼çš„æ–°ç»“ç‚¹</returns>
             public LinkedListNode<T> AddFirst(T value)
             {
                 LinkedListNode<T> node = AcquireNode(value);
@@ -172,19 +172,19 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ÔÚÁ´±íµÄ¿ªÍ·´¦Ìí¼ÓÖ¸¶¨µÄĞÂ½áµã
+            /// åœ¨é“¾è¡¨çš„å¼€å¤´å¤„æ·»åŠ æŒ‡å®šçš„æ–°ç»“ç‚¹
             /// </summary>
-            /// <param name="node">Ö¸¶¨µÄĞÂ½áµã</param>
+            /// <param name="node">æŒ‡å®šçš„æ–°ç»“ç‚¹</param>
             public void AddFirst(LinkedListNode<T> node)
             {
                 m_LinkedList.AddFirst(node);
             }
 
             /// <summary>
-            /// ÔÚÁ´±íµÄ½áÎ²´¦Ìí¼Ó°üº¬Ö¸¶¨ÖµµÄĞÂ½áµã
+            /// åœ¨é“¾è¡¨çš„ç»“å°¾å¤„æ·»åŠ åŒ…å«æŒ‡å®šå€¼çš„æ–°ç»“ç‚¹
             /// </summary>
-            /// <param name="value">Ö¸¶¨Öµ</param>
-            /// <returns>°üº¬Ö¸¶¨ÖµµÄĞÂ½áµã</returns>
+            /// <param name="value">æŒ‡å®šå€¼</param>
+            /// <returns>åŒ…å«æŒ‡å®šå€¼çš„æ–°ç»“ç‚¹</returns>
             public LinkedListNode<T> AddLast(T value)
             {
                 LinkedListNode<T> node = AcquireNode(value);
@@ -193,16 +193,16 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ÔÚÁ´±íµÄ½áÎ²´¦Ìí¼ÓÖ¸¶¨µÄĞÂ½áµã
+            /// åœ¨é“¾è¡¨çš„ç»“å°¾å¤„æ·»åŠ æŒ‡å®šçš„æ–°ç»“ç‚¹
             /// </summary>
-            /// <param name="node">Ö¸¶¨µÄĞÂ½áµã</param>
+            /// <param name="node">æŒ‡å®šçš„æ–°ç»“ç‚¹</param>
             public void AddLast(LinkedListNode<T> node)
             {
                 m_LinkedList.AddLast(node);
             }
 
             /// <summary>
-            /// ´ÓÁ´±íÖĞÒÆ³ıËùÓĞ½áµã
+            /// ä»é“¾è¡¨ä¸­ç§»é™¤æ‰€æœ‰ç»“ç‚¹
             /// </summary>
             public void Clear()
             {
@@ -217,7 +217,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// Çå³ıÁ´±í½áµã»º´æ
+            /// æ¸…é™¤é“¾è¡¨ç»“ç‚¹ç¼“å­˜
             /// </summary>
             public void ClearCachedNodes()
             {
@@ -225,60 +225,60 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// È·¶¨Ä³ÖµÊÇ·ñÔÚÁ´±íÖĞ
+            /// ç¡®å®šæŸå€¼æ˜¯å¦åœ¨é“¾è¡¨ä¸­
             /// </summary>
-            /// <param name="value">Ö¸¶¨Öµ</param>
-            /// <returns>Ä³ÖµÊÇ·ñÔÚÁ´±íÖĞ</returns>
+            /// <param name="value">æŒ‡å®šå€¼</param>
+            /// <returns>æŸå€¼æ˜¯å¦åœ¨é“¾è¡¨ä¸­</returns>
             public bool Contains(T value)
             {
                 return m_LinkedList.Contains(value);
             }
 
             /// <summary>
-            /// ´ÓÄ¿±êÊı×éµÄÖ¸¶¨Ë÷Òı´¦¿ªÊ¼½«Õû¸öÁ´±í¸´ÖÆµ½¼æÈİµÄÒ»Î¬Êı×é
+            /// ä»ç›®æ ‡æ•°ç»„çš„æŒ‡å®šç´¢å¼•å¤„å¼€å§‹å°†æ•´ä¸ªé“¾è¡¨å¤åˆ¶åˆ°å…¼å®¹çš„ä¸€ç»´æ•°ç»„
             /// </summary>
-            /// <param name="array">Ò»Î¬Êı×é£¬ËüÊÇ´ÓÁ´±í¸´ÖÆµÄÔªËØµÄÄ¿±ê¡£Êı×é±ØĞë¾ßÓĞ´ÓÁã¿ªÊ¼µÄË÷Òı</param>
-            /// <param name="index">array ÖĞ´ÓÁã¿ªÊ¼µÄË÷Òı£¬´Ó´Ë´¦¿ªÊ¼¸´ÖÆ</param>
+            /// <param name="array">ä¸€ç»´æ•°ç»„ï¼Œå®ƒæ˜¯ä»é“¾è¡¨å¤åˆ¶çš„å…ƒç´ çš„ç›®æ ‡ã€‚æ•°ç»„å¿…é¡»å…·æœ‰ä»é›¶å¼€å§‹çš„ç´¢å¼•</param>
+            /// <param name="index">array ä¸­ä»é›¶å¼€å§‹çš„ç´¢å¼•ï¼Œä»æ­¤å¤„å¼€å§‹å¤åˆ¶</param>
             public void CopyTo(T[] array, int index)
             {
                 m_LinkedList.CopyTo(array, index);
             }
 
             /// <summary>
-            /// ´ÓÌØ¶¨µÄ ICollection Ë÷Òı¿ªÊ¼£¬½«Êı×éµÄÔªËØ¸´ÖÆµ½Ò»¸öÊı×éÖĞ
+            /// ä»ç‰¹å®šçš„ ICollection ç´¢å¼•å¼€å§‹ï¼Œå°†æ•°ç»„çš„å…ƒç´ å¤åˆ¶åˆ°ä¸€ä¸ªæ•°ç»„ä¸­
             /// </summary>
-            /// <param name="array">Ò»Î¬Êı×é£¬ËüÊÇ´Ó ICollection ¸´ÖÆµÄÔªËØµÄÄ¿±ê¡£Êı×é±ØĞë¾ßÓĞ´ÓÁã¿ªÊ¼µÄË÷Òı</param>
-            /// <param name="index">array ÖĞ´ÓÁã¿ªÊ¼µÄË÷Òı£¬´Ó´Ë´¦¿ªÊ¼¸´ÖÆ</param>
+            /// <param name="array">ä¸€ç»´æ•°ç»„ï¼Œå®ƒæ˜¯ä» ICollection å¤åˆ¶çš„å…ƒç´ çš„ç›®æ ‡ã€‚æ•°ç»„å¿…é¡»å…·æœ‰ä»é›¶å¼€å§‹çš„ç´¢å¼•</param>
+            /// <param name="index">array ä¸­ä»é›¶å¼€å§‹çš„ç´¢å¼•ï¼Œä»æ­¤å¤„å¼€å§‹å¤åˆ¶</param>
             public void CopyTo(Array array, int index)
             {
                 ((ICollection)m_LinkedList).CopyTo(array, index);
             }
 
             /// <summary>
-            /// ²éÕÒ°üº¬Ö¸¶¨ÖµµÄµÚÒ»¸ö½áµã
+            /// æŸ¥æ‰¾åŒ…å«æŒ‡å®šå€¼çš„ç¬¬ä¸€ä¸ªç»“ç‚¹
             /// </summary>
-            /// <param name="value">Òª²éÕÒµÄÖ¸¶¨Öµ</param>
-            /// <returns>°üº¬Ö¸¶¨ÖµµÄµÚÒ»¸ö½áµã</returns>
+            /// <param name="value">è¦æŸ¥æ‰¾çš„æŒ‡å®šå€¼</param>
+            /// <returns>åŒ…å«æŒ‡å®šå€¼çš„ç¬¬ä¸€ä¸ªç»“ç‚¹</returns>
             public LinkedListNode<T> Find(T value)
             {
                 return m_LinkedList.Find(value);
             }
 
             /// <summary>
-            /// ²éÕÒ°üº¬Ö¸¶¨ÖµµÄ×îºóÒ»¸ö½áµã
+            /// æŸ¥æ‰¾åŒ…å«æŒ‡å®šå€¼çš„æœ€åä¸€ä¸ªç»“ç‚¹
             /// </summary>
-            /// <param name="value">Òª²éÕÒµÄÖ¸¶¨Öµ</param>
-            /// <returns>°üº¬Ö¸¶¨ÖµµÄ×îºóÒ»¸ö½áµã</returns>
+            /// <param name="value">è¦æŸ¥æ‰¾çš„æŒ‡å®šå€¼</param>
+            /// <returns>åŒ…å«æŒ‡å®šå€¼çš„æœ€åä¸€ä¸ªç»“ç‚¹</returns>
             public LinkedListNode<T> FindLast(T value)
             {
                 return m_LinkedList.FindLast(value);
             }
 
             /// <summary>
-            /// ´ÓÁ´±íÖĞÒÆ³ıÖ¸¶¨ÖµµÄµÚÒ»¸öÆ¥ÅäÏî
+            /// ä»é“¾è¡¨ä¸­ç§»é™¤æŒ‡å®šå€¼çš„ç¬¬ä¸€ä¸ªåŒ¹é…é¡¹
             /// </summary>
-            /// <param name="value">Ö¸¶¨Öµ</param>
-            /// <returns>ÊÇ·ñÒÆ³ı³É¹¦</returns>
+            /// <param name="value">æŒ‡å®šå€¼</param>
+            /// <returns>æ˜¯å¦ç§»é™¤æˆåŠŸ</returns>
             public bool Remove(T value)
             {
                 LinkedListNode<T> node = m_LinkedList.Find(value);
@@ -293,9 +293,9 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ´ÓÁ´±íÖĞÒÆ³ıÖ¸¶¨µÄ½áµã
+            /// ä»é“¾è¡¨ä¸­ç§»é™¤æŒ‡å®šçš„ç»“ç‚¹
             /// </summary>
-            /// <param name="node">Ö¸¶¨µÄ½áµã</param>
+            /// <param name="node">æŒ‡å®šçš„ç»“ç‚¹</param>
             public void Remove(LinkedListNode<T> node)
             {
                 m_LinkedList.Remove(node);
@@ -303,7 +303,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ÒÆ³ıÎ»ÓÚÁ´±í¿ªÍ·´¦µÄ½áµã
+            /// ç§»é™¤ä½äºé“¾è¡¨å¼€å¤´å¤„çš„ç»“ç‚¹
             /// </summary>
             public void RemoveFirst()
             {
@@ -318,7 +318,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ÒÆ³ıÎ»ÓÚÁ´±í½áÎ²´¦µÄ½áµã¡£
+            /// ç§»é™¤ä½äºé“¾è¡¨ç»“å°¾å¤„çš„ç»“ç‚¹ã€‚
             /// </summary>
             public void RemoveLast()
             {
@@ -333,9 +333,9 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ·µ»ØÑ­»··ÃÎÊ¼¯ºÏµÄÃ¶¾ÙÊı
+            /// è¿”å›å¾ªç¯è®¿é—®é›†åˆçš„æšä¸¾æ•°
             /// </summary>
-            /// <returns>Ñ­»··ÃÎÊ¼¯ºÏµÄÃ¶¾ÙÊı</returns>
+            /// <returns>å¾ªç¯è®¿é—®é›†åˆçš„æšä¸¾æ•°</returns>
             public Enumerator GetEnumerator()
             {
                 return new Enumerator(m_LinkedList);
@@ -364,34 +364,34 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ½«ÖµÌí¼Óµ½ ICollection`1 µÄ½áÎ²´¦
+            /// å°†å€¼æ·»åŠ åˆ° ICollection`1 çš„ç»“å°¾å¤„
             /// </summary>
-            /// <param name="value">ÒªÌí¼ÓµÄÖµ</param>
+            /// <param name="value">è¦æ·»åŠ çš„å€¼</param>
             void ICollection<T>.Add(T value)
             {
                 AddLast(value);
             }
 
             /// <summary>
-            /// ·µ»ØÑ­»··ÃÎÊ¼¯ºÏµÄÃ¶¾ÙÊı
+            /// è¿”å›å¾ªç¯è®¿é—®é›†åˆçš„æšä¸¾æ•°
             /// </summary>
-            /// <returns>Ñ­»··ÃÎÊ¼¯ºÏµÄÃ¶¾ÙÊı</returns>
+            /// <returns>å¾ªç¯è®¿é—®é›†åˆçš„æšä¸¾æ•°</returns>
             IEnumerator<T> IEnumerable<T>.GetEnumerator()
             {
                 return GetEnumerator();
             }
 
             /// <summary>
-            /// ·µ»ØÑ­»··ÃÎÊ¼¯ºÏµÄÃ¶¾ÙÊı
+            /// è¿”å›å¾ªç¯è®¿é—®é›†åˆçš„æšä¸¾æ•°
             /// </summary>
-            /// <returns>Ñ­»··ÃÎÊ¼¯ºÏµÄÃ¶¾ÙÊı</returns>
+            /// <returns>å¾ªç¯è®¿é—®é›†åˆçš„æšä¸¾æ•°</returns>
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
             }
 
             /// <summary>
-            /// Ñ­»··ÃÎÊ¼¯ºÏµÄÃ¶¾ÙÊı
+            /// å¾ªç¯è®¿é—®é›†åˆçš„æšä¸¾æ•°
             /// </summary>
             [StructLayout(LayoutKind.Auto)]
             public struct Enumerator : IEnumerator<T>, IEnumerator
@@ -409,7 +409,7 @@ namespace Convention.Collections
                 }
 
                 /// <summary>
-                /// »ñÈ¡µ±Ç°½áµã
+                /// è·å–å½“å‰ç»“ç‚¹
                 /// </summary>
                 public T Current
                 {
@@ -420,7 +420,7 @@ namespace Convention.Collections
                 }
 
                 /// <summary>
-                /// »ñÈ¡µ±Ç°µÄÃ¶¾ÙÊı
+                /// è·å–å½“å‰çš„æšä¸¾æ•°
                 /// </summary>
                 object IEnumerator.Current
                 {
@@ -431,7 +431,7 @@ namespace Convention.Collections
                 }
 
                 /// <summary>
-                /// ÇåÀíÃ¶¾ÙÊı
+                /// æ¸…ç†æšä¸¾æ•°
                 /// </summary>
                 public void Dispose()
                 {
@@ -439,16 +439,16 @@ namespace Convention.Collections
                 }
 
                 /// <summary>
-                /// »ñÈ¡ÏÂÒ»¸ö½áµã
+                /// è·å–ä¸‹ä¸€ä¸ªç»“ç‚¹
                 /// </summary>
-                /// <returns>·µ»ØÏÂÒ»¸ö½áµã</returns>
+                /// <returns>è¿”å›ä¸‹ä¸€ä¸ªç»“ç‚¹</returns>
                 public bool MoveNext()
                 {
                     return m_Enumerator.MoveNext();
                 }
 
                 /// <summary>
-                /// ÖØÖÃÃ¶¾ÙÊı
+                /// é‡ç½®æšä¸¾æ•°
                 /// </summary>
                 void IEnumerator.Reset()
                 {
@@ -456,40 +456,161 @@ namespace Convention.Collections
                 }
             }
         }
+
+        public sealed class Bijection<First, Second>
+        {
+            private readonly IDictionary<First, Second> BijectionKeyIndex;
+            private readonly IDictionary<Second, First> BijectionValueIndex;
+            public Bijection(IDictionary<First, Second> bijectionKeyIndex = null, IDictionary<Second, First> bijectionValueIndex = null)
+            {
+                BijectionKeyIndex = bijectionKeyIndex ?? new Dictionary<First, Second>();
+                BijectionValueIndex = bijectionValueIndex ?? new Dictionary<Second, First>();
+            }
+
+            #region Private
+
+            private bool DoTryInsert(First first, Second second)
+            {
+                if (BijectionKeyIndex.TryGetValue(first, out var oldValue))
+                {
+                    return false;
+                }
+                BijectionKeyIndex.Add(first, second);
+                BijectionValueIndex.Add(second, first);
+                return true;
+            }
+            private void DoInsert(First first, Second second, out bool hasOld, out KeyValuePair<First, Second> oldIndex)
+            {
+                if (hasOld = BijectionKeyIndex.TryGetValue(first, out var oldValue))
+                {
+                    BijectionKeyIndex.Remove(first);
+                    BijectionValueIndex.Remove(oldValue);
+                    oldIndex = new(first, oldValue);
+                }
+                else
+                {
+                    oldIndex = new(default, default);
+                }
+                BijectionKeyIndex.Add(first, second);
+                BijectionValueIndex.Add(second, first);
+            }
+            private bool DoEarse(First first)
+            {
+                if (BijectionKeyIndex.TryGetValue(first, out var second))
+                {
+                    BijectionKeyIndex.Remove(first);
+                    BijectionValueIndex.Remove(second);
+                    return true;
+                }
+                return false;
+            }
+            private bool DoEarse(Second second)
+            {
+                if (BijectionValueIndex.TryGetValue(second, out var first))
+                {
+                    BijectionKeyIndex.Remove(first);
+                    BijectionValueIndex.Remove(second);
+                    return true;
+                }
+                return false;
+            }
+            private bool DoEarse(First first, Second second)
+            {
+                if (BijectionKeyIndex.TryGetValue(first, out var test_second))
+                {
+                    if (test_second.Equals(second) == false)
+                        return false;
+                    BijectionKeyIndex.Remove(first);
+                    BijectionValueIndex.Remove(second);
+                    return true;
+                }
+                return false;
+            }
+            private bool DoContains(First first) => BijectionKeyIndex.ContainsKey(first);
+            private bool DoContains(Second second) => BijectionValueIndex.ContainsKey(second);
+            private bool DoContains(First first, Second second) => BijectionKeyIndex.ContainsKey(first) && BijectionValueIndex.ContainsKey(second);
+            private void DoClear()
+            {
+                BijectionKeyIndex.Clear();
+                BijectionValueIndex.Clear();
+            }
+
+            #endregion
+
+            #region Public
+            public void Add(First key, Second value)
+            {
+                DoInsert(key, value, out bool result, out var _);
+                if (result == false)
+                    throw new KeyNotFoundException($"{key} is not found");
+            }
+            public void Add(Second key, First value)
+            {
+                DoInsert(value, key, out bool result, out var _);
+                if (result == false)
+                    throw new KeyNotFoundException($"{key} is not found");
+            }
+            public void Add(KeyValuePair<First, Second> item) => Add(item.Key, item.Value);
+            public void Add(KeyValuePair<Second, First> item) => Add(item.Value, item.Key);
+            public bool TryAdd(First key, Second value) => DoTryInsert(key, value);
+            public bool TryAdd(Second key, First value) => DoTryInsert(value, key);
+            public bool TryAdd(KeyValuePair<First, Second> item) => TryAdd(item.Key, item.Value);
+            public bool TryAdd(KeyValuePair<Second, First> item) => TryAdd(item.Value, item.Key);
+            public Second this[First key] { get => BijectionKeyIndex[key]; set => DoInsert(key, value, out var _, out var _); }
+            public First this[Second key] { get => BijectionValueIndex[key]; set => DoInsert(value, key, out var _, out var _); }
+            public bool Contains(First first) => DoContains(first);
+            public bool Contains(Second second) => DoContains(second);
+            public bool Contains(KeyValuePair<First, Second> item) => DoContains(item.Key, item.Value);
+            public bool Contains(KeyValuePair<Second, First> item) => DoContains(item.Value, item.Key);
+            public bool ContainsKey(First key) => DoContains(key);
+            public bool ContainsKey(Second key) => DoContains(key);
+            public int Count => BijectionKeyIndex.Count;
+            public bool IsReadOnly => BijectionKeyIndex.IsReadOnly || BijectionValueIndex.IsReadOnly;
+            public ICollection<First> FirstKeys => BijectionKeyIndex.Keys;
+            public ICollection<Second> SecondKeys => BijectionValueIndex.Keys;
+            public void Clear() => DoClear();
+            public bool Remove(First key) => DoEarse(key);
+            public bool Remove(Second key) => DoEarse(key);
+            public bool Remove(KeyValuePair<First, Second> item) => DoEarse(item.Key, item.Value);
+            public bool Remove(KeyValuePair<Second, First> item) => DoEarse(item.Value, item.Key);
+            public bool TryGetValue(First key, out Second value) => BijectionKeyIndex.TryGetValue(key, out value);
+            public bool TryGetValue(Second key, out First value) => BijectionValueIndex.TryGetValue(key, out value);
+            #endregion
+        }
     }
 
 #if UNITY_6000_0_OR_NEWER
     namespace Cache
     {
         /// <summary>
-        /// Native LRUCache - »ùÓÚUnity.CollectionsµÄ¸ßĞÔÄÜ×î½ü×îÉÙÊ¹ÓÃ»º´æ
-        /// Burst¼æÈİ£¬ĞèÒªÊÖ¶¯Dispose
+        /// Native LRUCache - åŸºäºUnity.Collectionsçš„é«˜æ€§èƒ½æœ€è¿‘æœ€å°‘ä½¿ç”¨ç¼“å­˜
+        /// Burstå…¼å®¹ï¼Œéœ€è¦æ‰‹åŠ¨Dispose
         /// </summary>
-        /// <typeparam name="TKey">¼üÀàĞÍ£¨±ØĞëÊÇunmanagedÀàĞÍ£©</typeparam>
-        /// <typeparam name="TValue">ÖµÀàĞÍ£¨±ØĞëÊÇunmanagedÀàĞÍ£©</typeparam>
+        /// <typeparam name="TKey">é”®ç±»å‹ï¼ˆå¿…é¡»æ˜¯unmanagedç±»å‹ï¼‰</typeparam>
+        /// <typeparam name="TValue">å€¼ç±»å‹ï¼ˆå¿…é¡»æ˜¯unmanagedç±»å‹ï¼‰</typeparam>
         public struct NativeLRUCache<TKey, TValue> : IDisposable
             where TKey : unmanaged, IEquatable<TKey>
             where TValue : unmanaged
         {
-            // Á´±í½Úµã
+            // é“¾è¡¨èŠ‚ç‚¹
             private struct Node
             {
                 public TKey key;
                 public TValue value;
-                public int prevIndex;  // Ç°Ò»¸ö½ÚµãË÷Òı
-                public int nextIndex;  // ºóÒ»¸ö½ÚµãË÷Òı
+                public int prevIndex;  // å‰ä¸€ä¸ªèŠ‚ç‚¹ç´¢å¼•
+                public int nextIndex;  // åä¸€ä¸ªèŠ‚ç‚¹ç´¢å¼•
             }
 
-            private NativeList<Node> nodes;                     // ½Úµã³Ø
-            private readonly NativeHashMap<TKey, int> hashMap;  // key -> ½ÚµãË÷Òı
-            private readonly NativeList<int> freeList;          // ¿ÕÏĞ½ÚµãË÷Òı³Ø
+            private NativeList<Node> nodes;                     // èŠ‚ç‚¹æ± 
+            private readonly NativeHashMap<TKey, int> hashMap;  // key -> èŠ‚ç‚¹ç´¢å¼•
+            private readonly NativeList<int> freeList;          // ç©ºé—²èŠ‚ç‚¹ç´¢å¼•æ± 
 
             private readonly int capacity;
-            private int headIndex;                         // Á´±íÍ·£¨×î¾ÃÎ´Ê¹ÓÃ£©
-            private int tailIndex;                         // Á´±íÎ²£¨×î½üÊ¹ÓÃ£©
+            private int headIndex;                         // é“¾è¡¨å¤´ï¼ˆæœ€ä¹…æœªä½¿ç”¨ï¼‰
+            private int tailIndex;                         // é“¾è¡¨å°¾ï¼ˆæœ€è¿‘ä½¿ç”¨ï¼‰
             private int count;
 
-            // ÊÇ·ñÎªÓĞĞ§½ÚµãË÷Òı
+            // æ˜¯å¦ä¸ºæœ‰æ•ˆèŠ‚ç‚¹ç´¢å¼•
             private readonly bool IsValidIndex(int index) => index >= 0;
 
             public NativeLRUCache(int capacity, Allocator allocator)
@@ -503,7 +624,7 @@ namespace Convention.Collections
                 nodes = new NativeList<Node>(capacity, allocator);
                 freeList = new NativeList<int>(capacity, allocator);
 
-                // Ô¤·ÖÅä½Úµã³Ø
+                // é¢„åˆ†é…èŠ‚ç‚¹æ± 
                 nodes.Length = capacity;
                 for (int i = capacity - 1; i >= 0; i--)
                 {
@@ -512,13 +633,13 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// »ñÈ¡»º´æÖµ
+            /// è·å–ç¼“å­˜å€¼
             /// </summary>
             public bool TryGetValue(TKey key, out TValue value)
             {
                 if (hashMap.TryGetValue(key, out int nodeIndex))
                 {
-                    MoveToTail(nodeIndex);  // ÒÆ¶¯µ½Î²²¿£¨×î½üÊ¹ÓÃ£©
+                    MoveToTail(nodeIndex);  // ç§»åŠ¨åˆ°å°¾éƒ¨ï¼ˆæœ€è¿‘ä½¿ç”¨ï¼‰
                     value = nodes[nodeIndex].value;
                     return true;
                 }
@@ -528,11 +649,11 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// Ìí¼Ó»ò¸üĞÂ»º´æ
+            /// æ·»åŠ æˆ–æ›´æ–°ç¼“å­˜
             /// </summary>
             public void Put(TKey key, TValue value)
             {
-                // ÒÑ´æÔÚÔò¸üĞÂ²¢ÒÆ¶¯µ½Î²²¿
+                // å·²å­˜åœ¨åˆ™æ›´æ–°å¹¶ç§»åŠ¨åˆ°å°¾éƒ¨
                 if (hashMap.TryGetValue(key, out int nodeIndex))
                 {
                     Node node = nodes[nodeIndex];
@@ -542,13 +663,13 @@ namespace Convention.Collections
                     return;
                 }
 
-                // ÈİÁ¿ÒÑÂú£¬ÌÔÌ­Í·²¿½Úµã
+                // å®¹é‡å·²æ»¡ï¼Œæ·˜æ±°å¤´éƒ¨èŠ‚ç‚¹
                 if (count >= capacity)
                 {
                     EvictHead();
                 }
 
-                // ´´½¨ĞÂ½Úµã
+                // åˆ›å»ºæ–°èŠ‚ç‚¹
                 nodeIndex = AllocateNode();
                 nodes[nodeIndex] = new Node
                 {
@@ -564,7 +685,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// É¾³ı»º´æÏî
+            /// åˆ é™¤ç¼“å­˜é¡¹
             /// </summary>
             public bool Remove(TKey key)
             {
@@ -579,13 +700,13 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// Çå¿Õ»º´æ
+            /// æ¸…ç©ºç¼“å­˜
             /// </summary>
             public void Clear()
             {
                 hashMap.Clear();
 
-                // ÖØÖÃËùÓĞ½Úµãµ½¿ÕÏĞÁĞ±í
+                // é‡ç½®æ‰€æœ‰èŠ‚ç‚¹åˆ°ç©ºé—²åˆ—è¡¨
                 freeList.Clear();
                 for (int i = 0; i < capacity; i++)
                 {
@@ -597,7 +718,7 @@ namespace Convention.Collections
                 count = 0;
             }
 
-            // ·ÖÅä½ÚµãË÷Òı
+            // åˆ†é…èŠ‚ç‚¹ç´¢å¼•
             private readonly int AllocateNode()
             {
                 int index = freeList[^1];
@@ -605,13 +726,13 @@ namespace Convention.Collections
                 return index;
             }
 
-            // ÊÍ·Å½ÚµãË÷Òı
+            // é‡Šæ”¾èŠ‚ç‚¹ç´¢å¼•
             private readonly void FreeNode(int index)
             {
                 freeList.Add(index);
             }
 
-            // ½«½ÚµãÒÆ¶¯µ½Á´±íÎ²²¿£¨±ê¼ÇÎª×î½üÊ¹ÓÃ£©
+            // å°†èŠ‚ç‚¹ç§»åŠ¨åˆ°é“¾è¡¨å°¾éƒ¨ï¼ˆæ ‡è®°ä¸ºæœ€è¿‘ä½¿ç”¨ï¼‰
             private void MoveToTail(int nodeIndex)
             {
                 if (nodeIndex == tailIndex)
@@ -621,7 +742,7 @@ namespace Convention.Collections
                 AddToTail(nodeIndex);
             }
 
-            // ½«½ÚµãÌí¼Óµ½Î²²¿
+            // å°†èŠ‚ç‚¹æ·»åŠ åˆ°å°¾éƒ¨
             private void AddToTail(int nodeIndex)
             {
                 Node node = nodes[nodeIndex];
@@ -638,19 +759,19 @@ namespace Convention.Collections
 
                 tailIndex = nodeIndex;
 
-                // Èç¹ûÁ´±íÎª¿Õ£¬Í·Î²Ö¸ÏòÍ¬Ò»½Úµã
+                // å¦‚æœé“¾è¡¨ä¸ºç©ºï¼Œå¤´å°¾æŒ‡å‘åŒä¸€èŠ‚ç‚¹
                 if (!IsValidIndex(headIndex))
                 {
                     headIndex = nodeIndex;
                 }
             }
 
-            // ´ÓÁ´±íÖĞÒÆ³ı½Úµã
+            // ä»é“¾è¡¨ä¸­ç§»é™¤èŠ‚ç‚¹
             private void RemoveFromList(int nodeIndex)
             {
                 Node node = nodes[nodeIndex];
 
-                // ¸üĞÂÇ°Ò»¸ö½ÚµãµÄnextÖ¸Õë
+                // æ›´æ–°å‰ä¸€ä¸ªèŠ‚ç‚¹çš„nextæŒ‡é’ˆ
                 if (IsValidIndex(node.prevIndex))
                 {
                     Node prev = nodes[node.prevIndex];
@@ -659,11 +780,11 @@ namespace Convention.Collections
                 }
                 else
                 {
-                    // Ã»ÓĞÇ°Ò»¸ö½Úµã£¬ËµÃ÷ÊÇÍ·½Úµã
+                    // æ²¡æœ‰å‰ä¸€ä¸ªèŠ‚ç‚¹ï¼Œè¯´æ˜æ˜¯å¤´èŠ‚ç‚¹
                     headIndex = node.nextIndex;
                 }
 
-                // ¸üĞÂºóÒ»¸ö½ÚµãµÄprevÖ¸Õë
+                // æ›´æ–°åä¸€ä¸ªèŠ‚ç‚¹çš„prevæŒ‡é’ˆ
                 if (IsValidIndex(node.nextIndex))
                 {
                     Node next = nodes[node.nextIndex];
@@ -672,12 +793,12 @@ namespace Convention.Collections
                 }
                 else
                 {
-                    // Ã»ÓĞºóÒ»¸ö½Úµã£¬ËµÃ÷ÊÇÎ²½Úµã
+                    // æ²¡æœ‰åä¸€ä¸ªèŠ‚ç‚¹ï¼Œè¯´æ˜æ˜¯å°¾èŠ‚ç‚¹
                     tailIndex = node.prevIndex;
                 }
             }
 
-            // ÌÔÌ­Í·²¿½Úµã£¨×î¾ÃÎ´Ê¹ÓÃ£©
+            // æ·˜æ±°å¤´éƒ¨èŠ‚ç‚¹ï¼ˆæœ€ä¹…æœªä½¿ç”¨ï¼‰
             private void EvictHead()
             {
                 if (!IsValidIndex(headIndex)) return;
@@ -696,7 +817,7 @@ namespace Convention.Collections
                 }
                 else
                 {
-                    tailIndex = -1;  // Á´±íÎª¿Õ
+                    tailIndex = -1;  // é“¾è¡¨ä¸ºç©º
                 }
 
                 FreeNode(oldHead);
@@ -714,49 +835,49 @@ namespace Convention.Collections
                 count = 0;
             }
 
-            // ÊôĞÔ·ÃÎÊÆ÷
+            // å±æ€§è®¿é—®å™¨
             public readonly int Count => count;
             public readonly int Capacity => capacity;
             public readonly bool IsCreated => hashMap.IsCreated;
         }
 
         /// <summary>
-        /// Native LFUCache - »ùÓÚUnity.CollectionsµÄ¸ßĞÔÄÜ×î²»Æµ·±Ê¹ÓÃ»º´æ
-        /// Burst¼æÈİ£¬ĞèÒªÊÖ¶¯Dispose
+        /// Native LFUCache - åŸºäºUnity.Collectionsçš„é«˜æ€§èƒ½æœ€ä¸é¢‘ç¹ä½¿ç”¨ç¼“å­˜
+        /// Burstå…¼å®¹ï¼Œéœ€è¦æ‰‹åŠ¨Dispose
         /// </summary>
-        /// <typeparam name="TKey">¼üÀàĞÍ£¨±ØĞëÊÇunmanagedÀàĞÍ£©</typeparam>
-        /// <typeparam name="TValue">ÖµÀàĞÍ£¨±ØĞëÊÇunmanagedÀàĞÍ£©</typeparam>
+        /// <typeparam name="TKey">é”®ç±»å‹ï¼ˆå¿…é¡»æ˜¯unmanagedç±»å‹ï¼‰</typeparam>
+        /// <typeparam name="TValue">å€¼ç±»å‹ï¼ˆå¿…é¡»æ˜¯unmanagedç±»å‹ï¼‰</typeparam>
         public struct NativeLFUCache<TKey, TValue> : IDisposable
             where TKey : unmanaged, IEquatable<TKey>
             where TValue : unmanaged
         {
-            // »º´æ½Úµã
+            // ç¼“å­˜èŠ‚ç‚¹
             private struct Node
             {
                 public TKey key;
                 public TValue value;
-                public int frequency;      // ·ÃÎÊÆµÂÊ
-                public int prevIndex;      // Í¬ÆµÂÊÁ´±íÖĞµÄÇ°Ò»¸ö½Úµã
-                public int nextIndex;      // Í¬ÆµÂÊÁ´±íÖĞµÄºóÒ»¸ö½Úµã
+                public int frequency;      // è®¿é—®é¢‘ç‡
+                public int prevIndex;      // åŒé¢‘ç‡é“¾è¡¨ä¸­çš„å‰ä¸€ä¸ªèŠ‚ç‚¹
+                public int nextIndex;      // åŒé¢‘ç‡é“¾è¡¨ä¸­çš„åä¸€ä¸ªèŠ‚ç‚¹
             }
 
-            // ÆµÂÊÁ´±íÍ·Î²
+            // é¢‘ç‡é“¾è¡¨å¤´å°¾
             private struct FrequencyList
             {
-                public int headIndex;  // ¸ÃÆµÂÊÁ´±íµÄÍ·½Úµã£¨×î¾ÃÎ´Ê¹ÓÃ£©
-                public int tailIndex;  // ¸ÃÆµÂÊÁ´±íµÄÎ²½Úµã£¨×î½üÊ¹ÓÃ£©
+                public int headIndex;  // è¯¥é¢‘ç‡é“¾è¡¨çš„å¤´èŠ‚ç‚¹ï¼ˆæœ€ä¹…æœªä½¿ç”¨ï¼‰
+                public int tailIndex;  // è¯¥é¢‘ç‡é“¾è¡¨çš„å°¾èŠ‚ç‚¹ï¼ˆæœ€è¿‘ä½¿ç”¨ï¼‰
 
                 public readonly bool IsEmpty => headIndex == -1;
             }
 
             private readonly NativeHashMap<TKey, int> keyToNodeIndex;   // key -> nodeIndex
-            private NativeList<Node> nodes;                             // ½Úµã³Ø
-            private readonly NativeList<int> freeList;                  // ¿ÕÏĞ½ÚµãË÷Òı
+            private NativeList<Node> nodes;                             // èŠ‚ç‚¹æ± 
+            private readonly NativeList<int> freeList;                  // ç©ºé—²èŠ‚ç‚¹ç´¢å¼•
             private NativeHashMap<int, FrequencyList> freqToList;       // frequency -> FrequencyList
 
             private readonly int capacity;
             private int count;
-            private int minFrequency;  // µ±Ç°×îĞ¡ÆµÂÊ
+            private int minFrequency;  // å½“å‰æœ€å°é¢‘ç‡
 
             public NativeLFUCache(int capacity, Allocator allocator)
             {
@@ -769,7 +890,7 @@ namespace Convention.Collections
                 freeList = new NativeList<int>(capacity, allocator);
                 freqToList = new NativeHashMap<int, FrequencyList>(capacity, allocator);
 
-                // Ô¤·ÖÅä½Úµã³Ø
+                // é¢„åˆ†é…èŠ‚ç‚¹æ± 
                 nodes.Length = capacity;
                 for (int i = capacity - 1; i >= 0; i--)
                 {
@@ -778,13 +899,13 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// »ñÈ¡»º´æÖµ²¢Ôö¼ÓÆµÂÊ
+            /// è·å–ç¼“å­˜å€¼å¹¶å¢åŠ é¢‘ç‡
             /// </summary>
             public bool TryGetValue(TKey key, out TValue value)
             {
                 if (keyToNodeIndex.TryGetValue(key, out int nodeIndex))
                 {
-                    // Ôö¼Ó·ÃÎÊÆµÂÊ
+                    // å¢åŠ è®¿é—®é¢‘ç‡
                     IncreaseFrequency(nodeIndex);
 
                     value = nodes[nodeIndex].value;
@@ -796,11 +917,11 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// Ìí¼Ó»ò¸üĞÂ»º´æ
+            /// æ·»åŠ æˆ–æ›´æ–°ç¼“å­˜
             /// </summary>
             public void Put(TKey key, TValue value)
             {
-                // ¸üĞÂÏÖÓĞÖµ
+                // æ›´æ–°ç°æœ‰å€¼
                 if (keyToNodeIndex.TryGetValue(key, out int nodeIndex))
                 {
                     Node node = nodes[nodeIndex];
@@ -811,13 +932,13 @@ namespace Convention.Collections
                     return;
                 }
 
-                // ÈİÁ¿ÒÑÂú£¬ÌÔÌ­×îĞ¡ÆµÂÊµÄ½Úµã
+                // å®¹é‡å·²æ»¡ï¼Œæ·˜æ±°æœ€å°é¢‘ç‡çš„èŠ‚ç‚¹
                 if (count >= capacity)
                 {
                     EvictMinFrequencyNode();
                 }
 
-                // ´´½¨ĞÂ½Úµã£¬³õÊ¼ÆµÂÊÎª1
+                // åˆ›å»ºæ–°èŠ‚ç‚¹ï¼Œåˆå§‹é¢‘ç‡ä¸º1
                 nodeIndex = AllocateNode();
                 nodes[nodeIndex] = new Node
                 {
@@ -831,7 +952,7 @@ namespace Convention.Collections
                 keyToNodeIndex.Add(key, nodeIndex);
                 AddToFrequencyList(nodeIndex, 1);
 
-                // ¸üĞÂ×îĞ¡ÆµÂÊ
+                // æ›´æ–°æœ€å°é¢‘ç‡
                 if (minFrequency == 0)
                 {
                     minFrequency = 1;
@@ -841,7 +962,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// É¾³ı»º´æÏî
+            /// åˆ é™¤ç¼“å­˜é¡¹
             /// </summary>
             public bool Remove(TKey key)
             {
@@ -853,14 +974,14 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// Çå¿Õ»º´æ
+            /// æ¸…ç©ºç¼“å­˜
             /// </summary>
             public void Clear()
             {
                 keyToNodeIndex.Clear();
                 freqToList.Clear();
 
-                // ÖØÖÃËùÓĞ½Úµãµ½¿ÕÏĞÁĞ±í
+                // é‡ç½®æ‰€æœ‰èŠ‚ç‚¹åˆ°ç©ºé—²åˆ—è¡¨
                 freeList.Clear();
                 for (int i = 0; i < capacity; i++)
                 {
@@ -872,7 +993,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ÊÍ·ÅËùÓĞÄÚ´æ
+            /// é‡Šæ”¾æ‰€æœ‰å†…å­˜
             /// </summary>
             public void Dispose()
             {
@@ -885,7 +1006,7 @@ namespace Convention.Collections
                 count = 0;
             }
 
-            #region ÄÚ²¿¸¨Öú·½·¨
+            #region å†…éƒ¨è¾…åŠ©æ–¹æ³•
 
             private int AllocateNode()
             {
@@ -900,7 +1021,7 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// Ôö¼Ó½ÚµãµÄ·ÃÎÊÆµÂÊ
+            /// å¢åŠ èŠ‚ç‚¹çš„è®¿é—®é¢‘ç‡
             /// </summary>
             private void IncreaseFrequency(int nodeIndex)
             {
@@ -908,25 +1029,25 @@ namespace Convention.Collections
                 int oldFreq = node.frequency;
                 int newFreq = oldFreq + 1;
 
-                // ´Ó¾ÉÆµÂÊÁ´±íÒÆ³ı
+                // ä»æ—§é¢‘ç‡é“¾è¡¨ç§»é™¤
                 RemoveFromFrequencyList(nodeIndex, oldFreq);
 
-                // ¼ì²éÊÇ·ñĞèÒª¸üĞÂ×îĞ¡ÆµÂÊ
+                // æ£€æŸ¥æ˜¯å¦éœ€è¦æ›´æ–°æœ€å°é¢‘ç‡
                 if (oldFreq == minFrequency && GetFrequencyListHead(oldFreq) == -1)
                 {
                     minFrequency = newFreq;
                 }
 
-                // ¸üĞÂ½ÚµãÆµÂÊ
+                // æ›´æ–°èŠ‚ç‚¹é¢‘ç‡
                 node.frequency = newFreq;
                 nodes[nodeIndex] = node;
 
-                // Ìí¼Óµ½ĞÂÆµÂÊÁ´±í
+                // æ·»åŠ åˆ°æ–°é¢‘ç‡é“¾è¡¨
                 AddToFrequencyList(nodeIndex, newFreq);
             }
 
             /// <summary>
-            /// ´ÓÆµÂÊÁ´±íÖĞÒÆ³ı½Úµã
+            /// ä»é¢‘ç‡é“¾è¡¨ä¸­ç§»é™¤èŠ‚ç‚¹
             /// </summary>
             private void RemoveFromFrequencyList(int nodeIndex, int frequency)
             {
@@ -935,33 +1056,33 @@ namespace Convention.Collections
 
                 Node node = nodes[nodeIndex];
 
-                // Èç¹ûÊÇÍ·½Úµã
+                // å¦‚æœæ˜¯å¤´èŠ‚ç‚¹
                 if (node.prevIndex == -1)
                 {
                     list.headIndex = node.nextIndex;
                 }
                 else
                 {
-                    // ¸üĞÂÇ°Ò»¸ö½ÚµãµÄnextÖ¸Õë
+                    // æ›´æ–°å‰ä¸€ä¸ªèŠ‚ç‚¹çš„nextæŒ‡é’ˆ
                     Node prevNode = nodes[node.prevIndex];
                     prevNode.nextIndex = node.nextIndex;
                     nodes[node.prevIndex] = prevNode;
                 }
 
-                // Èç¹ûÊÇÎ²½Úµã
+                // å¦‚æœæ˜¯å°¾èŠ‚ç‚¹
                 if (node.nextIndex == -1)
                 {
                     list.tailIndex = node.prevIndex;
                 }
                 else
                 {
-                    // ¸üĞÂºóÒ»¸ö½ÚµãµÄprevÖ¸Õë
+                    // æ›´æ–°åä¸€ä¸ªèŠ‚ç‚¹çš„prevæŒ‡é’ˆ
                     Node nextNode = nodes[node.nextIndex];
                     nextNode.prevIndex = node.prevIndex;
                     nodes[node.nextIndex] = nextNode;
                 }
 
-                // Èç¹ûÁ´±í±ä¿Õ£¬ÒÆ³ı¸ÃÆµÂÊ
+                // å¦‚æœé“¾è¡¨å˜ç©ºï¼Œç§»é™¤è¯¥é¢‘ç‡
                 if (list.headIndex == -1)
                 {
                     freqToList.Remove(frequency);
@@ -973,17 +1094,17 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ½«½ÚµãÌí¼Óµ½ÆµÂÊÁ´±íÎ²²¿
+            /// å°†èŠ‚ç‚¹æ·»åŠ åˆ°é¢‘ç‡é“¾è¡¨å°¾éƒ¨
             /// </summary>
             private void AddToFrequencyList(int nodeIndex, int frequency)
             {
                 if (!freqToList.TryGetValue(frequency, out var list))
                 {
-                    // ´´½¨ĞÂµÄÆµÂÊÁ´±í
+                    // åˆ›å»ºæ–°çš„é¢‘ç‡é“¾è¡¨
                     list = new FrequencyList { headIndex = nodeIndex, tailIndex = nodeIndex };
                     freqToList.Add(frequency, list);
 
-                    // ÉèÖÃ½ÚµãÖ¸Õë
+                    // è®¾ç½®èŠ‚ç‚¹æŒ‡é’ˆ
                     Node node = nodes[nodeIndex];
                     node.prevIndex = -1;
                     node.nextIndex = -1;
@@ -991,28 +1112,28 @@ namespace Convention.Collections
                 }
                 else
                 {
-                    // Ìí¼Óµ½Á´±íÎ²²¿
+                    // æ·»åŠ åˆ°é“¾è¡¨å°¾éƒ¨
                     int oldTail = list.tailIndex;
 
-                    // ¸üĞÂÔ­Î²½Úµã
+                    // æ›´æ–°åŸå°¾èŠ‚ç‚¹
                     Node oldTailNode = nodes[oldTail];
                     oldTailNode.nextIndex = nodeIndex;
                     nodes[oldTail] = oldTailNode;
 
-                    // ÉèÖÃĞÂ½Úµã
+                    // è®¾ç½®æ–°èŠ‚ç‚¹
                     Node newNode = nodes[nodeIndex];
                     newNode.prevIndex = oldTail;
                     newNode.nextIndex = -1;
                     nodes[nodeIndex] = newNode;
 
-                    // ¸üĞÂÁ´±íÎ²
+                    // æ›´æ–°é“¾è¡¨å°¾
                     list.tailIndex = nodeIndex;
                     freqToList[frequency] = list;
                 }
             }
 
             /// <summary>
-            /// »ñÈ¡ÆµÂÊÁ´±íµÄÍ·½Úµã
+            /// è·å–é¢‘ç‡é“¾è¡¨çš„å¤´èŠ‚ç‚¹
             /// </summary>
             private int GetFrequencyListHead(int frequency)
             {
@@ -1024,11 +1145,11 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ÌÔÌ­×îĞ¡ÆµÂÊµÄ½Úµã£¨ÌÔÌ­¸ÃÆµÂÊÁ´±íµÄÍ·½Úµã£©
+            /// æ·˜æ±°æœ€å°é¢‘ç‡çš„èŠ‚ç‚¹ï¼ˆæ·˜æ±°è¯¥é¢‘ç‡é“¾è¡¨çš„å¤´èŠ‚ç‚¹ï¼‰
             /// </summary>
             private void EvictMinFrequencyNode()
             {
-                // ÕÒµ½ÓĞ½ÚµãµÄ×îĞ¡ÆµÂÊ
+                // æ‰¾åˆ°æœ‰èŠ‚ç‚¹çš„æœ€å°é¢‘ç‡
                 while (minFrequency <= capacity && GetFrequencyListHead(minFrequency) == -1)
                 {
                     minFrequency++;
@@ -1043,26 +1164,26 @@ namespace Convention.Collections
             }
 
             /// <summary>
-            /// ÒÆ³ıÍêÕû½Úµã£¨´ÓËùÓĞÊı¾İ½á¹¹ÖĞÉ¾³ı£©
+            /// ç§»é™¤å®Œæ•´èŠ‚ç‚¹ï¼ˆä»æ‰€æœ‰æ•°æ®ç»“æ„ä¸­åˆ é™¤ï¼‰
             /// </summary>
             private void RemoveNode(int nodeIndex)
             {
                 Node node = nodes[nodeIndex];
 
-                // ´ÓÆµÂÊÁ´±íÒÆ³ı
+                // ä»é¢‘ç‡é“¾è¡¨ç§»é™¤
                 RemoveFromFrequencyList(nodeIndex, node.frequency);
 
-                // ´ÓÖ÷HashMapÒÆ³ı
+                // ä»ä¸»HashMapç§»é™¤
                 keyToNodeIndex.Remove(node.key);
 
-                // »ØÊÕ½Úµã
+                // å›æ”¶èŠ‚ç‚¹
                 FreeNode(nodeIndex);
                 count--;
             }
 
             #endregion
 
-            // ÊôĞÔ·ÃÎÊÆ÷
+            // å±æ€§è®¿é—®å™¨
             public readonly int Count => count;
             public readonly int Capacity => capacity;
             public readonly bool IsCreated => keyToNodeIndex.IsCreated;
@@ -1087,7 +1208,7 @@ namespace Convention.Collections
             private NativeList<Node> nodes;
             private NativeList<int> freeList;
 
-            // ËÄ¸öÁ´±íÍ·Î²Ö¸Õë
+            // å››ä¸ªé“¾è¡¨å¤´å°¾æŒ‡é’ˆ
             private int t1Head, t1Tail, t2Head, t2Tail, b1Head, b1Tail, b2Head, b2Tail;
 
             private int capacity, t1Count, t2Count, b1Count, b2Count, p;
@@ -1117,7 +1238,7 @@ namespace Convention.Collections
             {
                 if (keyToNode.TryGetValue(key, out int nodeIndex))
                 {
-                    Node node = nodes[nodeIndex]; // ÏÈ¶ÁÈ¡
+                    Node node = nodes[nodeIndex]; // å…ˆè¯»å–
 
                     if (node.listType == LIST_T1 || node.listType == LIST_T2)
                     {
@@ -1169,18 +1290,18 @@ namespace Convention.Collections
                         b2Count--; t2Count++;
                     }
 
-                    nodes[nodeIndex] = node; // Ğ´»Ø
+                    nodes[nodeIndex] = node; // å†™å›
                     return;
                 }
 
-                // ÈİÁ¿Âú£¬Ö´ĞĞReplace
+                // å®¹é‡æ»¡ï¼Œæ‰§è¡ŒReplace
                 int totalSize = t1Count + t2Count;
                 if (totalSize >= capacity)
                 {
                     Replace();
                 }
 
-                // ´´½¨ĞÂ½Úµãµ½T1
+                // åˆ›å»ºæ–°èŠ‚ç‚¹åˆ°T1
                 nodeIndex = AllocateNode();
                 nodes[nodeIndex] = new Node
                 {
@@ -1200,14 +1321,14 @@ namespace Convention.Collections
             {
                 int delta = (oppositeCount >= sameCount) ? 1 : oppositeCount / sameCount + 1;
 
-                // ÏÈĞŞ¸ÄpÖµ
+                // å…ˆä¿®æ”¹på€¼
                 if (isB1) p = Math.Min(p + delta, capacity);
                 else p = Math.Max(p - delta, 0);
 
-                // Ö´ĞĞÌæ»»
+                // æ‰§è¡Œæ›¿æ¢
                 Replace();
 
-                // ÒÆ¶¯½Úµã
+                // ç§»åŠ¨èŠ‚ç‚¹
                 MoveBetweenLists(node.prevIndex, node.listType, LIST_T2);
                 node.listType = LIST_T2;
 
@@ -1246,7 +1367,7 @@ namespace Convention.Collections
                 }
             }
 
-            #region Á´±í²Ù×÷
+            #region é“¾è¡¨æ“ä½œ
 
             private void MoveToMRU(int nodeIndex, byte targetList)
             {
@@ -1262,7 +1383,7 @@ namespace Convention.Collections
 
             private void AddToHead(int nodeIndex, byte listType)
             {
-                Node node = nodes[nodeIndex]; // ¶ÁÈ¡
+                Node node = nodes[nodeIndex]; // è¯»å–
                 node.listType = listType;
                 node.prevIndex = -1;
 
@@ -1270,12 +1391,12 @@ namespace Convention.Collections
                 {
                     case LIST_T1:
                         node.nextIndex = t1Head;
-                        nodes[nodeIndex] = node; // Ğ´»Ø
+                        nodes[nodeIndex] = node; // å†™å›
                         if (t1Head != -1)
                         {
                             Node headNode = nodes[t1Head];
                             headNode.prevIndex = nodeIndex;
-                            nodes[t1Head] = headNode; // Ğ´»Ø
+                            nodes[t1Head] = headNode; // å†™å›
                         }
                         t1Head = nodeIndex;
                         if (t1Tail == -1) t1Tail = nodeIndex;
@@ -1283,12 +1404,12 @@ namespace Convention.Collections
 
                     case LIST_T2:
                         node.nextIndex = t2Head;
-                        nodes[nodeIndex] = node; // Ğ´»Ø
+                        nodes[nodeIndex] = node; // å†™å›
                         if (t2Head != -1)
                         {
                             Node headNode = nodes[t2Head];
                             headNode.prevIndex = nodeIndex;
-                            nodes[t2Head] = headNode; // Ğ´»Ø
+                            nodes[t2Head] = headNode; // å†™å›
                         }
                         t2Head = nodeIndex;
                         if (t2Tail == -1) t2Tail = nodeIndex;
@@ -1296,12 +1417,12 @@ namespace Convention.Collections
 
                     case LIST_B1:
                         node.nextIndex = b1Head;
-                        nodes[nodeIndex] = node; // Ğ´»Ø
+                        nodes[nodeIndex] = node; // å†™å›
                         if (b1Head != -1)
                         {
                             Node headNode = nodes[b1Head];
                             headNode.prevIndex = nodeIndex;
-                            nodes[b1Head] = headNode; // Ğ´»Ø
+                            nodes[b1Head] = headNode; // å†™å›
                         }
                         b1Head = nodeIndex;
                         if (b1Tail == -1) b1Tail = nodeIndex;
@@ -1309,12 +1430,12 @@ namespace Convention.Collections
 
                     case LIST_B2:
                         node.nextIndex = b2Head;
-                        nodes[nodeIndex] = node; // Ğ´»Ø
+                        nodes[nodeIndex] = node; // å†™å›
                         if (b2Head != -1)
                         {
                             Node headNode = nodes[b2Head];
                             headNode.prevIndex = nodeIndex;
-                            nodes[b2Head] = headNode; // Ğ´»Ø
+                            nodes[b2Head] = headNode; // å†™å›
                         }
                         b2Head = nodeIndex;
                         if (b2Tail == -1) b2Tail = nodeIndex;
@@ -1324,11 +1445,11 @@ namespace Convention.Collections
 
             private void RemoveFromList(int nodeIndex)
             {
-                Node node = nodes[nodeIndex]; // ¶ÁÈ¡
+                Node node = nodes[nodeIndex]; // è¯»å–
                 int prev = node.prevIndex;
                 int next = node.nextIndex;
 
-                // ¸ù¾İÀàĞÍ¸üĞÂÍ·Î²Ö¸Õë
+                // æ ¹æ®ç±»å‹æ›´æ–°å¤´å°¾æŒ‡é’ˆ
                 switch (node.listType)
                 {
                     case LIST_T1:
@@ -1349,22 +1470,22 @@ namespace Convention.Collections
                         break;
                 }
 
-                // ¸üĞÂÁÚ¾Ó
+                // æ›´æ–°é‚»å±…
                 if (prev != -1)
                 {
                     Node prevNode = nodes[prev];
                     prevNode.nextIndex = next;
-                    nodes[prev] = prevNode; // Ğ´»Ø
+                    nodes[prev] = prevNode; // å†™å›
                 }
                 if (next != -1)
                 {
                     Node nextNode = nodes[next];
                     nextNode.prevIndex = prev;
-                    nodes[next] = nextNode; // Ğ´»Ø
+                    nodes[next] = nextNode; // å†™å›
                 }
 
                 node.prevIndex = node.nextIndex = -1;
-                nodes[nodeIndex] = node; // Ğ´»Ø
+                nodes[nodeIndex] = node; // å†™å›
             }
 
             #endregion
@@ -1386,9 +1507,9 @@ namespace Convention.Collections
                 if (!keyToNode.TryGetValue(key, out int nodeIndex))
                     return false;
 
-                Node node = nodes[nodeIndex]; // ¶ÁÈ¡
+                Node node = nodes[nodeIndex]; // è¯»å–
 
-                // ¸üĞÂ¼ÆÊı
+                // æ›´æ–°è®¡æ•°
                 if (node.listType == LIST_T1) t1Count--;
                 else if (node.listType == LIST_T2) t2Count--;
                 else if (node.listType == LIST_B1) b1Count--;
