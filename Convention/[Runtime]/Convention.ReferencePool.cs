@@ -1,5 +1,3 @@
-
-using Convention.Experimental.PublicType;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -121,7 +119,7 @@ namespace Convention.ReferenceManagement
             {
                 if (typeof(T) != m_ReferenceType)
                 {
-                    throw new GameException("Type is invalid.");
+                    throw new Exception("Type is invalid.");
                 }
 
                 m_UsingReferenceCount++;
@@ -161,7 +159,7 @@ namespace Convention.ReferenceManagement
                 {
                     if (m_EnableStrictCheck && m_References.Contains(reference))
                     {
-                        throw new GameException("The reference has been released.");
+                        throw new Exception("The reference has been released.");
                     }
 
                     m_References.Enqueue(reference);
@@ -175,7 +173,7 @@ namespace Convention.ReferenceManagement
             {
                 if (typeof(T) != m_ReferenceType)
                 {
-                    throw new GameException("Type is invalid.");
+                    throw new Exception("Type is invalid.");
                 }
 
                 lock (m_References)
@@ -350,7 +348,7 @@ namespace Convention.ReferenceManagement
         {
             if (referenceType == null)
             {
-                throw new GameException("ReferenceType is invalid.");
+                throw new Exception("ReferenceType is invalid.");
             }
 
             ReferenceCollection referenceCollection = null;
@@ -375,17 +373,17 @@ namespace Convention.ReferenceManagement
 
             if (referenceType == null)
             {
-                throw new GameException("Reference type is invalid.");
+                throw new Exception("Reference type is invalid.");
             }
 
             if (!referenceType.IsClass || referenceType.IsAbstract)
             {
-                throw new GameException("Reference type is not a non-abstract class type.");
+                throw new Exception("Reference type is not a non-abstract class type.");
             }
 
             if (!typeof(IReference).IsAssignableFrom(referenceType))
             {
-                throw new GameException($"Reference type '{referenceType.FullName}' is invalid.");
+                throw new Exception($"Reference type '{referenceType.FullName}' is invalid.");
             }
         }
 
@@ -418,7 +416,7 @@ namespace Convention.ReferenceManagement
         {
             if (reference == null)
             {
-                throw new GameException("Reference is invalid.");
+                throw new Exception("Reference is invalid.");
             }
 
             Type referenceType = reference.GetType();

@@ -2,3 +2,23 @@
 	path = .cursor
 	url = http://gitea.liubai.site/ninemine/.cursor.git
 	branch = main
+[submodule "Convention/[Runtime]/File/CoreParty"]
+	path = Convention/[Runtime]/File/CoreParty
+	url = http://gitea.liubai.site/ninemine/Convention-CSharp-File.git
+	branch = master
+[submodule "Convention/[Runtime]/Collections"]
+	path = Convention/[Runtime]/Collections
+	url = http://gitea.liubai.site/ninemine/Convention-CSharp-Collections.git
+	branch = master
+[submodule "Convention/[Runtime]/Architecture"]
+	path = Convention/[Runtime]/Architecture
+	url = http://gitea.liubai.site/ninemine/Convention-CSharp-Architecture.git
+	branch = master
+[submodule "Convention/[Runtime]/Reflection"]
+	path = Convention/[Runtime]/Reflection
+	url = http://gitea.liubai.site/ninemine/Convention-CSharp-Reflection.git
+	branch = master
+[submodule "Convention/[Runtime]/Process"]
+	path = Convention/[Runtime]/Process
+	url = http://gitea.liubai.site/ninemine/Convention-CSharp-Process.git
+	branch = master

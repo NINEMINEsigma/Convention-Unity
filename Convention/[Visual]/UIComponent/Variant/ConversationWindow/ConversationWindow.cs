@@ -1,3 +1,4 @@
+using Convention.Architecture.PublicType;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Convention.WindowsUI.Variant
 {
-    public class ConversationWindow : MonoSingleton<ConversationWindow>
+    public class ConversationWindow : MonoSingleton<ConversationWindow>, IGameModule
     {
         [Resources, OnlyNotNullMode] public WindowManager m_WindowManager;
         [Resources, SerializeField, OnlyNotNullMode] private PropertiesWindow m_PropertiesWindow;
@@ -35,10 +36,7 @@ namespace Convention.WindowsUI.Variant
 
         private void Start()
         {
-            Architecture.RegisterWithDuplicateAllow(typeof(ConversationWindow), this, () =>
-            {
-
-            });
+            ConventionUtility.GetArchitecture().Register(this);
         }
 
         public void SetHeadText(string text)

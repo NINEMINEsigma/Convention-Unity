@@ -11,7 +11,7 @@ namespace Convention
     {
         private void Update()
         {
-            if (!Architecture.Contains<WindowsUI.Variant.HierarchyWindow>())
+            if (!ConventionUtility.GetArchitecture().Contains<WindowsUI.Variant.HierarchyWindow>())
                 return;
             var onlys = GetComponents<IOnlyLoadedInHierarchy>();
             try

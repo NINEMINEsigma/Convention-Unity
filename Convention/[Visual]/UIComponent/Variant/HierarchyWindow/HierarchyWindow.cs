@@ -1,3 +1,4 @@
+using Convention.Architecture.PublicType;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using static Convention.WindowsUI.Variant.PropertiesWindow;
 namespace Convention.WindowsUI.Variant
 {
     [RequireComponent(typeof(PropertiesWindow))]
-    public class HierarchyWindow : MonoSingleton<HierarchyWindow>
+    public class HierarchyWindow : MonoSingleton<HierarchyWindow>, IGameModule
     {
         [Resources] public WindowManager windowManager;
         [Resources, SerializeField] private PropertiesWindow m_PropertiesWindow;
@@ -99,7 +100,7 @@ namespace Convention.WindowsUI.Variant
 
         private void Start()
         {
-            Architecture.RegisterWithDuplicateAllow(typeof(HierarchyWindow), this, () => { });
+            ConventionUtility.GetArchitecture().Register(this);
         }
 
         private void Reset()

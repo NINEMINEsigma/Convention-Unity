@@ -35,9 +35,9 @@ namespace Convention.WindowsUI.Variant
             if (LoadedInRoot == null || LoadedInRoot.Count == 0)
                 InitLoadedRoots(ref LoadedInRoot);
             // Update extensions
-            var extensions = ToolFile.AssetBundleExtension.ToList();
+            var extensions = FileExtension.AssetBundleExtension.ToList();
             extensions.AddRange(LoadedFileIconsExtension);
-            ToolFile.AssetBundleExtension = extensions.ToArray();
+            FileExtension.AssetBundleExtension = extensions.ToArray();
             // Read Config
             if (LoadedFileAutoLoadMaxFileSize != 0)
                 FileSystemAssetsItem.LoadedFileAutoLoadMaxFileSize = LoadedFileAutoLoadMaxFileSize;

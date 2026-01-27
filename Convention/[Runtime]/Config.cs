@@ -1340,6 +1340,7 @@ namespace Convention
         private class CoroutineMonoStarterUtil : MonoBehaviour
         {
             internal float waitClock;
+            internal Architecture.Architecture architecture;
             private void Update()
             {
                 waitClock = Time.realtimeSinceStartup;
@@ -1350,6 +1351,12 @@ namespace Convention
             {
                 s_CoroutineStarter = null;
             }
+        }
+        public static Architecture.Architecture GetArchitecture()
+        {
+            if (CoroutineStarter.architecture == null)
+                CoroutineStarter.architecture = new Architecture.Architecture();
+            return CoroutineStarter.architecture;
         }
         /// <summary>
         /// 包装即将用于协程的迭代器成为一个防止假死机的迭代器

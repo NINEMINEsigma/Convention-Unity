@@ -1,3 +1,4 @@
+using Convention.Architecture.PublicType;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 namespace Convention.WindowsUI.Variant
 {
     [RequireComponent(typeof(PropertiesWindow))]
-    public class AssetsWindow : MonoSingleton<AssetsWindow>
+    public class AssetsWindow : MonoSingleton<AssetsWindow>, IGameModule
     {
         [Content, OnlyPlayMode, SerializeField, Header("Assets Stack")] private Stack<List<PropertiesWindow.ItemEntry>> m_EntriesStack = new();
         [Resources, OnlyNotNullMode, SerializeField] private PropertiesWindow m_PropertiesWindow;
@@ -28,7 +29,7 @@ namespace Convention.WindowsUI.Variant
         {
             m_BackButton.onClick.AddListener(() => Pop(true));
             UpdatePathText();
-            Architecture.RegisterWithDuplicateAllow(typeof(AssetsWindow), this, () => { });
+            ConventionUtility.GetArchitecture().Register(this);
         }
 
         protected virtual void Reset()
