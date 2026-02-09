@@ -72,9 +72,13 @@ namespace Convention.WindowsUI
 
         [Resources, SerializeField, WhenAttribute.Not(nameof(DragObjectInternal), null)] private RectTransform DragAreaInternal;
 
+        [Setting] public bool IsSetTopWhenDragBegin = true;
+
         public void OnBeginDrag(PointerEventData data)
         {
             if (!isCanDrag) return;
+            if (IsSetTopWhenDragBegin)
+                transform.SetAsLastSibling();
             originalPanelLocalPosition = DragObjectInternal.localPosition;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(DragAreaInternal, data.position, data.pressEventCamera, out originalLocalPointerPosition);
             gameObject.transform.SetAsLastSibling();
