@@ -31,6 +31,8 @@ MonoBehaviour:
     serializationDepthLimit: 64
     assemblyNames:
     - Assembly-CSharp
+    - Dreamteck.Splines
+    - Dreamteck.Utilities
     - EasySave3
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0

@@ -494,6 +494,7 @@ namespace Convention
         }
     }
 
+    [CustomEditor(typeof(MonoBehaviour), true)]
     public class AnyBehaviourEditor : AbstractCustomEditor { }
 
     public abstract class EditorWindow : UnityEditor.EditorWindow
