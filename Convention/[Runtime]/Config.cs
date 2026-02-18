@@ -1347,9 +1347,10 @@ namespace Convention
                 MainThreadID = Thread.CurrentThread.ManagedThreadId;
             }
 
-            private void OnDestroy()
+            private void OnApplicationQuit()
             {
                 s_CoroutineStarter = null;
+                GameObject.Destroy(gameObject);
             }
         }
         public static Architecture.Architecture GetArchitecture()
